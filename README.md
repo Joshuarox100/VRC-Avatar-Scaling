@@ -99,7 +99,7 @@ Troubleshooting:
 **Viewpoint doesn't appear to move when using Full Body Tracking (FBT).**
 >Unfortunately, Animator Set View doesn't seem to be working correctly with FBT at the moment. Even if it did, it would look really weird since it doesn't currently adjust IPD Scale which would cause your legs to float in the air and make you look like a ball (refer to 'What is IPD' in Common Questions).
 
-**Viewpoint doesn't move to where I want it to go.**
+**Viewpoint doesn't move to where you want it to go.**
 >The place your viewpoint moves to depends on where your head bone is located after setting your scale. By default, this package uses VRChat's T-Pose animation and takes the head position as where your view should go. This works fine usually, but if you are using a model that doesn't work correctly with VRChat's T-Pose animation, you'll need to create your own animation to use instead. Regardless of how you decide to create your animation, keep in mind that the viewpoint will be set to the location of the avatar's head bone within it. Once you have an animation you're happy with, replace the proxy_tpose Animation used in the "Updating View" state contained within the "Scale (View)" layer of the Animator.
 
 **IPD doesn't scale (T-Rex arms / Room floor above or below world floor).**
