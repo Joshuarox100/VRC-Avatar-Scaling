@@ -77,7 +77,7 @@ Common Questions:
 >IPD stands for interpupillary distance or, in layman's terms, the distance between the center of your eyes. In VRChat, IPD Scale is calculated using the height of your viewpoint and is used to set how large you and your play space are relative to the world (among other things). You can see exactly how it effects an avatar by enabling or disabling the IPD Scale within the Avatar Descriptor and testing it in VRChat. The scale used for an avatar is only calculated while loading the avatar and there is currently no way to recalculate it using a different height afterwards (as of the writing of this README). If it could be adjusted via Animator Set View (The script used to move the viewpoint), the scale of your play space could be made to adjust alongside the scale of the avatar. This would eliminate the current situation of the avatar changing size while you experience an instantaneous elevator ride to the head bone. You can upvote the feedback post I made on the VRChat Canny linked in the question above if you want to help in showing the devs a need for this feature.
 
 **How do I change the minimum and maximum size I can go between?**
->Simply adjust the scale values set in the included Animations named "Min" and "Max" to whatever you'd like (make sure to change the values for both frames of the Animation you're modifying). Also keep in mind that VRChat has trouble fully moving the viewpoint to the head after going above or below a certain height. If your head bone goes past that height, it will place the viewpoint slightly above or below the head bone.
+>Simply adjust the scale values set in the included Animations named "Min" and "Max" to whatever you'd like (make sure to change the values for both frames of the Animation you're modifying).
 
 **How do I change the animation used when adjusting the scale?**
 >By default, your avatar's Idle animation is used while adjusting your scale. If you want to have a different animation other than your Idle play, put the Animation you want on both the "Unlocking View" and "Waiting" states within the "Scale (View)" layer of your Animator.
@@ -93,8 +93,8 @@ Troubleshooting:
 **Avatar is super large or small after activating the Scale Constraint component.**
 >You did what I said not to do in Step 2, didn't you? If you did listen and this still happens, try repeating Steps 1 and 2 and ensure that the "Scaler" object is within the root of your Avatar next to Armature and Body. Additionally, make sure that you **don't** hit the Zero button on the Scale Constraint component at any time as it will set your Armature's scale to 1, messing up any models that scaled up their Armatures when exporting.
 
-**Viewpoint doesn't entirely follow the head bone when it updates.**
->VRChat seems to have trouble moving the viewpoint to the correct spot after a certain point. In my testing I've found it to occur when going below around 55 cm. However, it could be dependent on the original position of the viewpoint in which case it would depend on your avatar's original height (The smaller the avatar starts, the smaller it can go without issue).
+**Viewpoint starts to drift higher or lower from its intended location the more you scale.**
+>Animator Set View currently doesn't account for changing the scale of the head bone. It instead retains its position relative to the position of your head bone. I've made another post on the VRChat Canny explaining this in more detail here: [[Bug] Animator Set View does not account for changing the scale of the head bone.](https://bit.ly/3gXIPex)
 
 **The viewpoint doesn't appear to move when using Full Body Tracking (FBT).**
 >Unfortunately, Animator Set View doesn't seem to be working correctly with FBT at the moment. Even if it did, it would look really weird since it doesn't currently adjust IPD Scale which would cause your legs to float in the air and make you look like a ball (refer to 'What is IPD' in Common Questions).
