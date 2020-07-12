@@ -8,7 +8,7 @@ Usage: This package is meant for use with VRChat's Avatars 3.0 (VRCSDK-AVATAR)
 Description: Scale your avatar to any size on the fly with a spin of the joystick!
 
 Contains:
-- Two Animation files
+- Two Animations
 - One Animator
 - One Expressions Menu
 - This README
