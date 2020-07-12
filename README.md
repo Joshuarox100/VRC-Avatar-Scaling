@@ -96,16 +96,16 @@ Troubleshooting:
 **Viewpoint starts to drift higher or lower from its intended location the more you scale.**
 >Animator Set View currently doesn't account for changing the scale of the head bone. It instead retains its position relative to the position of your head bone. I've made another post on the VRChat Canny explaining this in more detail here: [[Bug] Animator Set View does not account for changing the scale of the head bone.](https://bit.ly/3gXIPex)
 
-**The viewpoint doesn't appear to move when using Full Body Tracking (FBT).**
+**Viewpoint doesn't appear to move when using Full Body Tracking (FBT).**
 >Unfortunately, Animator Set View doesn't seem to be working correctly with FBT at the moment. Even if it did, it would look really weird since it doesn't currently adjust IPD Scale which would cause your legs to float in the air and make you look like a ball (refer to 'What is IPD' in Common Questions).
 
-**Viewpoint doesn't move correctly.**
+**Viewpoint doesn't move to where I want it to go.**
 >The place your viewpoint moves to depends on where your head bone is located after setting your scale. By default, this package uses VRChat's T-Pose animation and takes the head position as where your view should go. This works fine usually, but if you are using a model that doesn't work correctly with VRChat's T-Pose animation, you'll need to create your own animation to use instead. Regardless of how you decide to create your animation, keep in mind that the viewpoint will be set to the location of the avatar's head bone within it. Once you have an animation you're happy with, replace the proxy_tpose Animation used in the "Updating View" state contained within the "Scale (View)" layer of the Animator.
 
 **IPD doesn't scale (T-Rex arms / Room floor above or below world floor).**
 >There is currently no option for Animator Set View to recalculate the IPD Scale after moving the viewpoint (refer to 'What is IPD' in Common Questions), however I have made a feedback post on the VRChat Canny about adding this feature that you can upvote here: [[Feedback] Option to Adjust the IPD Scale for Animator Set View](https://bit.ly/2ZY0SdG)
 
-**The viewpoint doesn't get set when switching between sizes quickly.**
+**Viewpoint doesn't get set when switching between sizes quickly.**
 >This should only happen if you adjusted the values for the included "Min" and "Max" Animations or changed the exit time for resetting the viewpoint. You can fix this by increasing the transition exit time between the "Unlocking View" and "Waiting" states within the "Scale (View)" layer of the Animator. This happens because of the linear amount of time it takes to reset the viewpoint from whatever height you set it to. While the viewpoint is resetting, it isn't possible to set a new one until it's finished.
 
 **Can't crouch or prone after setting the viewpoint (Desktop).**
