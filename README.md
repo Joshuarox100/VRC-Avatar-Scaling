@@ -20,6 +20,10 @@ Before following these steps, set up your avatar how you normally would and ensu
 1) Right click the object holding your Avatar Descriptor and create an empty object named "Scaler" (without the quotation marks).
 	>This is needed for the animations that actually scale your avatar.
 
+<p align="center">
+  <img width="404" height="206" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/master/Tutorial%20Images/Step%201.png">
+</p>
+
 2) Add a Scale Constraint component to your Armature, assign "Scaler" as a source, and click Activate (Don't click Zero).
 	>This will cause your Armature (and any other objects using this object in a Scale Constraint component) to multiply their original scale with the scale of the Scale Constraint source object (in this case, "Scaler"). You can test this by simply changing the scale of the "Scaler" object.
 
