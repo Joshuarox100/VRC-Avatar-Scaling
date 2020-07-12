@@ -91,7 +91,7 @@ Common Questions:
 Troubleshooting:
 --------------
 **Avatar is super large or small after activating the Scale Constraint component.**
->You did what I said not to do in Step 2, didn't you? If you did listen and this still happens, try repeating Steps 1 and 2 and ensure that the "Scaler" object is within the root of your Avatar next to Armature and Body. Additionally, make sure that you **don't** hit the Zero button on the Scale Constraint component at any time as it will set your Armature's scale to 1, messing up any models that scaled up their Armatures when exporting.
+>You did what I said **not** to do in Step 2, didn't you? If you did listen and this still happens, try repeating Steps 1 and 2 and ensure that the "Scaler" object is within the root of your Avatar next to Armature and Body. Additionally, make sure that you **don't** hit the Zero button on the Scale Constraint component at any time as it will set your Armature's scale to 1, messing up any models that scaled up their Armatures when exporting.
 
 **Viewpoint starts to drift higher or lower from its intended location the more you scale.**
 >Animator Set View currently doesn't account for changing the scale of the head bone. It instead retains its position relative to the position of your head bone. I've made another post on the VRChat Canny explaining this in more detail here: [[Bug] Animator Set View does not account for changing the scale of the head bone.](https://bit.ly/3gXIPex)
