@@ -21,26 +21,50 @@ Before following these steps, set up your avatar how you normally would and ensu
 	>This is needed for the animations that actually scale your avatar.
 
 <p align="center">
-  <img width="404" height="206" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/master/Tutorial%20Images/Step%201.png">
+  <img width="40%" height="40%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%201.png">
 </p>
 
 2) Add a Scale Constraint component to your Armature, assign "Scaler" as a source, and click Activate (Don't click Zero).
 	>This will cause your Armature (and any other objects using this object in a Scale Constraint component) to multiply their original scale with the scale of the Scale Constraint source object (in this case, "Scaler"). You can test this by simply changing the scale of the "Scaler" object.
 
+<p align="center">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%202.png">
+</p>
+
 3) In the Avatar Descriptor, assign the included Animator to your Action layer.
 	>If you already have a custom Action layer, you can copy the layers and parameters from the included Animator into your own. Keep in mind that doing so may cause the conditions for transitioning between the copied states to be lost or modified, so be sure to correct them or things will behave strangely (or not at all).
 
+<p align="center">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%203.png">
+</p>
+
 4) If you don't already have one, create a VRCStageParameters asset in your project (Create -> VRC Scriptable Objects -> Stage Parameters).
+
+<p align="center">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%204.png">
+</p>
 
 5) Add the following three variables anywhere within your Stage Parameters list (without the quotation marks):
 	1. "MenuState" (Int): Used for telling the Animator which menu you're in.
 	2. "Scale" (Float): Used for setting the scale of your avatar.
 	3. "Reset" (Int): Used for resetting the scale and the viewpoint.
 
+<p align="center">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%205.png">
+</p>
+
 6) Add your Stage Parameters asset to the included Expressions Menu.
 	>If the parameters and values for the menu controls aren't automatically set, have the Reset control set "Reset" to 1 and have the Size control set "MenuState" to 4 and use "Scale" for Parameter Rotation.
 
+<p align="center">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%206.png">
+</p>
+
 7) In the Avatar Descriptor, either use the included Expressions Menu or use it as a submenu within your own.
+
+<p align="center">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%207.png">
+</p>
 
 Everything should now be fully set up! If you have any issues or questions, look in the troubleshooting and questions section below before contacting me.
 
