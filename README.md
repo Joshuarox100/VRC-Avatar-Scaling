@@ -24,7 +24,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 	>This will cause your Armature (and any other objects using this object in a Scale Constraint component) to multiply their original scale with the scale of the Scale Constraint source object (in this case, "Scaler"). You can test this by simply changing the scale of the "Scaler" object.
 
 3) In the Avatar Descriptor, assign the included Animator to your Action layer.
-	>If you already have a custom Action layer, you can copy the layers and parameters from the included Animator into your own. Keep in mind that doing so may cause the conditions for transitioning between the copied states to be lost or modified, be sure to correct them if they do or things will behave strangely (or not at all).
+	>If you already have a custom Action layer, you can copy the layers and parameters from the included Animator into your own. Keep in mind that doing so may cause the conditions for transitioning between the copied states to be lost or modified, so be sure to correct them or things will behave strangely (or not at all).
 
 4) If you don't already have one, create a VRCStageParameters asset in your project (Create -> VRC Scriptable Objects -> Stage Parameters).
 
