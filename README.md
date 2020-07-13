@@ -15,7 +15,7 @@ Contains:
 
 How to Use:
 --------------
-Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how the Expressions Menu works.
+Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works.
 
 1) Right click the object holding your Avatar Descriptor and create an empty object named "Scaler" (without the quotation marks).
 	>This is needed for the animations that actually scale your avatar.
@@ -32,7 +32,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 </p>
 
 3) In the Avatar Descriptor, assign the included Animator to your Action layer.
-	>If you already have a custom Action layer, you can copy the layers and parameters from the included Animator into your own. Keep in mind that doing so may cause the conditions for transitioning between the copied states to be lost or modified, so be sure to correct them or things will behave strangely (or not at all).
+	>If you already have a custom Action layer, you can copy the layers and parameters from the included Animator into your own. Keep in mind that if you don't copy the parameters before the copying the states, the conditions for transitioning between the states may be modified, so be sure to correct them or things will behave strangely (or not at all).
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%203.png">
