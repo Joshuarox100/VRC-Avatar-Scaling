@@ -111,8 +111,8 @@ Troubleshooting:
 **Can't crouch or prone after setting the viewpoint (Desktop).**
 >*I think* this is a bug with Animator Set View regarding Desktop mode. You may be able to get around this by creating some extra states for checking if you're crouched or in prone, but you're on your own there.
 
-**People see me at my minimum size when resetting.**
->Not exactly sure why this happens. I think it has something to do with the way parameters are synced currently, but you can fix it by holding down the Reset control for about a second.
+**People see you at your minimum size when resetting.**
+>Not exactly sure why this happens. I think it has something to do with the way parameters are synced currently, but you can fix it by holding down the included Reset control for about a second.
 
 **VRChat's "Avatar Reset" button doesn't reset the viewpoint (Desktop).**
 >This seems to be a bug with using Desktop mode currently. You can use the Reset control within the included VRC Expressions Menu to reset it correctly. Additionally, I've made a post about this bug on the VRChat Canny you can upvote here: [[Bug] Animator Set View isn't reset after using the default reset button in Desktop](https://bit.ly/2C51eaa)
