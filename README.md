@@ -13,7 +13,7 @@ Contains:
 - One Expressions Menu
 - This README
 
-How to Use:
+How to Setup:
 --------------
 Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works.
 
