@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageParameters: {fileID: 11400000, guid: 4dc2e3b7db4a5d041bf493b0f2cb6179, type: 2}
   controls:
-  - name: Reset
+  - name: Reset (Hold)
     icon: {fileID: 0}
     type: 101
     parameter:
