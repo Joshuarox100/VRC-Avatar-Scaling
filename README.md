@@ -21,13 +21,13 @@ Before following these steps, set up your avatar how you normally would and ensu
 	>If you already have a custom Action layer, you can copy the layers and parameters from the included Animator into your own. Keep in mind that if you don't copy the parameters before the copying the states, the conditions for transitioning between the states may be modified, so be sure to correct them or things will behave strangely (or not at all).
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%203.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%201.png">
 </p>
 
 2) If you don't already have one, create a VRCStageParameters asset in your project (Create -> VRC Scriptable Objects -> Stage Parameters).
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%204.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%202.png">
 </p>
 
 3) Add the following three variables anywhere within your Stage Parameters list (without the quotation marks):
@@ -36,20 +36,20 @@ Before following these steps, set up your avatar how you normally would and ensu
 	3. "Reset" (Int): Used for resetting the scale and the viewpoint.
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%205.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%203.png">
 </p>
 
 4) Add your Stage Parameters asset to the included Expressions Menu.
 	>If the parameters and values for the menu controls aren't automatically set, have the Reset control set "Reset" to 1 and have the Size control set "MenuState" to 4 and use "Scale" for Parameter Rotation.
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%206.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%204.png">
 </p>
 
 5) In the Avatar Descriptor, either use the included Expressions Menu or use it as a submenu within your own.
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%207.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%205.png">
 </p>
 
 Everything should now be fully set up! If you have any issues or questions, look in the troubleshooting and questions section below before contacting me.
