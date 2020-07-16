@@ -1,5 +1,6 @@
 VRC Avatar Scaling
 ==============
+>Due to the recent update in the beta, the current release of this doesn't work. This page will be updated when a working revision is completed.
 
 Author: Joshuarox100
 
