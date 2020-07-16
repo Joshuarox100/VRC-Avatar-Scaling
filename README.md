@@ -66,7 +66,7 @@ Common Questions:
 >By default, your avatar's Idle animation is used while adjusting your scale. If you want to have a different animation other than your Idle play, put the Animation you want on the "Waiting" state within the "Scale (View)" layer of your Animator.
 
 **Can I remove the slight delay between setting a new size and having the viewpoint move?**
->No, the component responsible for remeasuring your height takes about half a second to work. Unless if VRChat changes this, it will remain necessary.
+>No, the component responsible for remeasuring your height takes about half a second to work. Unless if VRChat changes this, it will remain unchangeable.
 
 **Why does "MenuState" get set to 4 and not 1?**
 >The avatar I made this for uses "MenuState" for triggering other Animator states by opening or closing a menu as well. It just so happened that the fourth menu I made was the one used for scaling the avatar. If you want to change this value because of OCD go right ahead, just don't forget to change the conditions within the Animator as well when making your changes.
@@ -83,10 +83,7 @@ Troubleshooting:
 >This will happen if the default scale of your avatar isn't 1 and you haven't adjusted the "Min" and "Max" Animations. Fix this by adjusting the "Min" and "Max" Animations to better fit your avatar.
 
 **People see you at your minimum size when resetting.**
->Not exactly sure why this happens. I think it has something to do with the way parameters are synced currently, but you can fix it by holding down the included Reset control for about a second.
-
-**VRChat's "Avatar Reset" button doesn't reset the viewpoint.**
->The Avatar Reset button only works for uploaded Avatars, so it won't work if you're just using Build and Test. If your Avatar is uploaded and it's still not working, you can always use the Reset control within the included VRC Expressions Menu to reset it correctly.
+>Currently, there is a delay between updating a parameter and having it sync to other clients. By default, the Animator gives 1 second for syncronizing the Reset button. If this happens to you frequently, increase the exit time for the transition between "Resetting: Network" and "Resetting: Local" in the "Scale (Size)" layer of the Animator (60 = 1 second).
 
 **The menu doesn't change size when you do.**
 >VRChat has already stated that this will be fixed in the next version of the beta. It will update the size when you open one of the main menus like the one for Avatars or Worlds.
