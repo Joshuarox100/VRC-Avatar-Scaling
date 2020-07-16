@@ -66,10 +66,13 @@ Common Questions:
 >By default, your avatar's Idle animation is used while adjusting your scale. If you want to have a different animation other than your Idle play, put the Animation you want on the "Waiting" state within the "Scale (View)" layer of your Animator.
 
 **Can I remove the slight delay between setting a new size and having the viewpoint move?**
->No, the component responsible for remeasuring your height takes about a quarter of a second to work. Unless if VRChat changes this, it will remain necessary.
+>No, the component responsible for remeasuring your height takes about half a second to work. Unless if VRChat changes this, it will remain necessary.
 
 **Why does "MenuState" get set to 4 and not 1?**
 >The avatar I made this for uses "MenuState" for triggering other Animator states by opening or closing a menu as well. It just so happened that the fourth menu I made was the one used for scaling the avatar. If you want to change this value because of OCD go right ahead, just don't forget to change the conditions within the Animator as well when making your changes.
+
+**Why does the Action layer need to always stay at 1?**
+>For whatever reason, there is a bug with VRChat regarding Animations that modify the avatar root. If an Animator on an avatar contains an Animation that modifies the scale of the avatar root in any way, the avatar's scale when loading in will be doubled (or set to 2, not sure), even if the Animation isn't being played. To combat this, the "Default" Animation is constantly played when you aren't scaled so your scale is set correctly when loading in. Technically it doesn't need to be done in the Action layer, but I wanted to simplify the installation for others so I didn't use another Animation layer.
 
 Troubleshooting:
 --------------
@@ -84,6 +87,9 @@ Troubleshooting:
 
 **VRChat's "Avatar Reset" button doesn't reset the viewpoint.**
 >The Avatar Reset button only works for uploaded Avatars, so it won't work if you're just using Build and Test. If your Avatar is uploaded and it's still not working, you can always use the Reset control within the included VRC Expressions Menu to reset it correctly.
+
+**The menu doesn't change size when you do.**
+>VRChat has already stated that this will be fixed in the next version of the beta. It will update the size when you open one of the main menus like the one for Avatars or Worlds.
 
 Contacting Me:
 --------------
