@@ -83,7 +83,7 @@ Troubleshooting:
 >This will happen if the default scale of your avatar isn't 1 and you haven't adjusted the "Min" and "Max" Animations. Fix this by adjusting the "Min" and "Max" Animations to better fit your avatar.
 
 **People see you at your minimum size when resetting.**
->Currently, there is a delay between updating a parameter and having it sync to other clients. By default, the Animator gives 1 second for syncronizing the Reset button. If this happens to you frequently, increase the exit time for the transition between "Resetting: Network" and "Resetting: Local" in the "Scale (Size)" layer of the Animator (60 = 1 second).
+>Currently, there is a delay between updating a parameter and having it sync to other clients. By default, the Animator gives 1 second for syncronizing the Reset button. If this happens to you frequently, increase the exit time for the transition between "Resetting: Network" and "Resetting: Local" in the "Scale (Size)" layer of your Animator (60 = 1 second).
 
 **The menu doesn't change size when you do.**
 >VRChat has already stated that this will be fixed in the next version of the beta. It will update the size when you open one of the main menus like the one for Avatars or Worlds.
