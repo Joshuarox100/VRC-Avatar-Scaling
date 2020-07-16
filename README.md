@@ -65,9 +65,6 @@ Common Questions:
 **How do I change the animation used when adjusting the scale?**
 >By default, your avatar's Idle animation is used while adjusting your scale. If you want to have a different animation other than your Idle play, put the Animation you want on the "Waiting" state within the "Scale (View)" layer of your Animator.
 
-**Can I remove the slight delay between setting a new size and having the viewpoint move?**
->No, the component responsible for remeasuring your height takes about half a second to work. Unless if VRChat changes this, it will remain unchangeable.
-
 **Why does "MenuState" get set to 4 and not 1?**
 >The avatar I made this for uses "MenuState" for triggering other Animator states by opening or closing a menu as well. It just so happened that the fourth menu I made was the one used for scaling the avatar. If you want to change this value because of OCD go right ahead, just don't forget to change the conditions within the Animator as well when making your changes.
 
