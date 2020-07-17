@@ -88,9 +88,6 @@ Troubleshooting:
 **Viewpoint and Full Body trackers start to drift when changing size (FBT).**
 >This seems to currently be an issue with Animator Remeasure Avatar that I don't have control over. A Canny post about this bug has been made by bd_ that you can upvote here: [[BUG] FBT calibration seems to drift when scaling an avatar using Remeasure Avatar](https://feedback.vrchat.com/avatar-30/p/bug-fbt-calibration-seems-to-drift-when-scaling-an-avatar-using-remeasure-avatar)
 
-**People see you at your minimum size when recalibrating (FBT).**
->There currently isn't a way to tell when a user recalibrates so I don't actually have a way of fixing this yet. After recalibrating just hit the Reset button and it should correct itself.
-
 Contacting Me:
 --------------
 If you still have some questions or recommendations you'd like to throw my way, you can ask me on Discord (Joshuarox100#5024) or leave a suggestion or issue on the [GitHub](https://github.com/Joshuarox100/VRC-Avatar-Scaling) page.
