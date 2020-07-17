@@ -73,11 +73,11 @@ Common Questions:
 
 Troubleshooting:
 --------------
-**Avatar is extremely small or large when loading in.**
->This will happen if the default scale of your avatar isn't 1. Fix this by simply changing the values within the "Default" Animation to the default scale of your avatar.
+**Avatar is smaller or larger than normal when loading in.**
+>This will happen if the default scale of your avatar isn't 1. Fix this by simply changing the values within the "Default" Animation to the default scale of your avatar (make sure to change the values for both frames of the Animation).
 
-**Avatar is extremely small or large when adjusting scale.**
->This will happen if the default scale of your avatar isn't 1 and you haven't adjusted the "Min" and "Max" Animations. Fix this by adjusting the "Min" and "Max" Animations to better fit your avatar.
+**Avatar is smaller or larger than expected when adjusting scale.**
+>This will happen if the default scale of your avatar isn't 1 and you haven't adjusted the "Min" and "Max" Animations. Fix this by adjusting the "Min" and "Max" Animations to better fit your avatar (make sure to change the values for both frames of the Animation you're modifying).
 
 **People see you at your minimum size when resetting.**
 >Currently, there is a delay between updating a parameter and having it sync to other clients. By default, the included Animator gives 1 second for syncronizing the Reset button. If this happens to you frequently, increase the exit time for the transition between "Resetting: Network" and "Resetting: Local" in the "Scale (Size)" layer of your Animator (60 = 1 second).
