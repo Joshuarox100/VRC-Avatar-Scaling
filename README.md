@@ -29,7 +29,7 @@ Before following these steps, set up your avatar how you normally would and ensu
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%201.png">
 </p>
 
->If you already have a custom Action layer, you can copy the layers and parameters from the included Animator into your own using these steps **(Also be sure to read the answer for "Why does the Action layer need to always stay at 1?" in the Common Questions section below)**.
+>If you already have a custom Action layer, you can copy the layers and parameters from the included Animator into your own using these steps **(Also be sure to read the answer for *"Why does the Action layer need to always stay at 1?"* in the [Common Questions](#common-questions) section below)**.
 	‏‏‎ ‎  
 	<p align="center">Copy the parameters from the included Animator into your own.<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20A.png">
