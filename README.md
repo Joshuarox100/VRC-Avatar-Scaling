@@ -17,7 +17,7 @@ Setting Up
 --------------
 Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works.
 
-**0)** Download the latest release's **Unity Package** from the [**Releases**](https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases) section on GitHub **(You will have issues if you don't)**.
+0)** **Download the latest release's **Unity Package** from the [**Releases**](https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases) section on GitHub **(You will have issues if you don't)**.
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%200.png">
