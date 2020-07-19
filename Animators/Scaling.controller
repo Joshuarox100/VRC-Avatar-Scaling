@@ -6,7 +6,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: vrc_AvatarV3HandsLayer 1
+  m_Name: Scaling
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: GestureLeft
@@ -6122,6 +6122,40 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 0}
+--- !u!1107 &1107771587599638940
+AnimatorStateMachine:
+  serializedVersion: 5
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Scaling Machine
+  m_ChildStates:
+  - serializedVersion: 1
+    m_State: {fileID: 1102604679851803066}
+    m_Position: {x: 408, y: -12, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 1102838232578812710}
+    m_Position: {x: 192, y: -72, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 1102091463573344124}
+    m_Position: {x: 408, y: -72, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 1102088632557180012}
+    m_Position: {x: 408, y: -132, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 1102511926356350548}
+    m_Position: {x: 192, y: -12, z: 0}
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 12, y: -36, z: 0}
+  m_EntryPosition: {x: 432, y: -180, z: 0}
+  m_ExitPosition: {x: 432, y: 48, z: 0}
+  m_ParentStateMachinePosition: {x: 192, y: -132, z: 0}
+  m_DefaultState: {fileID: 1102088632557180012}
 --- !u!1107 &1107844646945326750
 AnimatorStateMachine:
   serializedVersion: 5
@@ -6130,32 +6164,23 @@ AnimatorStateMachine:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Scale
-  m_ChildStates:
+  m_ChildStates: []
+  m_ChildStateMachines:
   - serializedVersion: 1
-    m_State: {fileID: 1102604679851803066}
-    m_Position: {x: 456, y: 156, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 1102838232578812710}
-    m_Position: {x: 240, y: 156, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 1102091463573344124}
-    m_Position: {x: 456, y: 96, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 1102088632557180012}
-    m_Position: {x: 456, y: 36, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 1102511926356350548}
-    m_Position: {x: 240, y: 96, z: 0}
-  m_ChildStateMachines: []
+    m_StateMachine: {fileID: 1107771587599638940}
+    m_Position: {x: 216, y: 144, z: 0}
   m_AnyStateTransitions:
   - {fileID: 1101552036573422520}
   - {fileID: 1101271969089153518}
   m_EntryTransitions: []
-  m_StateMachineTransitions: {}
+  m_StateMachineTransitions:
+  - first: {fileID: 1107771587599638940}
+    second:
+    - {fileID: 1109401121028538352}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 72, y: 132, z: 0}
-  m_EntryPosition: {x: 480, y: -12, z: 0}
-  m_ExitPosition: {x: 480, y: 216, z: 0}
+  m_AnyStatePosition: {x: 240, y: 60, z: 0}
+  m_EntryPosition: {x: 240, y: 96, z: 0}
+  m_ExitPosition: {x: 240, y: 204, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 1102088632557180012}
 --- !u!1107 &1107970192013027796
@@ -6234,6 +6259,20 @@ AnimatorTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: Seated
     m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 0}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 1
+  serializedVersion: 1
+--- !u!1109 &1109401121028538352
+AnimatorTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions: []
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 0}
   m_Solo: 0
