@@ -8,9 +8,8 @@ Usage: This package is meant for use with VRChat's Avatars 3.0 (VRCSDK3-AVATAR)
 Description: Scale your avatar to any size on the fly with a spin of the joystick!
 
 Contains:
-- Four Animations
+- Three Animations
 - One Animator
-- One Animator Override Controller
 - One Expressions Menu
 - This README
 
@@ -24,9 +23,9 @@ Before following these steps, set up your avatar how you normally would and ensu
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%200.png">
 </p>
 
-1) In the Avatar Descriptor, assign the included Animator Override Controller ("Scaling Override") to your Action layer.
+1) In the Avatar Descriptor, assign the included Animator to your Action layer.
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%201.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%201.png">
 </p>
 
 >If you already have a custom Action layer, you can copy the layers and parameters from the included Animator into your own using these steps **(Also be sure to read the answer for *"Why does the Action layer need to always stay at 1?"* in the [Common Questions](#common-questions) section below)**.
@@ -45,9 +44,6 @@ Before following these steps, set up your avatar how you normally would and ensu
 	</p>
 	<p align="center">Set the weight of both layers to 1.00 within your Animator.<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20E.png">
-	</p>
-	<p align="center"><b>(Optional)</b><br>Create a new Animator Override Controller to use with your Animator<br>and use it for your Action layer in the Avatar Descriptor.<br>
-	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20F.png">
 	</p>
 
 2) If you don't already have one, create a VRCStageParameters asset in your project (Create -> VRC Scriptable Objects -> Stage Parameters).
@@ -75,7 +71,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 5) In the Avatar Descriptor, either use the included Expressions Menu or use it as a submenu within your own.
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%205.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%205.png">
 </p>
 
 Everything should now be fully set up! If you have any issues or questions, look in the troubleshooting and questions section below before contacting me.
@@ -86,10 +82,10 @@ Common Questions:
 >Yes! As of a recent update to the VRChat Avatars 3.0 beta, there is now a way to remeasure the height of the avatar and adjust the IPD Scale accordingly.
 
 **How do I change the minimum and maximum size I can go between?**
->Make a copy of the included "Min" and "Max" Animations, adjust them how you like, and use them in the "Scaling Override" (make sure to change the values for both frames of the Animation).
+>Simply adjust the scale values set in the included Animations named "Min" and "Max" to whatever you'd like (make sure to change the values for both frames of the Animation you're modifying).
 
 **How do I change the animation used when adjusting the scale?**
->By default, your avatar's Idle animation is used while adjusting your scale. If you want to have a different animation other than your Idle play, put the Animation you want to play instead in the "Custom" slot of the "Scaling Override".
+>By default, your avatar's Idle animation is used while adjusting your scale. If you want to have a different animation other than your Idle play, put the Animation you want on the "Waiting" state within the "Scale (View)" layer of your Animator.
 
 **Why does "MenuState" get set to 4 and not 1?**
 >The avatar I made this for uses "MenuState" for triggering other Animator states by opening or closing a menu as well. It just so happened that the fourth menu I made was the one used for scaling the avatar. If you want to change this value because of OCD go right ahead, just don't forget to change the conditions within the Animator as well when making your changes.
@@ -100,16 +96,19 @@ Common Questions:
 Troubleshooting:
 --------------
 **Avatar is smaller or larger than normal when loading in.**
->This will happen if the default scale of your avatar isn't 1. Fix this by making a copy of the "Default" Animation, changing the values within it to the default scale of your avatar, and using it in the "Scaling Override" (make sure to change the values for both frames of the Animation).
+>This will happen if the default scale of your avatar isn't 1. Fix this by simply changing the values within the "Default" Animation to the default scale of your avatar (make sure to change the values for both frames of the Animation).
 
 **Avatar is smaller or larger than expected when adjusting scale.**
->This will happen if the default scale of your avatar isn't 1 and you aren't using custom "Min" and "Max" Animations. Fix this by making a copy of the included "Min" and "Max" Animations, adjust them to better fit your avatar, and use them in the "Scaling Override" (make sure to change the values for both frames of the Animation).
+>This will happen if the default scale of your avatar isn't 1 and you haven't adjusted the "Min" and "Max" Animations. Fix this by adjusting the "Min" and "Max" Animations to better fit your avatar (make sure to change the values for both frames of the Animation you're modifying).
 
 **The menu doesn't change size when you do.**
 >VRChat has already stated that this will be fixed in the next version of the beta. It will update the size when you open one of the main menus like the one for Avatars or Worlds.
 
 **Viewpoint and Full Body trackers start to drift when changing size (FBT).**
 >This seems to currently be an issue with Animator Remeasure Avatar that I don't have control over. A Canny post about this bug has been made by bd_ that you can upvote here: [[BUG] FBT calibration seems to drift when scaling an avatar using Remeasure Avatar](https://feedback.vrchat.com/avatar-30/p/bug-fbt-calibration-seems-to-drift-when-scaling-an-avatar-using-remeasure-avatar)
+
+**Feet either move farther apart or closer together after changing size (Non-FBT).**
+>This is actually a problem with using Auto Footsteps. It currently retains the distance between the feet at your starting scale even after using Animator Remeasure Avatar. I've made a Canny post about it that you can upvote here: [[Bug] Auto Footsteps doesn't update correctly after using Remeasure Avatar.](https://feedback.vrchat.com/avatar-30/p/bug-auto-footsteps-doesnt-update-correctly-after-using-remeasure-avatar)
 
 Contacting Me:
 --------------
