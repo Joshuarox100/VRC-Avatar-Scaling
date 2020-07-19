@@ -26,7 +26,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 
 1) In the Avatar Descriptor, assign the included Animator to your Gesture layer.
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%201.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%201.png">
 </p>
 
 >If you already have a custom Gesture layer, you can copy the "Scaling Machine" and Animator parameters from the included Animator into your own using these steps.
