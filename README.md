@@ -40,7 +40,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 	<p align="center">Copy "Scaling Machine" from the "Scale" layer in the included Animator<br>into the new layer that you created within your own Animator.<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20C.png">
 	</p>
-	<p align="center">In the new layer, connect the Entry node and Exit node to "Scaling Machine" using transitions.<br>
+	<p align="center">In the new layer, connect "Scaling Machine" to the "Exit" state using a transition.<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20D.png">
 	</p>
 	<p align="center">Set the weight of the new layer to 1.00 within your Animator.<br>Also set the layer's mask to the included Avatar Mask, "Non-Body".<br>
@@ -104,6 +104,9 @@ Troubleshooting
 
 **The menu doesn't change size when you do.**
 >VRChat has already stated that this will be fixed in the next version of the beta. It will update the size when you open one of the main menus like the one for Avatars or Worlds.
+
+**Avatar starts walking weirdly after using Avatar Reset.**
+>I don't know why this happens honestly, but it only seems to happen occasionally when using local testing. It shouldn't occur on uploaded avatars.
 
 **The debug menu doesn't display the state names in the "Scale" layer.**
 >Sub-state machines seem to currently not display their state names correctly, so until VRChat fixes this you'll either have to deal with it or take the states out of the sub-state machine. Pick your poison. I've made a Canny post about this that you can upvote here: [[Bug] Sub-state machines don't properly display state names in the debug menu.](https://feedback.vrchat.com/avatar-30/p/bug-sub-state-machines-dont-properly-display-state-names-in-the-debug-menu)
