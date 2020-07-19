@@ -29,7 +29,7 @@ Before following these steps, set up your avatar how you normally would and ensu
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%201.png">
 </p>
 
->If you already have a custom Gesture layer, you can copy the "Scaling Machine" and Animator parameters from the included Animator into your own using these steps.
+>If you already have a custom Gesture layer, you can copy the states and parameters from the included Animator into your own using these steps.
 	‏‏‎ ‎  
 	<p align="center">Copy the parameters from the included Animator into your own.<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20A.png">
@@ -37,10 +37,10 @@ Before following these steps, set up your avatar how you normally would and ensu
 	<p align="center">Create a new layer within your own Animator<br>(I recommend you name it Scale or Scaling so you can identify it later on).<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20B.png">
 	</p>
-	<p align="center">Copy "Scaling Machine" from the "Scale" layer in the included Animator<br>into the new layer that you created within your own Animator.<br>
+	<p align="center">Copy the states from the "Scale" layer in the included Animator<br>into the new layer that you created within your own Animator.<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20C.png">
 	</p>
-	<p align="center">In the new layer, connect "Scaling Machine" to the "Exit" state using a transition.<br>
+	<p align="center">In the new layer, set the "Ready" state as the default layer state if it isn't already.<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20D.png">
 	</p>
 	<p align="center">Set the weight of the new layer to 1.00 within your Animator.<br>Also set the layer's mask to the included Avatar Mask, "Non-Body".<br>
