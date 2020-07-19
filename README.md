@@ -13,7 +13,7 @@ Contains:
 - One Expressions Menu
 - This README
 
-Setting Up:
+Setting Up
 --------------
 Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works.
 
@@ -76,7 +76,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 
 Everything should now be fully set up! If you have any issues or questions, look in the [troubleshooting](#troubleshooting) and [questions](#common-questions) section below before [contacting me](#contacting-me).
 
-Common Questions:
+Common Questions
 --------------
 **Does this also scale the IPD when you change size?**
 >Yes! As of a recent update to the VRChat Avatars 3.0 beta, there is now a way to remeasure the height of the avatar and adjust the IPD Scale accordingly.
@@ -93,7 +93,7 @@ Common Questions:
 **Why does the Action layer need to always stay at 1?**
 >For whatever reason, there is a bug with VRChat regarding Animations that modify the avatar root. If an Animator on an avatar contains an Animation that modifies the scale of the avatar root in any way, the avatar's scale when loading in will be doubled (or set to 2, not sure), even if the Animation isn't being played. To combat this, the "Default" Animation is constantly played when you aren't scaled so your scale is set correctly when loading in. Technically it doesn't need to be done in the Action layer, but I wanted to simplify the installation for others so I didn't use another Animation layer. I've posted about this bug on the VRChat Canny in a post that you can view and upvote here: [[Bug] The presence of Animations affecting the root avatar scale within an Animator cause the avatar to be the incorrect size.](https://feedback.vrchat.com/avatar-30/p/bug-the-presence-of-animations-affecting-the-root-avatar-scale-within-an-animato)
 
-Troubleshooting:
+Troubleshooting
 --------------
 **Avatar is smaller or larger than normal when loading in.**
 >This will happen if the default scale of your avatar isn't 1. Fix this by simply changing the values within the "Default" Animation to the default scale of your avatar (make sure to change the values for both frames of the Animation).
@@ -110,6 +110,6 @@ Troubleshooting:
 **Feet either move farther apart or closer together after changing size (Non-FBT).**
 >This is actually a problem with using Auto Footsteps. It currently retains the distance between the feet at your starting scale even after using Animator Remeasure Avatar. I've made a Canny post about it that you can upvote here: [[Bug] Auto Footsteps doesn't update correctly after using Remeasure Avatar.](https://feedback.vrchat.com/avatar-30/p/bug-auto-footsteps-doesnt-update-correctly-after-using-remeasure-avatar)
 
-Contacting Me:
+Contacting Me
 --------------
 If you still have some questions or recommendations you'd like to throw my way, you can ask me on Discord (Joshuarox100#5024) or leave a suggestion or issue on the [GitHub](https://github.com/Joshuarox100/VRC-Avatar-Scaling) page.
