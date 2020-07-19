@@ -86,7 +86,7 @@ Common Questions
 >Simply adjust the scale values set in the included Animations named "Min" and "Max" to whatever you'd like (make sure to change the values for both frames of the Animation you're modifying).
 
 **How do I change the animation used when adjusting the scale?**
->By default, your avatar's Idle animation is used while adjusting your scale. If you want to have a different animation other than your Idle play, you'll need to create another layer in your Animator that plays the animation while "MenuState" is 4.
+>By default, your avatar's Idle animation is used while adjusting your scale. If you want to have a different animation other than your Idle play, you'll need to create a layer in the (preferably Action) Animator that plays the animation while "MenuState" is 4.
 
 **Why does "MenuState" get set to 4 and not 1?**
 >The avatar I made this for uses "MenuState" for triggering other Animator states by opening or closing a menu as well. It just so happened that the fourth menu I made was the one used for scaling the avatar. If you want to change this value because of OCD go right ahead, just don't forget to change the conditions within the Animator as well when making your changes.
@@ -104,6 +104,9 @@ Troubleshooting
 
 **The menu doesn't change size when you do.**
 >VRChat has already stated that this will be fixed in the next version of the beta. It will update the size when you open one of the main menus like the one for Avatars or Worlds.
+
+**The debug menu doesn't display the state names in the "Scale" layer.**
+>Sub-state machines seem to currently not display their state names correctly, so until VRChat fixes this you'll either have to deal with it or take the states out of the sub-state machine. Pick your poison. I've made a Canny post about this that you can upvote here: [[Bug] Sub-state machines don't properly display state names in the debug menu.](https://feedback.vrchat.com/avatar-30/p/bug-sub-state-machines-dont-properly-display-state-names-in-the-debug-menu)
 
 **Viewpoint and Full Body trackers start to drift when changing size (FBT).**
 >This seems to currently be an issue with Animator Remeasure Avatar that I don't have control over. A Canny post about this bug has been made by bd_ that you can upvote here: [[BUG] FBT calibration seems to drift when scaling an avatar using Remeasure Avatar](https://feedback.vrchat.com/avatar-30/p/bug-fbt-calibration-seems-to-drift-when-scaling-an-avatar-using-remeasure-avatar)
