@@ -108,9 +108,6 @@ Troubleshooting
 **Avatar starts walking weirdly after using Avatar Reset.**
 >I don't know why this happens honestly, but it only seems to happen occasionally when using local testing. It shouldn't occur on uploaded avatars.
 
-**The debug menu doesn't display the state names in the "Scale" layer.**
->Sub-state machines seem to currently not display their state names correctly, so until VRChat fixes this you'll either have to deal with it or take the states out of the sub-state machine. Pick your poison. I've made a Canny post about this that you can upvote here: [[Bug] Sub-state machines don't properly display state names in the debug menu.](https://feedback.vrchat.com/avatar-30/p/bug-sub-state-machines-dont-properly-display-state-names-in-the-debug-menu)
-
 **Viewpoint and Full Body trackers start to drift when changing size (FBT).**
 >This seems to currently be an issue with Animator Remeasure Avatar that I don't have control over. A Canny post about this bug has been made by bd_ that you can upvote here: [[BUG] FBT calibration seems to drift when scaling an avatar using Remeasure Avatar](https://feedback.vrchat.com/avatar-30/p/bug-fbt-calibration-seems-to-drift-when-scaling-an-avatar-using-remeasure-avatar)
 
