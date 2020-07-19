@@ -49,7 +49,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 2) If you don't already have one, create a VRCStageParameters asset in your project (Create -> VRC Scriptable Objects -> Stage Parameters).
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%202.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%202.png">
 </p>
 
 3) Add the following three variables anywhere within your Stage Parameters list (without the quotation marks):
