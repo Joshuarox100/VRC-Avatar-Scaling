@@ -28,21 +28,21 @@ Before following these steps, set up your avatar how you normally would and ensu
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%201.png">
 </p>
 
->If you already have a custom Action layer, you can copy the layers and parameters from the included Animator into your own using these steps **(Also be sure to read the answer for *"Why does the Action layer need to always stay at 1?"* in the [Common Questions](#common-questions) section below)**.
+>If you already have a custom Action layer, you can copy the layer and parameters from the included Animator into your own using these steps **(Also be sure to read the answer for *"Why does the Action layer need to always stay at 1?"* in the [Common Questions](#common-questions) section below)**.
 	‏‏‎ ‎  
 	<p align="center">Copy the parameters from the included Animator into your own.<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20A.png">
 	</p>
-	<p align="center">Create two new layers within your own Animator<br>(I recommend you name them the same so you can identify them later).<br>
+	<p align="center">Create a new layer within your own Animator<br>(I recommend you name it the same so you can identify it later).<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20B.png">
 	</p>
-	<p align="center">Copy the states from each layer in the included Animator into<br>each of their respective layers that you created within your own Animator.<br>
+	<p align="center">Copy the states from the layer in the included Animator into<br>the new layer that you created within your own Animator.<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20C.png">
 	</p>
-	<p align="center">In each layer, set the default state to "Ready" if it isn't already.<br>
+	<p align="center">In the new layer, set the default state to "Ready" if it isn't already.<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20D.png">
 	</p>
-	<p align="center">Set the weight of both layers to 1.00 within your Animator.<br>
+	<p align="center">Set the weight of the new layer to 1.00 within your Animator.<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20E.png">
 	</p>
 
@@ -85,13 +85,13 @@ Common Questions
 >Simply adjust the scale values set in the included Animations named "Min" and "Max" to whatever you'd like (make sure to change the values for both frames of the Animation you're modifying).
 
 **How do I change the animation used when adjusting the scale?**
->By default, your avatar's Idle animation is used while adjusting your scale. If you want to have a different animation other than your Idle play, put the Animation you want on the "Waiting" state within the "Scale (View)" layer of your Animator.
+>By default, your avatar's Idle animation is used while adjusting your scale. If you want to have a different animation other than your Idle play, you'll need to create another layer in your Animator that plays the animation while "MenuState" is 4.
 
 **Why does "MenuState" get set to 4 and not 1?**
 >The avatar I made this for uses "MenuState" for triggering other Animator states by opening or closing a menu as well. It just so happened that the fourth menu I made was the one used for scaling the avatar. If you want to change this value because of OCD go right ahead, just don't forget to change the conditions within the Animator as well when making your changes.
 
 **Why does the Action layer need to always stay at 1?**
->For whatever reason, there is a bug with VRChat regarding Animations that modify the avatar root. If an Animator on an avatar contains an Animation that modifies the scale of the avatar root in any way, the avatar's scale when loading in will be doubled (or set to 2, not sure), even if the Animation isn't being played. To combat this, the "Default" Animation is constantly played when you aren't scaled so your scale is set correctly when loading in. Technically it doesn't need to be done in the Action layer, but I wanted to simplify the installation for others so I didn't use another Animation layer. I've posted about this bug on the VRChat Canny in a post that you can view and upvote here: [[Bug] The presence of Animations affecting the root avatar scale within an Animator cause the avatar to be the incorrect size.](https://feedback.vrchat.com/avatar-30/p/bug-the-presence-of-animations-affecting-the-root-avatar-scale-within-an-animato)
+>For whatever reason, there is a bug with VRChat regarding Animations that modify the avatar root. If an Animator on an avatar contains an Animation that modifies the scale of the avatar root in any way, the avatar's scale when loading in will be doubled (or set to 2, not sure), even if the Animation isn't being played. To combat this, the "Default" Animation is constantly played when you aren't scaled so your scale is set correctly when loading in. Technically it doesn't need to be done in the Action layer, but I wanted to simplify the installation for others so I didn't use more layers. I've posted about this bug on the VRChat Canny in a post that you can view and upvote here: [[Bug] The presence of Animations affecting the root avatar scale within an Animator cause the avatar to be the incorrect size.](https://feedback.vrchat.com/avatar-30/p/bug-the-presence-of-animations-affecting-the-root-avatar-scale-within-an-animato)
 
 Troubleshooting
 --------------
