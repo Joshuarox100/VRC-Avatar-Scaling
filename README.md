@@ -17,7 +17,7 @@ Setting Up
 --------------
 Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works.
 
-0) Download the latest release's **Unity Package** from the [**Releases**](https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases) section on GitHub **(You will have issues if you don't)**.
+**0**) Download the latest release's **Unity Package** from the [**Releases**](https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases) section on GitHub **(You will have issues if you don't)**.
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%200.png">
@@ -100,6 +100,9 @@ Troubleshooting
 
 **Avatar is smaller or larger than expected when adjusting scale.**
 >This will happen if the default scale of your avatar isn't 1 and you haven't adjusted the "Min" and "Max" Animations. Fix this by adjusting the "Min" and "Max" Animations to better fit your avatar (make sure to change the values for both frames of the Animation you're modifying).
+
+**Unable to open the "Size" menu.**
+>If you're using "Scale Menu" as a submenu, ensure sure that selecting it in the previous menu doesn't set MenuState's value.
 
 **The menu doesn't change size when you do.**
 >VRChat has already stated that this will be fixed in the next version of the beta. It will update the size when you open one of the main menus like the one for Avatars or Worlds.
