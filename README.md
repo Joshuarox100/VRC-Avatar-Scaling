@@ -37,7 +37,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 	<p align="center">Create a new layer within your own Animator<br>(I recommend you name it Scale or Scaling so you can identify it later on).<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20B.png">
 	</p>
-	<p align="center">Copy the states from the "Scale" layer in the included Animator<br>into the new layer that you created within your own Animator.<br>
+	<p align="center">Select and copy all the states from the "Scale" layer in the<br>included Animator into the new layer that you created within your own Animator.<br>
 	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20C.png">
 	</p>
 	<p align="center">In the new layer, set the "Ready" state as the default layer state if it isn't already.<br>
