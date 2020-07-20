@@ -16,7 +16,7 @@ Contains:
 
 Setting Up
 --------------
-Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works.
+Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works. If you'd rather follow a video guide for setting this up, look [here]().
 
 0) Download and import the latest **Unity Package** from [**Releases**](https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases) on GitHub **(You will have issues if you don't)**.
 
