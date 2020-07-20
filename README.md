@@ -8,7 +8,7 @@ Usage: This package is meant for use with VRChat's Avatars 3.0 (VRCSDK3-AVATAR)
 Description: Scale your avatar to any size on the fly with a spin of the joystick!
 
 Contains:
-- Three Animations
+- One Animation
 - One Animator
 - One Avatar Mask
 - One Expressions Menu
@@ -16,7 +16,7 @@ Contains:
 
 Setting Up
 --------------
-Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works. If you'd rather follow a video guide for setting this up, go [here](https://www.youtube.com/watch?v=kvw1SByRiJc).
+Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works. If you'd rather follow a video guide for setting this up, go [here](Need New Guide).
 
 0) Download and import the latest **Unity Package** from [**Releases**](https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases) on GitHub **(You will have issues if you don't)**.
 
@@ -53,17 +53,16 @@ Before following these steps, set up your avatar how you normally would and ensu
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%202.png">
 </p>
 
-3) Add the following three variables anywhere within your Stage Parameters list (without the quotation marks):
-	1. "MenuState" (Int): Used for telling the Animator which menu you're in.
-	2. "Scale" (Float): Used for setting the scale of your avatar.
-	3. "Reset" (Int): Used for resetting the scale and the viewpoint.
+3) Add the following two variables anywhere within your Stage Parameters list (without the quotation marks):
+	1. "Scale" (Float): Used for setting the scale of your avatar.
+	2. "SizeOp" (Int): Used for knowing when to update the viewpoint.
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%203.png">
 </p>
 
 4) Add your Stage Parameters asset to the included Expressions Menu.
-	>If the parameters and values for the menu controls aren't automatically set, have the Reset control set "Reset" to 1 and have the Size control set "MenuState" to 4 and use "Scale" for Parameter Rotation.
+	>If the parameters and values for the menu controls aren't automatically set, have the Reset control set "SizeOp" to 2 and have the Size control set "SizeOp" to 1 and use "Scale" for Parameter Rotation.
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%204.png">
@@ -82,25 +81,22 @@ Common Questions
 **Does this also scale the IPD when you change size?**
 >Yes! As of a recent update to the VRChat Avatars 3.0 beta, there is now a way to remeasure the height of the avatar and adjust the IPD Scale accordingly.
 
-**How do I change the minimum and maximum size I can go between?**
->Simply adjust the scale values set in the included Animations named "Min" and "Max" to whatever you'd like (make sure to change the values for both frames of the Animation you're modifying).
+**How do I change the minimum, maximum, and default size?**
+>Simply adjust the scale values set in the included Animation named "Size Settings" to whatever you'd like. First frame is the minimum, second is the default, and last is the maximum.
 
 **How do I change the animation used when adjusting the scale?**
->By default, your avatar's Idle animation is used while adjusting your scale. If you want to have a different animation other than your Idle play, you'll need to create a layer in the (preferably Action) Animator that plays the animation while "MenuState" is 4.
-
-**Why does "MenuState" get set to 4 and not 1?**
->The avatar I made this for uses "MenuState" for triggering other Animator states by opening or closing a menu as well. It just so happened that the fourth menu I made was the one used for scaling the avatar. If you want to change this value because of OCD go right ahead, just don't forget to change the conditions within the Animator as well when making your changes.
+>By default, your avatar's Idle animation is used while adjusting your scale. If you want to have a different animation other than your Idle play, you'll need to create a layer in the (preferably Action) Animator that plays the animation while "SizeOp" is 1.
 
 Troubleshooting
 --------------
 **Avatar is smaller or larger than normal when loading in.**
->This will happen if the default scale of your avatar isn't 1. Fix this by simply changing the values within the "Default" Animation to the default scale of your avatar (make sure to change the values for both frames of the Animation).
+>This can happen if the default scale of your avatar isn't 1. Fix this by changing the values within the "Size Settings" Animation to the default scale of your avatar. This can also be caused if you merged the "Scaling" layer into another Animator and didn't set the "Scale" parameter to 0.5.
 
 **Avatar is smaller or larger than expected when adjusting scale.**
->This will happen if the default scale of your avatar isn't 1 and you haven't adjusted the "Min" and "Max" Animations. Fix this by adjusting the "Min" and "Max" Animations to better fit your avatar (make sure to change the values for both frames of the Animation you're modifying).
+>This will happen if the default scale of your avatar isn't 1 and you haven't adjusted the "Size Settings" Animation. Fix this by adjusting the Animation to better fit your avatar as described in [Common Questions](#common-questions).
 
 **Unable to open the "Size" menu.**
->If you're using "Scale Menu" as a submenu, ensure sure that selecting it in the previous menu doesn't set MenuState's value.
+>If you're using "Scale Menu" as a submenu, ensure sure that selecting it in the previous menu doesn't set SizeOp's value.
 
 **The menu doesn't change size when you do.**
 >VRChat has already stated that this will be fixed in the next version of the beta. It will update the size when you open one of the main menus like the one for Avatars or Worlds.
