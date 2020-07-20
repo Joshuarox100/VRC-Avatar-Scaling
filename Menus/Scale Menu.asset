@@ -18,8 +18,8 @@ MonoBehaviour:
     icon: {fileID: 2800000, guid: 4f3f63ea20bcd4b408f0116065ceb352, type: 3}
     type: 102
     parameter:
-      name: Reset
-    value: 1
+      name: SizeOp
+    value: 2
     style: 0
     subMenu: {fileID: 0}
     subParameter1:
@@ -46,8 +46,8 @@ MonoBehaviour:
     icon: {fileID: 2800000, guid: 72b3ad2d66b58bc49bbfdd7ed421da54, type: 3}
     type: 203
     parameter:
-      name: MenuState
-    value: 4
+      name: SizeOp
+    value: 1
     style: 0
     subMenu: {fileID: 0}
     subParameter1:
