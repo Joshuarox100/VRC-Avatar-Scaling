@@ -16,7 +16,7 @@ Contains:
 
 Setting Up
 --------------
-Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works. If you'd rather follow a video guide for setting this up, go [here](Need New Guide).
+Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works. If you'd rather follow a video guide for setting this up, go [here](Video URL).
 
 0) Download and import the latest **Unity Package** from [**Releases**](https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases) on GitHub **(You will have issues if you don't)**.
 
@@ -25,7 +25,8 @@ Before following these steps, set up your avatar how you normally would and ensu
 </p>
 
 1) In the Avatar Descriptor, assign the "Scaling" Animator to your Gesture layer.
-	>If you use Full-Body Tracking, also assign the "TPose" Animator to your TPose layer (this corrects your scale for others when you press Calibrate). Additionally, if you already have a custom Gesture layer, you can copy the states and parameters from the included Animator into your own as seen in [this video here](video url).
+	>If you use Full-Body Tracking, also assign the "TPose" Animator to your TPose layer (this corrects your scale for others when you press Calibrate). Additionally, if you already have a custom Gesture layer, you can copy the states and parameters from the included Animator into your own as seen in [this video here](Video URL).
+
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%201.png">
 </p>
@@ -52,6 +53,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 </p>
 
 5) In the Avatar Descriptor, either use the included Expressions Menu or use it as a submenu within your own.
+	>If you need to adjust the minimum, maximum, or default scale, adjust the values contained within the "Size Settings" Animation [as seen here](Video URL).
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%205.png">
@@ -63,9 +65,6 @@ Common Questions
 --------------
 **Does this also scale the IPD when you change size?**
 >Yes! As of a recent update to the VRChat Avatars 3.0 beta, there is now a way to remeasure the height of the avatar and adjust the IPD Scale accordingly.
-
-**How do I change the minimum, maximum, and default size?**
->Simply adjust the scale values set in the included Animation named "Size Settings" to whatever you'd like. First frame is the minimum, second is the default, and last is the maximum.
 
 **How do I change the animation used when adjusting the scale?**
 >By default, your avatar's Idle animation is used while adjusting your scale. If you want to have a different animation other than your Idle play, you'll need to create a layer in the (preferably Action) Animator that plays the animation while "SizeOp" is 1.
@@ -82,7 +81,7 @@ Troubleshooting
 >VRChat has already stated that this will be fixed in the next version of the beta. It will update the size when you open one of the main menus like the one for Avatars or Worlds.
 
 **Avatar starts walking weirdly after using Avatar Reset.**
->I don't know why this happens honestly, but it only seems to happen occasionally when using local testing. It shouldn't occur on uploaded avatars.
+>I don't know why this happens honestly, but it's a known issue that only seems to occur when using local testing. It shouldn't happen for uploaded avatars.
 
 **Viewpoint and Full Body trackers start to drift when changing size (FBT).**
 >This seems to currently be an issue with Animator Remeasure Avatar that I don't have control over. A Canny post about this bug has been made by bd_ that you can upvote here: [[BUG] FBT calibration seems to drift when scaling an avatar using Remeasure Avatar](https://feedback.vrchat.com/avatar-30/p/bug-fbt-calibration-seems-to-drift-when-scaling-an-avatar-using-remeasure-avatar)
