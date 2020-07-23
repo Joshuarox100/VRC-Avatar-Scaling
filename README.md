@@ -34,7 +34,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 2) If you don't already have one, create a VRCStageParameters asset in your project (Create -> VRC Scriptable Objects -> Stage Parameters).
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%202.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/Step%202.png">
 </p>
 
 3) Add the following two variables anywhere within your Stage Parameters list (without the quotation marks):
@@ -53,11 +53,13 @@ Before following these steps, set up your avatar how you normally would and ensu
 </p>
 
 5) In the Avatar Descriptor, either use the included Expressions Menu or use it as a submenu within your own.
-	>If you need to adjust the minimum, maximum, or default scale, adjust the values contained within the "Size Settings" Animation [as seen here](https://youtu.be/0IDKNUBxxOc).
+	>If you're using it as a submenu, make sure not to set Scale or SizeOp to any value when opening the menu or things will break.
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%205.png">
 </p>
+
+6) If you need to adjust the minimum, maximum, or default scale, adjust the values contained within the "Size Settings" Animation [as seen here](https://youtu.be/0IDKNUBxxOc).
 
 Everything should now be fully set up! If you have any issues or questions, look in the [troubleshooting](#troubleshooting) and [questions](#common-questions) section below before [contacting me](#contacting-me).
 
