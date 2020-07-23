@@ -30,7 +30,7 @@ Before following these steps, set up your avatar how you normally would and ensu
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%201.png">
 </p>
  
->If you already have a custom Gesture layer, you can copy the states and parameters from the included Animator into your own as seen in this video.
+>If you already have a custom Gesture layer, you can copy the states and parameters from the included Animator into your own as seen in this video.  
 	‏‏‎ ‎ [![Youtube Preview](GIF HERE)](LINK HERE)
 
 2) If you don't already have one, create a VRCStageParameters asset in your project (Create -> VRC Scriptable Objects -> Stage Parameters).
