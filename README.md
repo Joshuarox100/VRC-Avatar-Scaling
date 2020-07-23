@@ -31,22 +31,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 </p>
 
 >If you already have a custom Gesture layer, you can copy the states and parameters from the included Animator into your own using these steps.
-	‏‏‎ ‎  
-	<p align="center">Copy the parameters from the included Animator into your own.<br>
-	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20A.png">
-	</p>
-	<p align="center">Create a new layer within your own Animator<br>(I recommend you name it Scale or Scaling so you can identify it later on).<br>
-	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20B.png">
-	</p>
-	<p align="center">Select and copy all the states from the "Scale" layer in the<br>included Animator into the new layer that you created within your own Animator.<br>
-	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20C.png">
-	</p>
-	<p align="center">In the new layer, set the "Ready" state as the default layer state if it isn't already.<br>
-	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20D.png">
-	</p>
-	<p align="center">Set the weight of the new layer to 1.00 within your Animator.<br>Also set the layer's mask to the included Avatar Mask, "Non-Body".<br>
-	  <img width="75%" height="75%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%20E.png">
-	</p>
+	‏‏‎ ‎  <iframe width="560" height="315" src="https://www.youtube.com/embed/kvw1SByRiJc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 2) If you don't already have one, create a VRCStageParameters asset in your project (Create -> VRC Scriptable Objects -> Stage Parameters).
 
