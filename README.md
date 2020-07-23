@@ -25,7 +25,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 </p>
 
 1) In the Avatar Descriptor, assign the "Scaling" Animator to your Gesture layer.
-	>If you use Full-Body Tracking, also assign the "TPose" Animator to your TPose layer (this corrects your scale for others when you press Calibrate). Additionally, if you already have a custom Gesture layer, you can copy the states and parameters from the included Animator into your own [as shown here](Video URL).
+	>If you use Full-Body Tracking, also assign the "TPose" Animator to your TPose layer (this corrects your scale for others when you press Calibrate). Additionally, if you already have a custom Gesture layer, you can copy the states and parameters from the included Animator into your own [as shown here](https://youtu.be/ejkvgj3CZjU).
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%201.png">
@@ -53,7 +53,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 </p>
 
 5) In the Avatar Descriptor, either use the included Expressions Menu or use it as a submenu within your own.
-	>If you need to adjust the minimum, maximum, or default scale, adjust the values contained within the "Size Settings" Animation [as seen here](Video URL).
+	>If you need to adjust the minimum, maximum, or default scale, adjust the values contained within the "Size Settings" Animation [as seen here](https://youtu.be/0IDKNUBxxOc).
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%205.png">
