@@ -9,7 +9,7 @@ Description: Scale your avatar to any size on the fly with a spin of the joystic
 
 Contains:
 - One Animation
-- One Animator
+- Two Animators
 - One Avatar Mask
 - One Expressions Menu
 - This README
@@ -24,7 +24,8 @@ Before following these steps, set up your avatar how you normally would and ensu
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%200.png">
 </p>
 
-1) In the Avatar Descriptor, assign the included Animator to your Gesture layer.
+1) In the Avatar Descriptor, assign the "Scaling" Animator to your Gesture layer.
+	>If you use Full-Body Tracking, also assign the "TPose" Animator to your TPose layer.
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/New/Step%201.png">
 </p>
@@ -89,11 +90,8 @@ Common Questions
 
 Troubleshooting
 --------------
-**Avatar is smaller or larger than normal when loading in.**
->This can happen if the default scale of your avatar isn't 1. Fix this by changing the values within the "Size Settings" Animation to the default scale of your avatar. This can also be caused if you merged the "Scaling" layer into another Animator and didn't set the "Scale" parameter to 0.5.
-
-**Avatar is smaller or larger than expected when adjusting scale.**
->This will happen if the default scale of your avatar isn't 1 and you haven't adjusted the "Size Settings" Animation. Fix this by adjusting the Animation to better fit your avatar as described in [Common Questions](#common-questions).
+**Avatar is smaller or larger than normal when loading in or adjusting scale.**
+>This can happen if the default scale of your avatar isn't 1. Fix this by changing the values within the "Size Settings" Animation to better fit your avatar as described in [Common Questions](#common-questions). This can also be caused if you merged the "Scaling" layer into another Animator and didn't set the "Scale" parameter to 0.5.
 
 **Unable to open the "Size" menu.**
 >If you're using "Scale Menu" as a submenu, ensure sure that selecting it in the previous menu doesn't set SizeOp's value.
