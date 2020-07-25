@@ -24,8 +24,8 @@ Before following these steps, set up your avatar how you normally would and ensu
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%200.png">
 </p>
 
-2) In the Avatar Descriptor, assign the 'Gesture' Animator to your Gesture layer and the 'Sitting' Animator to your Sitting layer.
-	>If you use Full-Body Tracking, also assign the 'TPose' Animator to your TPose layer (this corrects your scale for others when you press Calibrate). Additionally, if you already have custom versions of these layers, you can copy the states and parameters from the included Animators into your own [as shown here](https://youtu.be/ejkvgj3CZjU).
+2) In the Avatar Descriptor, assign the included Animators to their corresponding layers.
+	>If you already have custom versions of these layers, you can copy the states and parameters from the included Animators into your own [as shown here](https://youtu.be/ejkvgj3CZjU).
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%201.png">
