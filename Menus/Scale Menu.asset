@@ -9,39 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -281001752, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Script: {fileID: -340790334, guid: 67cc4cb7839cd3741b63733d5adf0442, type: 3}
   m_Name: Scale Menu
   m_EditorClassIdentifier: 
-  stageParameters: {fileID: 11400000, guid: 4dc2e3b7db4a5d041bf493b0f2cb6179, type: 2}
   controls:
   - name: Reset
     icon: {fileID: 2800000, guid: 4f3f63ea20bcd4b408f0116065ceb352, type: 3}
-    type: 102
+    type: 101
     parameter:
       name: SizeOp
     value: 2
     style: 0
     subMenu: {fileID: 0}
-    subParameter1:
-      name: 
-    subParameter2:
-      name: 
-    subParameter3:
-      name: 
-    subParameter4:
-      name: 
-    label1:
-      name: 
-      icon: {fileID: 0}
-    label2:
-      name: 
-      icon: {fileID: 0}
-    label3:
-      name: 
-      icon: {fileID: 0}
-    label4:
-      name: 
-      icon: {fileID: 0}
+    subParameters: []
+    labels: []
   - name: Size
     icon: {fileID: 2800000, guid: 72b3ad2d66b58bc49bbfdd7ed421da54, type: 3}
     type: 203
@@ -50,23 +31,6 @@ MonoBehaviour:
     value: 1
     style: 0
     subMenu: {fileID: 0}
-    subParameter1:
-      name: Scale
-    subParameter2:
-      name: 
-    subParameter3:
-      name: 
-    subParameter4:
-      name: 
-    label1:
-      name: 
-      icon: {fileID: 0}
-    label2:
-      name: 
-      icon: {fileID: 0}
-    label3:
-      name: 
-      icon: {fileID: 0}
-    label4:
-      name: 
-      icon: {fileID: 0}
+    subParameters:
+    - name: Scale
+    labels: []
