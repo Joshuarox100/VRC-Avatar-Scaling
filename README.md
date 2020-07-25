@@ -58,6 +58,9 @@ Common Questions
 **How do I change the animation used when adjusting the scale?**
 >By default, any other Animations that are currently playing will continue to play while you change your scale. If you want to make a specific Animation play, use the Action layer to play it when 'SizeOp' is equal to 1.
 
+**How will I look to those who have my Animations disabled?**
+>If someone has custom animations turned off, you'll appear to either be floating or partially in the floor at your default size. Your IK will still work correctly though, so don't worry about your arms flying into space or crushing your internal organs when you change size, they won't do that.
+
 Troubleshooting
 --------------
 **Avatar is smaller or larger than normal when loading in or adjusting scale.**
