@@ -40,7 +40,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 </p>
 
 4) In the Avatar Descriptor, either use the included Expressions Menu or use it as a submenu within your own.
-	>If you're using it as a submenu, make sure not to set Scale or SizeOp to any value when opening the menu or things will break.
+	>If you're using it as a submenu, make sure not to set 'Scale' or 'SizeOp' to any value when opening the menu or things will break.
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%205.png">
@@ -61,10 +61,10 @@ Common Questions
 Troubleshooting
 --------------
 **Avatar is smaller or larger than normal when loading in or adjusting scale.**
->This can happen if the default scale of your avatar isn't 1. Fix this by changing the values within the 'Size Settings' Animation to better fit your avatar as shown in the linked video for Step 5 of the tutorial. This can also be caused if you merged the 'Scaling' layer into another Animator and didn't set the 'Scale' and 'RemoteSize' parameters to 0.5.
+>This can happen if the default scale of your avatar isn't 1. Fix this by changing the values within the 'Size Settings' Animation to better fit your avatar as shown in the linked video for Step 5 of the tutorial. This can also be caused if you merged the 'Scaling' layer into another Animator and didn't set the 'Scale' parameter to 0.5.
 
 **Unable to open the 'Size' menu.**
->If you're using 'Scale Menu' as a submenu, ensure sure that selecting it in the previous menu doesn't set SizeOp's value.
+>If you're using 'Scale Menu' as a submenu, ensure sure that selecting it in the previous menu doesn't set 'SizeOp's value.
 
 **The menu doesn't change size when you do.**
 >VRChat has already stated that this will be fixed *soon*™. It will update the size when you open one of the main menus like the one for Avatars or Worlds.
