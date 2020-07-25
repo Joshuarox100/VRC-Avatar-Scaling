@@ -6,7 +6,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Scaling
+  m_Name: Gesture
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: GestureLeft
@@ -56,6 +56,12 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 1
+    m_Controller: {fileID: 0}
+  - m_Name: RemoteSize
+    m_Type: 1
+    m_DefaultFloat: 0.5
+    m_DefaultInt: 0
+    m_DefaultBool: 0
     m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
@@ -6419,7 +6425,7 @@ AnimatorState:
   m_PrefabAsset: {fileID: 0}
   m_Name: 'Adjusting: Remote'
   m_Speed: 0
-  m_CycleOffset: 0.5
+  m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101228223127591150}
   m_StateMachineBehaviours: []
@@ -6430,7 +6436,7 @@ AnimatorState:
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
+  m_TimeParameterActive: 1
   m_Motion: {fileID: 7400000, guid: 3b937296337d56a42a9be7b01c6ab579, type: 2}
   m_Tag: 
   m_SpeedParameter: GestureLeftWeight
@@ -7130,19 +7136,19 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1102369628022540488}
-    m_Position: {x: -216, y: 0, z: 0}
+    m_Position: {x: -216, y: -12, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102762763545174778}
-    m_Position: {x: 0, y: 60, z: 0}
+    m_Position: {x: 0, y: 48, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102772244932511774}
-    m_Position: {x: -216, y: 60, z: 0}
+    m_Position: {x: -216, y: 48, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102834354757408878}
-    m_Position: {x: 0, y: 0, z: 0}
+    m_Position: {x: 0, y: -12, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102354827416447100}
-    m_Position: {x: 216, y: 60, z: 0}
+    m_Position: {x: 216, y: 48, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 1101143920234329884}
@@ -7151,9 +7157,9 @@ AnimatorStateMachine:
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: -84, y: -48, z: 0}
-  m_EntryPosition: {x: 24, y: 120, z: 0}
-  m_ExitPosition: {x: -192, y: 120, z: 0}
+  m_AnyStatePosition: {x: -84, y: -60, z: 0}
+  m_EntryPosition: {x: 24, y: 108, z: 0}
+  m_ExitPosition: {x: -192, y: 108, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 1102762763545174778}
 --- !u!1107 &1107970192013027796
