@@ -24,8 +24,8 @@ Before following these steps, set up your avatar how you normally would and ensu
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%200.png">
 </p>
 
-2) In the Avatar Descriptor, assign the 'Scaling' Animator to your Gesture layer.
-	>If you use Full-Body Tracking, also assign the 'TPose' Animator to your TPose layer (this corrects your scale for others when you press Calibrate). Additionally, if you already have a custom Gesture layer, you can copy the states and parameters from the included Animator into your own [as shown here](https://youtu.be/ejkvgj3CZjU).
+2) In the Avatar Descriptor, assign the 'Gesture' Animator to your Gesture layer and the 'Sitting' Animator to your Sitting layer.
+	>If you use Full-Body Tracking, also assign the 'TPose' Animator to your TPose layer (this corrects your scale for others when you press Calibrate). Additionally, if you already have custom versions of these layers, you can copy the states and parameters from the included Animators into your own [as shown here](https://youtu.be/ejkvgj3CZjU).
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%201.png">
@@ -61,7 +61,7 @@ Common Questions
 Troubleshooting
 --------------
 **Avatar is smaller or larger than normal when loading in or adjusting scale.**
->This can happen if the default scale of your avatar isn't 1. Fix this by changing the values within the 'Size Settings' Animation to better fit your avatar as shown in the linked video for Step 5 of the tutorial. This can also be caused if you merged the 'Scaling' layer into another Animator and didn't set the 'Scale' parameter to 0.5.
+>This can happen if the default scale of your avatar isn't 1. Fix this by changing the values within the 'Size Settings' Animation to better fit your avatar as shown in the linked video for Step 5 of the tutorial. This can also be caused if you merged the 'Scaling' layer into another Animator and didn't set the 'Scale' and 'RemoteSize' parameters to 0.5.
 
 **Unable to open the 'Size' menu.**
 >If you're using 'Scale Menu' as a submenu, ensure sure that selecting it in the previous menu doesn't set 'SizeOp's value.
