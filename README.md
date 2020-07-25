@@ -21,14 +21,14 @@ Before following these steps, set up your avatar how you normally would and ensu
 1) Download and import the latest **Unity Package** from [**Releases**](https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases) on GitHub **(You will have issues if you don't)**.
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%200.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/2/Step%201.png">
 </p>
 
 2) In the Avatar Descriptor, assign the included Animators to their corresponding layers.
 	>If you already have custom versions of these layers, you can copy the states and parameters from the included Animators into your own [as shown here](https://youtu.be/ejkvgj3CZjU).
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%201.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/2/Step%202.png">
 </p>
 
 3) Add the following two variables anywhere within your Expression Parameters list (without the quotation marks):
@@ -36,14 +36,14 @@ Before following these steps, set up your avatar how you normally would and ensu
 	2. "SizeOp" (Int): Used for knowing when to update the viewpoint.
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%203.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/2/Step%203.png">
 </p>
 
 4) In the Avatar Descriptor, either use the included Expressions Menu or use it as a submenu within your own.
 	>If you're using it as a submenu, make sure not to set 'Scale' or 'SizeOp' to any value when opening the menu or things will break.
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/Step%205.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/2/Step%204.png">
 </p>
 
 5) If you need to adjust the minimum, maximum, or default scale, adjust the values contained within the 'Size Settings' Animation [as seen here](https://youtu.be/0IDKNUBxxOc).
