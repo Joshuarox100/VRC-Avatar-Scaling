@@ -15,7 +15,7 @@ MonoBehaviour:
   controls:
   - name: Reset
     icon: {fileID: 2800000, guid: 4f3f63ea20bcd4b408f0116065ceb352, type: 3}
-    type: 101
+    type: 102
     parameter:
       name: SizeOp
     value: 2
