@@ -9,7 +9,7 @@ Description: Scale your avatar to any size on the fly with a spin of the joystic
 
 Contains:
 - One Animation
-- Two Animators
+- Three Animators
 - One Avatar Mask
 - One Expressions Menu
 - This README
