@@ -21,38 +21,13 @@ public class ScalingSetupWindow : EditorWindow
         ScalingSetupWindow window = (ScalingSetupWindow)EditorWindow.GetWindow(typeof(ScalingSetupWindow), false, "Avatar Scaling Setup");
         window.Show();
     }
-
     private void OnDestroy()
     {
         ScalingSetupWindow window = (ScalingSetupWindow)EditorWindow.GetWindow(typeof(ScalingSetupWindow), false, "Avatar Scaling Setup");
         window = null;
     }
-
     private void OnGUI()
     {
-        GUILayout.Label("Avatar Settings", EditorStyles.boldLabel);
-        EditorGUI.BeginChangeCheck();
-            avatar = (VRCAvatarDescriptor)EditorGUILayout.ObjectField("Avatar", avatar, typeof(VRCAvatarDescriptor), true);
-        if (EditorGUI.EndChangeCheck())
-        {
-            sizes[1] = (avatar != null) ? avatar.gameObject.transform.localScale : sizes[1];
-            if (tab == 0)
-            {
-                sizes[0] = new Vector3(min * sizes[1].x, min * sizes[1].y, min * sizes[1].z);
-                sizes[2] = new Vector3(max * sizes[1].x, max * sizes[1].y, max * sizes[1].z);
-            }
-        }
-        EditorGUILayout.Space();
-        DrawLine();
-        GUILayout.Label("Optional Settings", EditorStyles.boldLabel);
-        expressionsMenu = (VRCExpressionsMenu)EditorGUILayout.ObjectField("Expressions Menu", expressionsMenu, typeof(VRCExpressionsMenu), true);
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Add Neccessary Parameters");
-        GUILayout.FlexibleSpace();
-        addExpressionParameters = EditorGUILayout.Toggle(addExpressionParameters, GUILayout.Width(15));
-        GUILayout.EndHorizontal();
-        EditorGUILayout.Space();
-        DrawLine();
         if (found)
         {
             DrawWindow();
@@ -75,6 +50,29 @@ public class ScalingSetupWindow : EditorWindow
     }
     private void DrawWindow()
     {
+        GUILayout.Label("Avatar Settings", EditorStyles.boldLabel);
+        EditorGUI.BeginChangeCheck();
+        avatar = (VRCAvatarDescriptor)EditorGUILayout.ObjectField("Avatar", avatar, typeof(VRCAvatarDescriptor), true);
+        if (EditorGUI.EndChangeCheck())
+        {
+            sizes[1] = (avatar != null) ? avatar.gameObject.transform.localScale : sizes[1];
+            if (tab == 0)
+            {
+                sizes[0] = new Vector3(min * sizes[1].x, min * sizes[1].y, min * sizes[1].z);
+                sizes[2] = new Vector3(max * sizes[1].x, max * sizes[1].y, max * sizes[1].z);
+            }
+        }
+        EditorGUILayout.Space();
+        DrawLine();
+        GUILayout.Label("Optional Settings", EditorStyles.boldLabel);
+        expressionsMenu = (VRCExpressionsMenu)EditorGUILayout.ObjectField("Expressions Menu", expressionsMenu, typeof(VRCExpressionsMenu), true);
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Add Neccessary Parameters");
+        GUILayout.FlexibleSpace();
+        addExpressionParameters = EditorGUILayout.Toggle(addExpressionParameters, GUILayout.Width(15));
+        GUILayout.EndHorizontal();
+        EditorGUILayout.Space();
+        DrawLine();
         GUILayout.Label("Size Settings", EditorStyles.boldLabel);
         tab = GUILayout.Toolbar(tab, new string[] { "Simple", "Advanced" });
         switch (tab)
