@@ -192,7 +192,7 @@ public class ScalingSetupWindow : EditorWindow
         {
             if (avatar.expressionsMenu == null)
             {
-                avatar.expressionsMenu = templateMenu;
+                avatar.expressionsMenu = (VRCExpressionsMenu)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("Scale Controls", new string[] { "Assets/Avatar Scaling/Menus" })[0]), typeof(VRCExpressionsMenu));
             }
         }
 
@@ -214,11 +214,15 @@ public class ScalingSetupWindow : EditorWindow
             }
         }
 
+        //Create sorting folders
+        AssetDatabase.CreateFolder(outputPath, "Animators");
+        AssetDatabase.CreateFolder(outputPath, "Animations");
+
         //Copy templates
-        if (!AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateAnimators[0]), outputPath + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Gesture.controller") ||
-        !AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateAnimators[1]), outputPath + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Sitting.controller") ||
-        !AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateAnimators[2]), outputPath + Path.DirectorySeparatorChar + avatar.gameObject.name + "_TPose.controller") ||
-        !AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateSizes), outputPath + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Sizes.anim"))
+        if (!AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateAnimators[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Gesture.controller") ||
+        !AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateAnimators[1]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Sitting.controller") ||
+        !AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateAnimators[2]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_TPose.controller") ||
+        !AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateSizes), outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Sizes.anim"))
         {
             return 1;
         }
