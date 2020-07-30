@@ -42,11 +42,10 @@ public class ScalingSetupWindow : EditorWindow
                 sizes[2] = new Vector3(max * sizes[1].x, max * sizes[1].y, max * sizes[1].z);
             }
         }
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Add to Expressions Menu");
-        GUILayout.FlexibleSpace();
-        addExpressionMenu = EditorGUILayout.Toggle(addExpressionMenu, GUILayout.Width(15));
-        GUILayout.EndHorizontal();
+        EditorGUILayout.Space();
+        DrawLine();
+        GUILayout.Label("Optional Settings", EditorStyles.boldLabel);
+        expressionsMenu = (VRCExpressionsMenu)EditorGUILayout.ObjectField("Expressions Menu", expressionsMenu, typeof(VRCExpressionsMenu), true);
         GUILayout.BeginHorizontal();
         GUILayout.Label("Add Neccessary Parameters");
         GUILayout.FlexibleSpace();
@@ -126,6 +125,12 @@ public class ScalingSetupWindow : EditorWindow
                 case 1:
                     EditorUtility.DisplayDialog("Avatar Scaling Setup", "ERROR: Failed to create one or more files!", "Close");
                     break;
+                case 2:
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "ERROR: Given Expression Menu already contains 8 controls!", "Close");
+                    break;
+                case 3:
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "ERROR: No Avatar selected!", "Close");
+                    break;
             }
         }
     }
@@ -146,16 +151,50 @@ public class ScalingSetupWindow : EditorWindow
     private VRCExpressionsMenu templateMenu;
 
     public VRCAvatarDescriptor avatar;
+    public VRCExpressionsMenu expressionsMenu;
     public bool addExpressionParameters = true;
-    public bool addExpressionMenu = true;
     public Vector3[] sizes = new Vector3[] { new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1.0f, 1.0f, 1.0f), new Vector3(3.0f, 3.0f, 3.0f) };
 
     public string outputPath = "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Output";
     public int ApplyChanges()
     {
         /*
+        // Check if an Avatar is selected. 
+        */
+
+        if (avatar == null)
+        {
+            return 3;
+        }
+
+        /*
         // Check avatar's ExpressionParameters for needed parameters. Skip step if present, attempt to append to list if absent. In cases where the list is full, inform the user and abort. 
         */
+
+
+
+        /*
+        // Check if a Expressions Menu was provided and attempt to add Scale Controls as a submenu to it. If none was provided then assign the template to the descriptor if the slot is empty.
+        */
+
+        if (expressionsMenu != null)
+        {
+            if (expressionsMenu.controls.Count == 8)
+            {
+                return 2;
+            }
+            else
+            {
+                expressionsMenu.controls.Add(templateMenu.controls[0]);
+            }
+        }
+        else
+        {
+            if (avatar.expressionsMenu == null)
+            {
+                avatar.expressionsMenu = templateMenu;
+            }
+        }
 
         /*
         // Create copy of all templates in destination folder.
