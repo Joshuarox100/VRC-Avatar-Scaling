@@ -153,31 +153,34 @@ public class ScalingSetupWindow : EditorWindow
                     EditorUtility.DisplayDialog("Avatar Scaling Setup", "Success!", "Close");
                     break;
                 case 1:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "ERROR: Failed to create one or more files!", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: Failed to create one or more files!", "Close");
                     break;
                 case 2:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "ERROR: Given Expression Menu already contains 8 controls!", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Success!\nWARNING: Submenu not added. (Given Expression Menu already contains 8 controls!)", "Close");
                     break;
                 case 3:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "ERROR: No Avatar selected!", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: No Avatar selected!", "Close");
                     break;
                 case 4:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "ERROR: Scale already present in parameter list, but as the wrong type!", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: Scale already present in parameter list, but as the wrong type!", "Close");
                     break;
                 case 5:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "ERROR: SizeOp already present in parameter list, but as the wrong type!", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: SizeOp already present in parameter list, but as the wrong type!", "Close");
                     break;
                 case 6:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "ERROR: No unused Expression Parameters found! At least two unused parameters are needed.", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: No unused Expression Parameters found! (At least two unused parameters are needed.)", "Close");
                     break;
                 case 7:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "ERROR: Avatar does not contain a VRCExpressionParameters object!", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: Avatar does not contain a VRCExpressionParameters object!", "Close");
                     break;
                 case 8:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "ERROR: One or more parameters already present in an Animator, but as the wrong type!", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: One or more parameters already present in an Animator, but as the wrong type!", "Close");
                     break;
                 case 9:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "ERROR: Failed to copy layers to one or more Animators!", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: Failed to copy layers to one or more Animators!", "Close");
+                    break;
+                case 10:
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Success!\nWARNING: Submenu not added. (Don't use the menu template as input!)", "Close");
                     break;
             }
         }
@@ -253,19 +256,7 @@ public class ScalingSetupWindow : EditorWindow
         // Create any files needed in destination folder.
         */
 
-        //Check if output folder exists and use the default path if it doesn't
-        if (!AssetDatabase.IsValidFolder(outputPath))
-        {
-            if (!AssetDatabase.IsValidFolder("Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Output"))
-            {
-                string guid = AssetDatabase.CreateFolder("Assets" + Path.DirectorySeparatorChar + "Avatar Scaling", "Output");
-                outputPath = AssetDatabase.GUIDToAssetPath(guid);
-            }
-            else
-            {
-                outputPath = "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Output";
-            }
-        }
+        VerifyDestination();
 
         //Copy SDK templates (if needed)
 
@@ -274,7 +265,7 @@ public class ScalingSetupWindow : EditorWindow
         AnimatorController tpose = (avatar.specialAnimationLayers[1].animatorController != null && insertLayers) ? (AnimatorController)avatar.specialAnimationLayers[1].animatorController : null;
         AnimationClip sizeSettings = new AnimationClip();
         
-        if (gesture == null)
+        if (gesture == null || gesture == templateAnimators[0] || gesture == templateAnimators[1] || gesture == templateAnimators[2])
         {
             if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
                 AssetDatabase.CreateFolder(outputPath, "Animators");
@@ -284,7 +275,7 @@ public class ScalingSetupWindow : EditorWindow
             }
         }
 
-        if (sitting == null)
+        if (sitting == null || sitting == templateAnimators[0] || sitting == templateAnimators[1] || sitting == templateAnimators[2])
         {
             if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
                 AssetDatabase.CreateFolder(outputPath, "Animators");
@@ -294,7 +285,7 @@ public class ScalingSetupWindow : EditorWindow
             }
         }
 
-        if (tpose == null)
+        if (tpose == null || tpose == templateAnimators[0] || tpose == templateAnimators[1] || tpose == templateAnimators[2])
         {
             if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
                 AssetDatabase.CreateFolder(outputPath, "Animators");
@@ -360,45 +351,10 @@ public class ScalingSetupWindow : EditorWindow
         // Replace reference to template AnimationClip in Gesture with the modified one.
         */
 
-        //Get copied layers
-        AnimatorControllerLayer[] layers = gesture.layers;
-        AnimatorControllerLayer scalingLayer = new AnimatorControllerLayer();
-        
-        //Get scaling layer
-        foreach (AnimatorControllerLayer layer in layers)
-        {
-            if (layer.name == "Scaling")
-            {
-                scalingLayer = layer;
-                break;
-            }
-        }
-        if (scalingLayer == null)
+        if (!ReplaceAnimation(gesture, "Scaling", templateSizes, sizeSettings))
         {
             return 9;
         }
-        
-        //Replace all instances of the template Animation with the new one
-        for (int i = 0; i < scalingLayer.stateMachine.states.Length; i++)
-        {
-            if (AssetDatabase.GetAssetPath(scalingLayer.stateMachine.states[i].state.motion) == AssetDatabase.GetAssetPath(templateSizes))
-            {
-                scalingLayer.stateMachine.states[i].state.motion = sizeSettings;
-            }
-        }
-
-        //Update the scaling layer in the list
-        for(int i = 0; i < layers.Length; i++)
-        {
-            if (layers[i].name == "Scaling") 
-            {
-                layers[i] = scalingLayer;
-                break;
-            }
-        }
-
-        //Update Animator with modified layers
-        gesture.layers = layers;
 
         /*
         // Add new Animators to the Avatar Descriptor if possible. 
@@ -527,7 +483,7 @@ public class ScalingSetupWindow : EditorWindow
         // Check if a Expressions Menu was provided and attempt to add Scale Controls as a submenu to it. If none was provided then assign the template to the descriptor if the slot is empty.
         */
 
-        if (expressionsMenu != null)
+        if (expressionsMenu != null && expressionsMenu != templateMenu)
         {
             if (expressionsMenu.controls.Count == 8)
             {
@@ -535,8 +491,24 @@ public class ScalingSetupWindow : EditorWindow
             }
             else
             {
-                expressionsMenu.controls.Add(templateMenu.controls[0]);
+                bool exists = false;
+                foreach (VRCExpressionsMenu.Control control in expressionsMenu.controls)
+                {
+                    if (control == templateMenu.controls[0])
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists)
+                {
+                    expressionsMenu.controls.Add(templateMenu.controls[0]);
+                }
             }
+        }
+        else if (expressionsMenu == templateMenu)
+        {
+            return 10;
         }
         else
         {
@@ -547,6 +519,22 @@ public class ScalingSetupWindow : EditorWindow
         }
 
         return 0;
+    }
+
+    private void VerifyDestination()
+    {
+        if (!AssetDatabase.IsValidFolder(outputPath))
+        {
+            if (!AssetDatabase.IsValidFolder("Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Output"))
+            {
+                string guid = AssetDatabase.CreateFolder("Assets" + Path.DirectorySeparatorChar + "Avatar Scaling", "Output");
+                outputPath = AssetDatabase.GUIDToAssetPath(guid);
+            }
+            else
+            {
+                outputPath = "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Output";
+            }
+        }
     }
 
     private void ModifyAnimation(AnimationClip anim)
@@ -578,6 +566,46 @@ public class ScalingSetupWindow : EditorWindow
             }
             AnimationUtility.SetEditorCurve(anim, binding, curve);
         }
+    }
+
+    private bool ReplaceAnimation(AnimatorController source, string layerName, AnimationClip oldAnim, AnimationClip newAnim)
+    {
+        AnimatorControllerLayer[] layers = source.layers;
+        AnimatorControllerLayer selectedLayer = new AnimatorControllerLayer();
+
+        foreach (AnimatorControllerLayer layer in layers)
+        {
+            if (layer.name == layerName)
+            {
+                selectedLayer = layer;
+                break;
+            }
+        }
+        if (selectedLayer == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < selectedLayer.stateMachine.states.Length; i++)
+        {
+            if (AssetDatabase.GetAssetPath(selectedLayer.stateMachine.states[i].state.motion) == AssetDatabase.GetAssetPath(oldAnim))
+            {
+                selectedLayer.stateMachine.states[i].state.motion = newAnim;
+            }
+        }
+
+        for (int i = 0; i < layers.Length; i++)
+        {
+            if (layers[i].name == layerName)
+            {
+                layers[i] = selectedLayer;
+                break;
+            }
+        }
+
+        source.layers = layers;
+
+        return true;
     }
 
     private bool AddLayersParameters(AnimatorController source, AnimatorController target)
@@ -616,7 +644,6 @@ public class ScalingSetupWindow : EditorWindow
         source.parameters = srcParam;
 
         //Check and Add/Replace Layers
-
         AnimatorControllerLayer[] srcLayers = source.layers;
         AnimatorControllerLayer[] tarLayers = target.layers;
 
