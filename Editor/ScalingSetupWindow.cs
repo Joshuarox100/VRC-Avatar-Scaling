@@ -153,7 +153,7 @@ public class ScalingSetupWindow : EditorWindow
                     EditorUtility.DisplayDialog("Avatar Scaling Setup", "Success!", "Close");
                     break;
                 case 1:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: Failed to create one or more files!", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Success!\nWARNING: Submenu not added. (Scaling submenu already exists!)", "Close");
                     break;
                 case 2:
                     EditorUtility.DisplayDialog("Avatar Scaling Setup", "Success!\nWARNING: Submenu not added. (Given Expression Menu already contains 8 controls!)", "Close");
@@ -168,19 +168,19 @@ public class ScalingSetupWindow : EditorWindow
                     EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: SizeOp already present in parameter list, but as the wrong type!", "Close");
                     break;
                 case 6:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: No unused Expression Parameters found! (At least two unused parameters are needed.)", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: One or more parameters already present in an Animator, but as the wrong type!", "Close");
                     break;
                 case 7:
                     EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: Avatar does not contain a VRCExpressionParameters object!", "Close");
                     break;
                 case 8:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: One or more parameters already present in an Animator, but as the wrong type!", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: No unused Expression Parameters found! (At least two unused parameters are needed.)", "Close");
                     break;
                 case 9:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: Failed to copy layers to one or more Animators!", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: Failed to create one or more files!", "Close");
                     break;
                 case 10:
-                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Success!\nWARNING: Submenu not added. (Don't use the menu template as input!)", "Close");
+                    EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\nERROR: Failed to copy layers to one or more Animators!", "Close");
                     break;
             }
         }
@@ -271,7 +271,7 @@ public class ScalingSetupWindow : EditorWindow
                 AssetDatabase.CreateFolder(outputPath, "Animators");
             if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("vrc_AvatarV3HandsLayer", new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Gesture.controller"))
             {
-                return 1;
+                return 9;
             }
         }
 
@@ -281,7 +281,7 @@ public class ScalingSetupWindow : EditorWindow
                 AssetDatabase.CreateFolder(outputPath, "Animators");
             if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("vrc_AvatarV3SittingLayer", new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Sitting.controller"))
             {
-                return 1;
+                return 9;
             }
         }
 
@@ -291,7 +291,7 @@ public class ScalingSetupWindow : EditorWindow
                 AssetDatabase.CreateFolder(outputPath, "Animators");
             if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("vrc_AvatarV3UtilityTPose", new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_TPose.controller"))
             {
-                return 1;
+                return 9;
             }
         }
 
@@ -299,7 +299,7 @@ public class ScalingSetupWindow : EditorWindow
             AssetDatabase.CreateFolder(outputPath, "Animations");
         if (!AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateSizes), outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Sizes.anim"))
         {
-            return 1;
+            return 9;
         }
 
         AssetDatabase.Refresh();
@@ -338,7 +338,7 @@ public class ScalingSetupWindow : EditorWindow
             !AddLayersParameters(sitting, templateAnimators[1]) ||
             !AddLayersParameters(tpose, templateAnimators[2]))
         {
-            return 8;
+            return 6;
         }
 
         /*
@@ -353,7 +353,7 @@ public class ScalingSetupWindow : EditorWindow
 
         if (!ReplaceAnimation(gesture, "Scaling", templateSizes, sizeSettings))
         {
-            return 9;
+            return 10;
         }
 
         /*
@@ -448,7 +448,7 @@ public class ScalingSetupWindow : EditorWindow
 
             if ((count >= 15 && !scalePresent && !sizeOpPresent) || (count == 16 && (!scalePresent || !sizeOpPresent)))
             {
-                return 6;
+                return 8;
             }
             else
             {
@@ -483,7 +483,7 @@ public class ScalingSetupWindow : EditorWindow
         // Check if a Expressions Menu was provided and attempt to add Scale Controls as a submenu to it. If none was provided then assign the template to the descriptor if the slot is empty.
         */
 
-        if (expressionsMenu != null && expressionsMenu != templateMenu)
+        if (expressionsMenu != null)
         {
             if (expressionsMenu.controls.Count == 8)
             {
@@ -494,7 +494,7 @@ public class ScalingSetupWindow : EditorWindow
                 bool exists = false;
                 foreach (VRCExpressionsMenu.Control control in expressionsMenu.controls)
                 {
-                    if (control == templateMenu.controls[0])
+                    if (control.type == VRCExpressionsMenu.Control.ControlType.SubMenu && control.subMenu == templateMenu.controls[0].subMenu)
                     {
                         exists = true;
                         break;
@@ -504,11 +504,11 @@ public class ScalingSetupWindow : EditorWindow
                 {
                     expressionsMenu.controls.Add(templateMenu.controls[0]);
                 }
+                else
+                {
+                    return 1;
+                }
             }
-        }
-        else if (expressionsMenu == templateMenu)
-        {
-            return 10;
         }
         else
         {
