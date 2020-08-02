@@ -557,60 +557,60 @@ public class ASManager : UnityEngine.Object
     {
         foreach (AnimatorControllerLayer layer in source.layers)
         {
-            foreach (var a in layer.stateMachine.stateMachines)
+            foreach (var subStateMachine in layer.stateMachine.stateMachines)
             {
-                if (AssetDatabase.GetAssetPath(a.stateMachine).Length == 0)
+                if (AssetDatabase.GetAssetPath(subStateMachine.stateMachine).Length == 0)
                 {
-                    AssetDatabase.AddObjectToAsset(a.stateMachine, AssetDatabase.GetAssetPath(source));
-                    a.stateMachine.hideFlags = HideFlags.HideInHierarchy;
+                    AssetDatabase.AddObjectToAsset(subStateMachine.stateMachine, AssetDatabase.GetAssetPath(source));
+                    subStateMachine.stateMachine.hideFlags = HideFlags.HideInHierarchy;
                 }
             }
-            foreach (var a in layer.stateMachine.states)
+            foreach (var childState in layer.stateMachine.states)
             {
-                if (AssetDatabase.GetAssetPath(a.state).Length == 0)
+                if (AssetDatabase.GetAssetPath(childState.state).Length == 0)
                 {
-                    AssetDatabase.AddObjectToAsset(a.state, AssetDatabase.GetAssetPath(source));
-                    a.state.hideFlags = HideFlags.HideInHierarchy;
+                    AssetDatabase.AddObjectToAsset(childState.state, AssetDatabase.GetAssetPath(source));
+                    childState.state.hideFlags = HideFlags.HideInHierarchy;
                 }
-                foreach (var b in a.state.behaviours)
+                foreach (var stateBehavior in childState.state.behaviours)
                 {
-                    if (AssetDatabase.GetAssetPath(b).Length == 0)
+                    if (AssetDatabase.GetAssetPath(stateBehavior).Length == 0)
                     {
-                        AssetDatabase.AddObjectToAsset(b, AssetDatabase.GetAssetPath(source));
-                        b.hideFlags = HideFlags.HideInHierarchy;
+                        AssetDatabase.AddObjectToAsset(stateBehavior, AssetDatabase.GetAssetPath(source));
+                        stateBehavior.hideFlags = HideFlags.HideInHierarchy;
                     }
                 }
-                foreach (var c in a.state.transitions)
+                foreach (var stateTransition in childState.state.transitions)
                 {
-                    if (AssetDatabase.GetAssetPath(c).Length == 0)
+                    if (AssetDatabase.GetAssetPath(stateTransition).Length == 0)
                     {
-                        AssetDatabase.AddObjectToAsset(c, AssetDatabase.GetAssetPath(source));
-                        c.hideFlags = HideFlags.HideInHierarchy;
+                        AssetDatabase.AddObjectToAsset(stateTransition, AssetDatabase.GetAssetPath(source));
+                        stateTransition.hideFlags = HideFlags.HideInHierarchy;
                     }
                 }
             }
-            foreach (var a in layer.stateMachine.anyStateTransitions)
+            foreach (var anyStateTransition in layer.stateMachine.anyStateTransitions)
             {
-                if (AssetDatabase.GetAssetPath(a).Length == 0)
+                if (AssetDatabase.GetAssetPath(anyStateTransition).Length == 0)
                 {
-                    AssetDatabase.AddObjectToAsset(a, AssetDatabase.GetAssetPath(source));
-                    a.hideFlags = HideFlags.HideInHierarchy;
+                    AssetDatabase.AddObjectToAsset(anyStateTransition, AssetDatabase.GetAssetPath(source));
+                    anyStateTransition.hideFlags = HideFlags.HideInHierarchy;
                 }
             }
-            foreach (var a in layer.stateMachine.entryTransitions)
+            foreach (var entryTransition in layer.stateMachine.entryTransitions)
             {
-                if (AssetDatabase.GetAssetPath(a).Length == 0)
+                if (AssetDatabase.GetAssetPath(entryTransition).Length == 0)
                 {
-                    AssetDatabase.AddObjectToAsset(a, AssetDatabase.GetAssetPath(source));
-                    a.hideFlags = HideFlags.HideInHierarchy;
+                    AssetDatabase.AddObjectToAsset(entryTransition, AssetDatabase.GetAssetPath(source));
+                    entryTransition.hideFlags = HideFlags.HideInHierarchy;
                 }
             }
-            foreach (var a in layer.stateMachine.behaviours)
+            foreach (var machineBehavior in layer.stateMachine.behaviours)
             {
-                if (AssetDatabase.GetAssetPath(a).Length == 0)
+                if (AssetDatabase.GetAssetPath(machineBehavior).Length == 0)
                 {
-                    AssetDatabase.AddObjectToAsset(a, AssetDatabase.GetAssetPath(source));
-                    a.hideFlags = HideFlags.HideInHierarchy;
+                    AssetDatabase.AddObjectToAsset(machineBehavior, AssetDatabase.GetAssetPath(source));
+                    machineBehavior.hideFlags = HideFlags.HideInHierarchy;
                 }
             }
         }
