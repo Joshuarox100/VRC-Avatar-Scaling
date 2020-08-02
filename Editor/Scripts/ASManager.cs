@@ -20,7 +20,7 @@ public class ASManager : UnityEngine.Object
     public Vector3[] sizes = new Vector3[] { new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1.0f, 1.0f, 1.0f), new Vector3(3.0f, 3.0f, 3.0f) };
     public int curveType;
 
-    private string relativePath;
+    public string relativePath;
     public string outputPath;
 
     public ASManager() {}
@@ -526,15 +526,8 @@ public class ASManager : UnityEngine.Object
             }
             source.AddLayer(layer.name);
             srcLayers = source.layers;
-            AnimatorControllerLayer copiedLayer = layer.DeepClone();
-            srcLayers[srcLayers.Length - 1] = copiedLayer;
+            srcLayers[srcLayers.Length - 1] = layer.DeepClone();
             source.layers = srcLayers;
-            //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
-            if (AssetDatabase.GetAssetPath(copiedLayer.stateMachine).Length == 0)
-            {
-                AssetDatabase.AddObjectToAsset(copiedLayer.stateMachine, AssetDatabase.GetAssetPath(source));
-                copiedLayer.stateMachine.hideFlags = HideFlags.HideInHierarchy;
-            }
         }
 
         source.SaveController();
