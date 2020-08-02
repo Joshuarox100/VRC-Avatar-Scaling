@@ -568,12 +568,14 @@ public class ASManager : UnityEngine.Object
         return output;
     }
 
-    //Figure out if looping through states or transitions is faster
     private AnimatorStateMachine CloneMachine(AnimatorStateMachine machine)
     {
         AnimatorStateMachine output = new AnimatorStateMachine();
+
+        //All Serializable Fields (ex. Primitives)
         EditorUtility.CopySerialized(machine, output);
 
+        //State Machines
         ChildAnimatorStateMachine[] outMachines = new ChildAnimatorStateMachine[machine.stateMachines.Length];
         for (int i = 0; i < machine.stateMachines.Length; i++)
         {
@@ -585,6 +587,7 @@ public class ASManager : UnityEngine.Object
         }
         output.stateMachines = outMachines;
 
+        //States
         ChildAnimatorState[] outStates = new ChildAnimatorState[machine.states.Length];
         for (int i = 0; i < machine.states.Length; i++)
         {
@@ -596,68 +599,38 @@ public class ASManager : UnityEngine.Object
         }
         for (int i = 0; i < machine.states.Length; i++)
         {
-            AnimatorStateTransition[] fixedTransitions = outStates[i].state.transitions;
-            foreach (AnimatorStateTransition transition in fixedTransitions)
+            AnimatorStateTransition[] outTransitions = new AnimatorStateTransition[machine.states[i].state.transitions.Length];
+            for (int j = 0; j < machine.states[i].state.transitions.Length; j++)
             {
-                for (int j = 0; j < machine.states.Length; j++)
-                {
-                    if (transition.destinationState != null && transition.destinationState.name == machine.states[j].state.name)
-                    {
-                        transition.destinationState = outStates[j].state;
-                        break;
-                    }
-                }
+                outTransitions[j] = (AnimatorStateTransition)CloneTransition(machine.states[i].state.transitions[j], outStates);
             }
-            outStates[i].state.transitions = fixedTransitions;
+            outStates[i].state.transitions = outTransitions;
         }
         output.states = outStates;
 
+        //Any Transitions
         AnimatorStateTransition[] outAnyTransitions = new AnimatorStateTransition[machine.anyStateTransitions.Length];
         for (int i = 0; i < machine.anyStateTransitions.Length; i++)
         {
-            outAnyTransitions[i] = (AnimatorStateTransition)CloneTransition(machine.anyStateTransitions[i]);
+            outAnyTransitions[i] = (AnimatorStateTransition)CloneTransition(machine.anyStateTransitions[i], outStates);
         }
-        AnimatorStateTransition[] fixedAnyTransitions = outAnyTransitions;
-        foreach (AnimatorStateTransition transition in fixedAnyTransitions)
-        {
-            for (int j = 0; j < machine.states.Length; j++)
-            {
-                if (transition.destinationState != null && transition.destinationState.name == machine.states[j].state.name)
-                {
-                    transition.destinationState = outStates[j].state;
-                    break;
-                }
-            }
-        }
-        outAnyTransitions = fixedAnyTransitions;
         output.anyStateTransitions = outAnyTransitions;
 
+        //Entry Transitions
         AnimatorTransition[] outEntryTransitions = new AnimatorTransition[machine.entryTransitions.Length];
         for (int i = 0; i < machine.entryTransitions.Length; i++)
         {
-            outEntryTransitions[i] = (AnimatorTransition)CloneTransition(machine.entryTransitions[i]);
+            outEntryTransitions[i] = (AnimatorTransition)CloneTransition(machine.entryTransitions[i], outStates);
         }
-        AnimatorTransition[] fixedEntryTransitions = outEntryTransitions;
-        foreach (AnimatorTransition transition in fixedEntryTransitions)
-        {
-            for (int j = 0; j < machine.states.Length; j++)
-            {
-                if (transition.destinationState != null && transition.destinationState.name == machine.states[j].state.name)
-                {
-                    transition.destinationState = outStates[j].state;
-                    break;
-                }
-            }
-        }
-        outEntryTransitions = fixedEntryTransitions;
         output.entryTransitions = outEntryTransitions;
 
-        foreach (ChildAnimatorState state in outStates)
+        //Default State
+        foreach (ChildAnimatorState childState in outStates)
         {
             //Using `state.state == machine.defaultState` doesn't actually get the correct state in very specific scenarios, so the state name is used instead. State names must be unique per machine so this doesn't cause issues.
-            if (state.state.name == machine.defaultState.name)
+            if (childState.state.name == machine.defaultState.name)
             {
-                output.defaultState = state.state;
+                output.defaultState = childState.state;
                 break;
             }
         }
@@ -670,31 +643,32 @@ public class ASManager : UnityEngine.Object
         AnimatorState output = new AnimatorState();
         EditorUtility.CopySerialized(state, output);
 
-        AnimatorStateTransition[] outTransitions = new AnimatorStateTransition[state.transitions.Length];
-        for (int i = 0; i < state.transitions.Length; i++)
-        {
-            outTransitions[i] = (AnimatorStateTransition)CloneTransition(state.transitions[i]);
-        }
-        output.transitions = outTransitions;
-
         StateMachineBehaviour[] outBehaviors = new StateMachineBehaviour[state.behaviours.Length];
         for (int i = 0; i < state.behaviours.Length; i++)
         {
-            outBehaviors[i] = CloneStateBehaviors(state.behaviours[i]);
+            outBehaviors[i] = CloneStateBehavior(state.behaviours[i]);
         }
         output.behaviours = outBehaviors;
 
         return output;
     }
 
-    private AnimatorTransitionBase CloneTransition(AnimatorTransitionBase transition)
+    private AnimatorTransitionBase CloneTransition(AnimatorTransitionBase transition, ChildAnimatorState[] states)
     {
         AnimatorTransitionBase output = Instantiate(transition);
         EditorUtility.CopySerialized(transition, output);
+        for (int i = 0; i < states.Length; i++)
+        {
+            if (output.destinationState != null && output.destinationState.name == states[i].state.name)
+            {
+                output.destinationState = states[i].state;
+                break;
+            }
+        }
         return output;
     }
 
-    private StateMachineBehaviour CloneStateBehaviors(StateMachineBehaviour behavior)
+    private StateMachineBehaviour CloneStateBehavior(StateMachineBehaviour behavior)
     {
         StateMachineBehaviour output = (StateMachineBehaviour)ScriptableObject.CreateInstance(behavior.GetType());
         EditorUtility.CopySerialized(behavior, output);
