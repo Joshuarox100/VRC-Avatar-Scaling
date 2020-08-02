@@ -48,7 +48,7 @@ Setup Window
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%205.png">
 </p>
 | Setting | Function |
-|---------|----------|
+| --------- | ---------- |
 | Active Avatar | The Avatar you want to setup scaling for. |
 | Expressions Menu | (Optional) The Expressions Menu you want the scaling controls added to. Leave this empty if you don't want any menus to be affected.\n(Controls will be added as a submenu.) |
 | Add Parameters | Check the needed parameters for scaling within the Avatar's Expression Parameters and add them if they're absent. |
