@@ -537,10 +537,7 @@ public class ASManager : UnityEngine.Object
             }
         }
 
-        if (!SaveController(source))
-        {
-            return false;
-        }
+        source.SaveController();
 
         //Delete Clone
         if (!AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(cloned)))
@@ -548,72 +545,6 @@ public class ASManager : UnityEngine.Object
             return false;
         }
         AssetDatabase.Refresh();
-
-        return true;
-    }
-
-    //make better variable names here.
-    private bool SaveController(AnimatorController source)
-    {
-        foreach (AnimatorControllerLayer layer in source.layers)
-        {
-            foreach (var subStateMachine in layer.stateMachine.stateMachines)
-            {
-                if (AssetDatabase.GetAssetPath(subStateMachine.stateMachine).Length == 0)
-                {
-                    AssetDatabase.AddObjectToAsset(subStateMachine.stateMachine, AssetDatabase.GetAssetPath(source));
-                    subStateMachine.stateMachine.hideFlags = HideFlags.HideInHierarchy;
-                }
-            }
-            foreach (var childState in layer.stateMachine.states)
-            {
-                if (AssetDatabase.GetAssetPath(childState.state).Length == 0)
-                {
-                    AssetDatabase.AddObjectToAsset(childState.state, AssetDatabase.GetAssetPath(source));
-                    childState.state.hideFlags = HideFlags.HideInHierarchy;
-                }
-                foreach (var stateBehavior in childState.state.behaviours)
-                {
-                    if (AssetDatabase.GetAssetPath(stateBehavior).Length == 0)
-                    {
-                        AssetDatabase.AddObjectToAsset(stateBehavior, AssetDatabase.GetAssetPath(source));
-                        stateBehavior.hideFlags = HideFlags.HideInHierarchy;
-                    }
-                }
-                foreach (var stateTransition in childState.state.transitions)
-                {
-                    if (AssetDatabase.GetAssetPath(stateTransition).Length == 0)
-                    {
-                        AssetDatabase.AddObjectToAsset(stateTransition, AssetDatabase.GetAssetPath(source));
-                        stateTransition.hideFlags = HideFlags.HideInHierarchy;
-                    }
-                }
-            }
-            foreach (var anyStateTransition in layer.stateMachine.anyStateTransitions)
-            {
-                if (AssetDatabase.GetAssetPath(anyStateTransition).Length == 0)
-                {
-                    AssetDatabase.AddObjectToAsset(anyStateTransition, AssetDatabase.GetAssetPath(source));
-                    anyStateTransition.hideFlags = HideFlags.HideInHierarchy;
-                }
-            }
-            foreach (var entryTransition in layer.stateMachine.entryTransitions)
-            {
-                if (AssetDatabase.GetAssetPath(entryTransition).Length == 0)
-                {
-                    AssetDatabase.AddObjectToAsset(entryTransition, AssetDatabase.GetAssetPath(source));
-                    entryTransition.hideFlags = HideFlags.HideInHierarchy;
-                }
-            }
-            foreach (var machineBehavior in layer.stateMachine.behaviours)
-            {
-                if (AssetDatabase.GetAssetPath(machineBehavior).Length == 0)
-                {
-                    AssetDatabase.AddObjectToAsset(machineBehavior, AssetDatabase.GetAssetPath(source));
-                    machineBehavior.hideFlags = HideFlags.HideInHierarchy;
-                }
-            }
-        }
 
         return true;
     }
