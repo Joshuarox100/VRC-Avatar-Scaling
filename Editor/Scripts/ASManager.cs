@@ -568,6 +568,7 @@ public class ASManager : UnityEngine.Object
         return output;
     }
 
+    //Figure out if looping through states or transitions is faster
     private AnimatorStateMachine CloneMachine(AnimatorStateMachine machine)
     {
         AnimatorStateMachine output = new AnimatorStateMachine();
