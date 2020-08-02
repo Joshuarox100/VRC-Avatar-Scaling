@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Data.OleDb;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Animations;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 
-public class ASManager
+public class ASManager : UnityEngine.Object
 {
     public AnimatorController[] templateAnimators = new AnimatorController[3];
     public AnimationClip templateSizes;
@@ -19,9 +21,10 @@ public class ASManager
     public Vector3[] sizes = new Vector3[] { new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1.0f, 1.0f, 1.0f), new Vector3(3.0f, 3.0f, 3.0f) };
     public int curveType;
 
-    public string outputPath = "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Output";
+    private string relativePath;
+    public string outputPath;
 
-    public ASManager() {   }
+    public ASManager() {}
 
     public int ApplyChanges()
     {
@@ -331,7 +334,7 @@ public class ASManager
             {
                 if (avatar.expressionsMenu == null)
                 {
-                    avatar.expressionsMenu = (VRCExpressionsMenu)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("Scale Controls", new string[] { "Assets/Avatar Scaling/Menus" })[0]), typeof(VRCExpressionsMenu));
+                    avatar.expressionsMenu = (VRCExpressionsMenu)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("Scale Controls", new string[] { relativePath + Path.DirectorySeparatorChar + "Menus" })[0]), typeof(VRCExpressionsMenu));
                 }
             }
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 1.0f);
@@ -349,14 +352,14 @@ public class ASManager
     {
         if (!AssetDatabase.IsValidFolder(outputPath))
         {
-            if (!AssetDatabase.IsValidFolder("Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Output"))
+            if (!AssetDatabase.IsValidFolder(relativePath + Path.DirectorySeparatorChar + "Output"))
             {
-                string guid = AssetDatabase.CreateFolder("Assets" + Path.DirectorySeparatorChar + "Avatar Scaling", "Output");
+                string guid = AssetDatabase.CreateFolder(relativePath, "Output");
                 outputPath = AssetDatabase.GUIDToAssetPath(guid);
             }
             else
             {
-                outputPath = "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Output";
+                outputPath = relativePath + Path.DirectorySeparatorChar + "Output";
             }
         }
     }
@@ -449,7 +452,7 @@ public class ASManager
     private bool AddLayersParameters(AnimatorController source, AnimatorController target)
     {
         //Clone Target Animator
-        if (!AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(target), "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + "Temporary.controller"))
+        if (!AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(target), relativePath + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + "Temporary.controller"))
         {
             return false;
         }
@@ -457,7 +460,7 @@ public class ASManager
 
         AnimatorController cloned = null;
 
-        string[] results = AssetDatabase.FindAssets("Temporary", new string[] { "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Animators" });
+        string[] results = AssetDatabase.FindAssets("Temporary", new string[] { relativePath + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Animators" });
 
         foreach (string guid in results)
         {
@@ -772,7 +775,9 @@ public class ASManager
 
     public bool FindTemplates()
     {
-        string[] results = AssetDatabase.FindAssets("(ASTemplate)", new string[] { "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" });
+        UpdatePaths();
+
+        string[] results = AssetDatabase.FindAssets("(ASTemplate)", new string[] { relativePath + Path.DirectorySeparatorChar + "Templates" });
 
         foreach (string guid in results)
         {
@@ -823,5 +828,17 @@ public class ASManager
         }
 
         return true;
+    }
+
+    private void UpdatePaths()
+    {
+        string old = relativePath;
+        relativePath = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("(ASTemplate)")[0]).Substring(0, AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("(ASTemplate)")[0]).LastIndexOf("Templates") - 1);
+        if (relativePath == old)
+            return;
+        else if (outputPath == null || !AssetDatabase.IsValidFolder(outputPath))
+        {
+            outputPath = relativePath + Path.DirectorySeparatorChar + "Output";
+        }
     }
 }
