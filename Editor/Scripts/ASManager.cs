@@ -465,7 +465,6 @@ public class ASManager : UnityEngine.Object
         foreach (string guid in results)
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
-            //Debug.Log([Avatar Scaling Setup] Clone : path);
             if (path.Contains("Temporary.controller"))
             {
                 cloned = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
@@ -543,7 +542,7 @@ public class ASManager : UnityEngine.Object
             return false;
         }
 
-        //Delete clone
+        //Delete Clone
         if (!AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(cloned)))
         {
             return false;
@@ -782,7 +781,6 @@ public class ASManager : UnityEngine.Object
         foreach (string guid in results)
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
-            //Debug.Log([Avatar Scaling Setup] Template : path);
 
             //Gesture Animator
             if (path.Contains("Gesture (ASTemplate).controller"))
