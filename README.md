@@ -52,8 +52,8 @@ Setup Window
 | --------- | ---------- |
 | Active Avatar | The Avatar you want to setup scaling for. |
 | Expressions Menu | (Optional) The Expressions Menu you want the scaling controls added to. Leave this empty if you don't want any menus to be affected. (Controls will be added as a submenu.) |
-| Add Parameters | Check for needed parameters within the Avatar's Expression Parameters and add them if necessary. |
-| Use Existing Animators | If Animators are already present for Gesture, Sitting, or TPose, the parameters and layer for scaling will be added to them. If an Animator is missing or this feature is disabled, a new Animator will be generated using the defaults included in the VRChat SDK and inserted into the descriptor automatically. |
+| Add Parameters | (Optional) Check for needed parameters within the Avatar's Expression Parameters and add them if necessary. |
+| Use Existing Animators | (Optional) If Animators are already present for Gesture, Sitting, or TPose, the parameters and layer for scaling will be added to them. If an Animator is missing or this feature is disabled, a new Animator will be generated using the defaults included in the VRChat SDK and inserted into the descriptor automatically. |
 | Minimum (Simple) | The minimum scale your avatar can be. (Multiplier) |
 | Maximum (Simple) | The maximum scale your avatar can be. (Multiplier) |
 | Minimum (Advanced) | The minimum scale your avatar can be. (Exact) |

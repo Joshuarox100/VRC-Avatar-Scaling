@@ -169,12 +169,12 @@ public class AvatarScalingWindow : EditorWindow
         manager.expressionsMenu = (VRCExpressionsMenu)EditorGUILayout.ObjectField(new GUIContent("Expressions Menu", "(Optional) The Expressions Menu you want the scaling controls added to. Leave this empty if you don't want any menus to be affected.\n(Controls will be added as a submenu.)"), manager.expressionsMenu, typeof(VRCExpressionsMenu), true);
         EditorGUILayout.Space();
         GUILayout.BeginHorizontal();
-        GUILayout.Label(new GUIContent("Add Parameters", "Check for needed parameters within the Avatar's Expression Parameters and add them if necessary."), GUILayout.Width(145));
+        GUILayout.Label(new GUIContent("Add Parameters", "(Optional) Check for needed parameters within the Avatar's Expression Parameters and add them if necessary."), GUILayout.Width(145));
         manager.addExpressionParameters = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(manager.addExpressionParameters), new string[] { "No", "Yes" }));
         GUILayout.EndHorizontal();
         EditorGUILayout.Space();
         GUILayout.BeginHorizontal();
-        GUILayout.Label(new GUIContent("Use Existing Animators", "If Animators are already present for Gesture, Sitting, or TPose, the parameters and layer for scaling will be added to them. If an Animator is missing or this feature is disabled, a new Animator will be generated using the defaults included in the VRChat SDK and inserted into the descriptor automatically."), GUILayout.Width(145));
+        GUILayout.Label(new GUIContent("Use Existing Animators", "(Optional) If Animators are already present for Gesture, Sitting, or TPose, the parameters and layer for scaling will be added to them. If an Animator is missing or this feature is disabled, a new Animator will be generated using the defaults included in the VRChat SDK and inserted into the descriptor automatically."), GUILayout.Width(145));
         manager.insertLayers = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(manager.insertLayers), new string[] { "No", "Yes" }));
         GUILayout.EndHorizontal();
         EditorGUILayout.Space();
