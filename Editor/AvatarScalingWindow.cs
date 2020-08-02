@@ -7,7 +7,6 @@ using VRC.SDK3.Avatars.ScriptableObjects;
 
 public class AvatarScalingWindow : EditorWindow
 {
-    //Window Stuff
     private readonly ASManager manager = new ASManager();
 
     int sizeTab;
@@ -21,7 +20,6 @@ public class AvatarScalingWindow : EditorWindow
     static void Init()
     {
         AvatarScalingWindow window = (AvatarScalingWindow)EditorWindow.GetWindow(typeof(AvatarScalingWindow), false, "Avatar Scaling");
-        
         window.Show();
         window.minSize = new Vector2(375f, 515f);
     }
