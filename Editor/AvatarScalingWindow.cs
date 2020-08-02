@@ -25,12 +25,6 @@ public class AvatarScalingWindow : EditorWindow
         window.minSize = new Vector2(375f, 515f);
     }
 
-    //Fixes weird bug where menu refuses to reopen.
-    private void OnDestroy()
-    {
-        AvatarScalingWindow window = (AvatarScalingWindow)EditorWindow.GetWindow(typeof(AvatarScalingWindow), false, "Avatar Scaling");
-        window = null;
-    }
     private void OnGUI()
     {
         EditorGUILayout.Space();
@@ -263,6 +257,7 @@ public class AvatarScalingWindow : EditorWindow
                         EditorUtility.ClearProgressBar();
                     break;
             }
+            Selection.activeGameObject = avatar.gameObject;
         }
     }
 
@@ -875,18 +870,22 @@ public class AvatarScalingWindow : EditorWindow
         ChildAnimatorStateMachine[] outMachines = new ChildAnimatorStateMachine[machine.stateMachines.Length];
         for (int i = 0; i < machine.stateMachines.Length; i++)
         {
-            outMachines[i] = new ChildAnimatorStateMachine();
-            outMachines[i].position = machine.stateMachines[i].position;
-            outMachines[i].stateMachine = CloneMachine(machine.stateMachines[i].stateMachine);
+            outMachines[i] = new ChildAnimatorStateMachine
+            {
+                position = machine.stateMachines[i].position,
+                stateMachine = CloneMachine(machine.stateMachines[i].stateMachine)
+            };
         }
         output.stateMachines = outMachines;
 
         ChildAnimatorState[] outStates = new ChildAnimatorState[machine.states.Length];
         for (int i = 0; i < machine.states.Length; i++)
         {
-            outStates[i] = new ChildAnimatorState();
-            outStates[i].position = machine.states[i].position;
-            outStates[i].state = CloneState(machine.states[i].state);
+            outStates[i] = new ChildAnimatorState
+            {
+                position = machine.states[i].position,
+                state = CloneState(machine.states[i].state)
+            };
         }
         for (int i = 0; i < machine.states.Length; i++)
         {
@@ -926,8 +925,29 @@ public class AvatarScalingWindow : EditorWindow
         outAnyTransitions = fixedAnyTransitions;
         output.anyStateTransitions = outAnyTransitions;
 
+        AnimatorTransition[] outEntryTransitions = new AnimatorTransition[machine.entryTransitions.Length];
+        for (int i = 0; i < machine.entryTransitions.Length; i++)
+        {
+            outEntryTransitions[i] = CloneEntryTransition(machine.entryTransitions[i]);
+        }
+        AnimatorTransition[] fixedEntryTransitions = outEntryTransitions;
+        foreach (AnimatorTransition transition in fixedEntryTransitions)
+        {
+            for (int j = 0; j < machine.states.Length; j++)
+            {
+                if (transition.destinationState != null && transition.destinationState.name == machine.states[j].state.name)
+                {
+                    transition.destinationState = outStates[j].state;
+                    break;
+                }
+            }
+        }
+        outEntryTransitions = fixedEntryTransitions;
+        output.entryTransitions = outEntryTransitions;
+
         foreach (ChildAnimatorState state in outStates)
         {
+            //Using `state.state == machine.defaultState` doesn't actually get the correct state in very specific scenarios, so the state name is used instead.
             if (state.state.name == machine.defaultState.name)
             {
                 output.defaultState = state.state;
@@ -967,6 +987,13 @@ public class AvatarScalingWindow : EditorWindow
         return output;
     }
 
+    private AnimatorTransition CloneEntryTransition(AnimatorTransition transition)
+    {
+        AnimatorTransition output = new AnimatorTransition();
+        EditorUtility.CopySerialized(transition, output);
+        return output;
+    }
+
     private StateMachineBehaviour CloneStateBehaviors(StateMachineBehaviour behavior)
     {
         StateMachineBehaviour output = (StateMachineBehaviour)ScriptableObject.CreateInstance(behavior.GetType());
@@ -980,7 +1007,6 @@ public class AvatarScalingWindow : EditorWindow
         {
             foreach (var a in layer.stateMachine.stateMachines)
             {
-                //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
                 if (AssetDatabase.GetAssetPath(a.stateMachine).Length == 0)
                 {
                     AssetDatabase.AddObjectToAsset(a.stateMachine, AssetDatabase.GetAssetPath(source));
@@ -989,7 +1015,6 @@ public class AvatarScalingWindow : EditorWindow
             }
             foreach (var a in layer.stateMachine.states)
             {
-                //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
                 if (AssetDatabase.GetAssetPath(a.state).Length == 0)
                 {
                     AssetDatabase.AddObjectToAsset(a.state, AssetDatabase.GetAssetPath(source));
@@ -997,7 +1022,6 @@ public class AvatarScalingWindow : EditorWindow
                 }
                 foreach (var b in a.state.behaviours)
                 {
-                    //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
                     if (AssetDatabase.GetAssetPath(b).Length == 0)
                     {
                         AssetDatabase.AddObjectToAsset(b, AssetDatabase.GetAssetPath(source));
@@ -1006,7 +1030,6 @@ public class AvatarScalingWindow : EditorWindow
                 }
                 foreach (var c in a.state.transitions)
                 {
-                    //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
                     if (AssetDatabase.GetAssetPath(c).Length == 0)
                     {
                         AssetDatabase.AddObjectToAsset(c, AssetDatabase.GetAssetPath(source));
@@ -1016,7 +1039,14 @@ public class AvatarScalingWindow : EditorWindow
             }
             foreach (var a in layer.stateMachine.anyStateTransitions)
             {
-                //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
+                if (AssetDatabase.GetAssetPath(a).Length == 0)
+                {
+                    AssetDatabase.AddObjectToAsset(a, AssetDatabase.GetAssetPath(source));
+                    a.hideFlags = HideFlags.HideInHierarchy;
+                }
+            }
+            foreach (var a in layer.stateMachine.entryTransitions)
+            {
                 if (AssetDatabase.GetAssetPath(a).Length == 0)
                 {
                     AssetDatabase.AddObjectToAsset(a, AssetDatabase.GetAssetPath(source));
@@ -1025,7 +1055,6 @@ public class AvatarScalingWindow : EditorWindow
             }
             foreach (var a in layer.stateMachine.behaviours)
             {
-                //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
                 if (AssetDatabase.GetAssetPath(a).Length == 0)
                 {
                     AssetDatabase.AddObjectToAsset(a, AssetDatabase.GetAssetPath(source));
@@ -1036,6 +1065,7 @@ public class AvatarScalingWindow : EditorWindow
 
         return true;
     }
+    
     private bool FindTemplates()
     {
         string[] results = AssetDatabase.FindAssets("(ASTemplate)", new string[] { "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" });
