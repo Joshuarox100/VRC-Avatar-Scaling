@@ -59,7 +59,7 @@ Setup Window
 | Minimum (Advanced) | The minimum scale your avatar can be. (Exact) |
 | Maximum (Advanced) | The maximum scale your avatar can be. (Exact) |
 | Curve Type | What curve the scaling Animation should use. |
-| Path | The folder where any generated files will be saved to.  (Generated files will overwrite existing files with the same name: <AVATAR NAME>_<TEMPLATE NAME>) |
+| Path | The folder where any generated files will be saved to.  (Generated files will overwrite existing files with the same name\: <AVATAR NAME>_<TEMPLATE NAME>) |
 
 Common Questions
 --------------
