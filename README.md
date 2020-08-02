@@ -84,10 +84,10 @@ Troubleshooting
 >VRChat has already stated that this will be fixed *soon*™. It will update the size when you open one of the main menus like the one for Avatars or Worlds.
 
 **Avatar starts walking weirdly after using Reset Avatar.**
->I don't know why this happens honestly, but it's a known issue that only seems to occur when using local testing. It shouldn't happen for uploaded avatars.
+>This is a known issue with VRChat that only seems to occur when using local testing. It shouldn't happen on uploaded avatars.
 
 **Avatar is stuck T-Posing either remotely or locally.**
->I really don't know why this occurs either just yet, but the only way to fix it is by leaving and rejoining whatever world you're in.
+>Uncertain of the cause, but the only way to fix it is by leaving and rejoining whatever world you're in.
 
 **Viewpoint and Full Body trackers start to drift when changing size (FBT).**
 >This seems to currently be an issue with Animator Remeasure Avatar that I don't have control over. A Canny post about this bug has been made by bd_ that you can upvote here: [[BUG] FBT calibration seems to drift when scaling an avatar using Remeasure Avatar](https://feedback.vrchat.com/avatar-30/p/bug-fbt-calibration-seems-to-drift-when-scaling-an-avatar-using-remeasure-avatar)
@@ -96,7 +96,7 @@ Troubleshooting
 >This is actually a problem with using Auto Footsteps. It currently retains the distance between the feet at your starting scale even after using Animator Remeasure Avatar. I've made a Canny post about it that you can upvote here: [[Bug] Auto Footsteps doesn't update correctly after using Remeasure Avatar.](https://feedback.vrchat.com/avatar-30/p/bug-auto-footsteps-doesnt-update-correctly-after-using-remeasure-avatar)
 
 **"An exception occured!" it said.**
->If this happens, ensure you have a clean install of Avatar Scaling, and if the problem persists, let me know!
+>If this happens, ensure you have a clean install of Avatar Scaling, and if the problem persists, [let me know](#contacting-me)!
 
 Contacting Me
 --------------
