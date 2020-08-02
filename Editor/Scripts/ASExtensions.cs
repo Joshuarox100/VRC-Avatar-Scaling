@@ -80,6 +80,14 @@ namespace ASExtensions
             }
             output.entryTransitions = outEntryTransitions;
 
+            //Behaviors
+            StateMachineBehaviour[] outBehaviors = new StateMachineBehaviour[machine.behaviours.Length];
+            for (int i = 0; i < outBehaviors.Length; i++)
+            {
+                outBehaviors[i] = CloneBehavior(machine.behaviours[i]);
+            }
+            output.behaviours = outBehaviors;
+
             //Default State
             foreach (ChildAnimatorState childState in outStates)
             {
@@ -102,10 +110,17 @@ namespace ASExtensions
             StateMachineBehaviour[] outBehaviors = new StateMachineBehaviour[state.behaviours.Length];
             for (int i = 0; i < outBehaviors.Length; i++)
             {
-                outBehaviors[i] = CloneStateBehavior(state.behaviours[i]);
+                outBehaviors[i] = CloneBehavior(state.behaviours[i]);
             }
             output.behaviours = outBehaviors;
 
+            return output;
+        }
+
+        private static StateMachineBehaviour CloneBehavior(StateMachineBehaviour behavior)
+        {
+            StateMachineBehaviour output = (StateMachineBehaviour)ScriptableObject.CreateInstance(behavior.GetType());
+            EditorUtility.CopySerialized(behavior, output);
             return output;
         }
 
@@ -121,13 +136,6 @@ namespace ASExtensions
                     break;
                 }
             }
-            return output;
-        }
-
-        private static StateMachineBehaviour CloneStateBehavior(StateMachineBehaviour behavior)
-        {
-            StateMachineBehaviour output = (StateMachineBehaviour)ScriptableObject.CreateInstance(behavior.GetType());
-            EditorUtility.CopySerialized(behavior, output);
             return output;
         }
     }
