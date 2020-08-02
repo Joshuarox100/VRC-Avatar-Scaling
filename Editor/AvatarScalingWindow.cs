@@ -216,7 +216,7 @@ public class AvatarScalingWindow : EditorWindow
         GUILayout.Label("Destination", EditorStyles.boldLabel);
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Path:", new GUIStyle(GUI.skin.GetStyle("Box")) { normal = new GUIStyleState() { background = null } });
-        EditorGUILayout.LabelField(new GUIContent("<i>" + manager.outputPath + "</i>", "The folder where any generated files will be saved to.\n(Generated files will overwrite existing files with the same name: <AVATAR NAME>_<TEMPLATE NAME>)"), new GUIStyle(GUI.skin.GetStyle("Box")) { richText = true });
+        EditorGUILayout.LabelField(new GUIContent("<i>" + manager.outputPath.Replace('\\', '/') + "</i>", "The folder where any generated files will be saved to.\n(Generated files will overwrite existing files with the same name: <AVATAR NAME>_<TEMPLATE NAME>)"), new GUIStyle(GUI.skin.GetStyle("Box")) { richText = true });
         GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
         if (GUILayout.Button("Select"))
