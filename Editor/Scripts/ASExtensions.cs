@@ -31,7 +31,7 @@ namespace ASExtensions
 
             //State Machines
             ChildAnimatorStateMachine[] outMachines = new ChildAnimatorStateMachine[machine.stateMachines.Length];
-            for (int i = 0; i < machine.stateMachines.Length; i++)
+            for (int i = 0; i < outMachines.Length; i++)
             {
                 outMachines[i] = new ChildAnimatorStateMachine
                 {
@@ -43,7 +43,7 @@ namespace ASExtensions
 
             //States
             ChildAnimatorState[] outStates = new ChildAnimatorState[machine.states.Length];
-            for (int i = 0; i < machine.states.Length; i++)
+            for (int i = 0; i < outStates.Length; i++)
             {
                 outStates[i] = new ChildAnimatorState
                 {
@@ -51,10 +51,10 @@ namespace ASExtensions
                     state = CloneState(machine.states[i].state)
                 };
             }
-            for (int i = 0; i < machine.states.Length; i++)
+            for (int i = 0; i < outStates.Length; i++)
             {
                 AnimatorStateTransition[] outTransitions = new AnimatorStateTransition[machine.states[i].state.transitions.Length];
-                for (int j = 0; j < machine.states[i].state.transitions.Length; j++)
+                for (int j = 0; j < outTransitions.Length; j++)
                 {
                     outTransitions[j] = (AnimatorStateTransition)CloneTransition(machine.states[i].state.transitions[j], outStates);
                 }
@@ -64,7 +64,7 @@ namespace ASExtensions
 
             //Any Transitions
             AnimatorStateTransition[] outAnyTransitions = new AnimatorStateTransition[machine.anyStateTransitions.Length];
-            for (int i = 0; i < machine.anyStateTransitions.Length; i++)
+            for (int i = 0; i < outAnyTransitions.Length; i++)
             {
                 outAnyTransitions[i] = (AnimatorStateTransition)CloneTransition(machine.anyStateTransitions[i], outStates);
             }
@@ -72,7 +72,7 @@ namespace ASExtensions
 
             //Entry Transitions
             AnimatorTransition[] outEntryTransitions = new AnimatorTransition[machine.entryTransitions.Length];
-            for (int i = 0; i < machine.entryTransitions.Length; i++)
+            for (int i = 0; i < outEntryTransitions.Length; i++)
             {
                 outEntryTransitions[i] = (AnimatorTransition)CloneTransition(machine.entryTransitions[i], outStates);
             }
@@ -98,7 +98,7 @@ namespace ASExtensions
             EditorUtility.CopySerialized(state, output);
 
             StateMachineBehaviour[] outBehaviors = new StateMachineBehaviour[state.behaviours.Length];
-            for (int i = 0; i < state.behaviours.Length; i++)
+            for (int i = 0; i < outBehaviors.Length; i++)
             {
                 outBehaviors[i] = CloneStateBehavior(state.behaviours[i]);
             }
