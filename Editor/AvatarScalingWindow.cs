@@ -2,6 +2,7 @@
 using System.IO;
 using UnityEditor;
 using UnityEditor.Animations;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
@@ -9,7 +10,7 @@ using VRC.SDK3.Avatars.ScriptableObjects;
 public class AvatarScalingWindow : EditorWindow
 {
     //Window Stuff
-    
+
     int sizeTab;
     int windowTab;
     bool found;
@@ -19,7 +20,7 @@ public class AvatarScalingWindow : EditorWindow
 
     [MenuItem("Window/Avatar Scaling")]
     static void Init()
-    { 
+    {
         AvatarScalingWindow window = (AvatarScalingWindow)EditorWindow.GetWindow(typeof(AvatarScalingWindow), false, "Avatar Scaling");
         window.Show();
         window.minSize = new Vector2(375f, 515f);
@@ -168,11 +169,11 @@ public class AvatarScalingWindow : EditorWindow
             case 0:
                 EditorGUILayout.HelpBox("These values will be multiplied by the scale of your Avatar.\n(0.5 is half scale, 2.0 is twice your scale)", MessageType.Info);
                 EditorGUI.BeginChangeCheck();
-                    GUILayout.FlexibleSpace();
-                    min = EditorGUILayout.FloatField(new GUIContent("Minimum", "The minimum scale your avatar can be. (Multiplier)"), min);
-                    GUILayout.FlexibleSpace();
-                    max = EditorGUILayout.FloatField(new GUIContent("Maximum", "The maximum scale your avatar can be. (Multiplier)"), max);
-                    GUILayout.FlexibleSpace();
+                GUILayout.FlexibleSpace();
+                min = EditorGUILayout.FloatField(new GUIContent("Minimum", "The minimum scale your avatar can be. (Multiplier)"), min);
+                GUILayout.FlexibleSpace();
+                max = EditorGUILayout.FloatField(new GUIContent("Maximum", "The maximum scale your avatar can be. (Multiplier)"), max);
+                GUILayout.FlexibleSpace();
                 if (EditorGUI.EndChangeCheck())
                 {
                     sizes[0] = new Vector3(min * sizes[1].x, min * sizes[1].y, min * sizes[1].z);
@@ -235,7 +236,7 @@ public class AvatarScalingWindow : EditorWindow
                         EditorUtility.ClearProgressBar();
                     break;
                 case 5:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: SizeOp already present in parameter list, but as the wrong type!", "Close")) 
+                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: SizeOp already present in parameter list, but as the wrong type!", "Close"))
                         EditorUtility.ClearProgressBar();
                     break;
                 case 6:
@@ -256,6 +257,10 @@ public class AvatarScalingWindow : EditorWindow
                     break;
                 case 10:
                     if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: Failed to copy layers to one or more Animators!", "Close"))
+                        EditorUtility.ClearProgressBar();
+                    break;
+                case 99:
+                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: An Exception occured! Please look at the console for further details.", "Close")) ;
                         EditorUtility.ClearProgressBar();
                     break;
             }
@@ -320,310 +325,318 @@ public class AvatarScalingWindow : EditorWindow
     public string outputPath = "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Output";
     public int ApplyChanges()
     {
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Starting", 0f);
-        /*
-        // Check if an Avatar is selected. 
-        */
-
-        if (avatar == null)
+        try
         {
-            return 3;
-        }
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Starting", 0f);
+            /*
+            // Check if an Avatar is selected. 
+            */
 
-        /*
-        // Create any files needed in destination folder.
-        */
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Checking Destination", 0.05f);
-        VerifyDestination();
-
-        //Copy SDK templates (if needed)
-        if (insertLayers)
-        {
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Looking for Existing Animators", 0.1f);
-        }
-
-        AnimatorController gesture = (avatar.baseAnimationLayers[2].animatorController != null && insertLayers) ? (AnimatorController)avatar.baseAnimationLayers[2].animatorController : null;
-        AnimatorController sitting = (avatar.specialAnimationLayers[0].animatorController != null && insertLayers) ? (AnimatorController)avatar.specialAnimationLayers[0].animatorController : null;
-        AnimatorController tpose = (avatar.specialAnimationLayers[1].animatorController != null && insertLayers) ? (AnimatorController)avatar.specialAnimationLayers[1].animatorController : null;
-        AnimationClip sizeSettings = new AnimationClip();
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.2f);
-
-        if (gesture == null || gesture == templateAnimators[0] || gesture == templateAnimators[1] || gesture == templateAnimators[2])
-        {
-            if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
-                AssetDatabase.CreateFolder(outputPath, "Animators");
-            if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("vrc_AvatarV3HandsLayer", new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Gesture.controller"))
+            if (avatar == null)
             {
-                return 9;
-            }
-        }
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.25f);
-
-        if (sitting == null || sitting == templateAnimators[0] || sitting == templateAnimators[1] || sitting == templateAnimators[2])
-        {
-            if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
-                AssetDatabase.CreateFolder(outputPath, "Animators");
-            if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("vrc_AvatarV3SittingLayer", new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Sitting.controller"))
-            {
-                return 9;
-            }
-        }
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.3f);
-
-        if (tpose == null || tpose == templateAnimators[0] || tpose == templateAnimators[1] || tpose == templateAnimators[2])
-        {
-            if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
-                AssetDatabase.CreateFolder(outputPath, "Animators");
-            if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("vrc_AvatarV3UtilityTPose", new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_TPose.controller"))
-            {
-                return 9;
-            }
-        }
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.35f);
-
-        if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animations"))
-            AssetDatabase.CreateFolder(outputPath, "Animations");
-        if (!AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateSizes), outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Sizes.anim"))
-        {
-            return 9;
-        }
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Refreshing Asset Database", 0.4f);
-        AssetDatabase.Refresh();
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Loading New Files", 0.45f);
-
-        string[] results = AssetDatabase.FindAssets(avatar.gameObject.name + "_", new string[] { outputPath });
-        foreach (string guid in results)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            //Gesture Animator
-            if (path.Contains(avatar.gameObject.name + "_Gesture.controller") && gesture == null)
-            {
-                gesture = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
-            }
-            //Sitting Animator
-            else if (path.Contains(avatar.gameObject.name + "_Sitting.controller") && sitting == null)
-            {
-                sitting = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
-            }
-            //TPose Animator
-            else if (path.Contains(avatar.gameObject.name + "_TPose.controller") && tpose == null)
-            {
-                tpose = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
-            }
-            //Size Settings Anim
-            else if (path.Contains(avatar.gameObject.name + "_Sizes.anim"))
-            {
-                sizeSettings = (AnimationClip)AssetDatabase.LoadAssetAtPath(path, typeof(AnimationClip));
-            }
-        }
-
-        /*
-        // Append scaling layers to Animators. 
-        */
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.5f);
-
-        if (!AddLayersParameters(gesture, templateAnimators[0]) ||
-            !AddLayersParameters(sitting, templateAnimators[1]) ||
-            !AddLayersParameters(tpose, templateAnimators[2]))
-        {
-            return 6;
-        }
-
-        /*
-        // Modify copy of AnimationClip to use new sizes.
-        */
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animations", 0.7f);
-        ModifyAnimation(sizeSettings);
-
-        /*
-        // Replace reference to template AnimationClip in Gesture with the modified one.
-        */
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animators", 0.8f);
-        if (!ReplaceAnimation(gesture, "Scaling", templateSizes, sizeSettings))
-        {
-            return 10;
-        }
-
-        /*
-        // Add new Animators to the Avatar Descriptor if possible. 
-        */
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.85f);
-
-        //Enable custom layers
-        if (avatar.customizeAnimationLayers == false)
-        {
-            avatar.customizeAnimationLayers = true;
-        }
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.875f);
-        //Add Gesture
-        if (!avatar.baseAnimationLayers[2].isEnabled)
-        {
-            avatar.baseAnimationLayers[2].isEnabled = true;
-            avatar.baseAnimationLayers[2].isDefault = false;
-            avatar.baseAnimationLayers[2].animatorController = gesture;
-        }
-        else if (avatar.baseAnimationLayers[2].animatorController == null)
-        {
-            avatar.baseAnimationLayers[2].animatorController = gesture;
-            avatar.baseAnimationLayers[2].isDefault = false;
-        }
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.9f);
-        //Add Sitting
-        if (!avatar.specialAnimationLayers[0].isEnabled)
-        {
-            avatar.specialAnimationLayers[0].isEnabled = true;
-            avatar.specialAnimationLayers[0].isDefault = false;
-            avatar.specialAnimationLayers[0].animatorController = sitting;
-        }
-        else if (avatar.specialAnimationLayers[0].animatorController == null)
-        {
-            avatar.specialAnimationLayers[0].animatorController = sitting;
-            avatar.specialAnimationLayers[0].isDefault = false;
-        }
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.925f);
-        //Add TPose
-        if (!avatar.specialAnimationLayers[1].isEnabled)
-        {
-            avatar.specialAnimationLayers[1].isEnabled = true;
-            avatar.specialAnimationLayers[1].isDefault = false;
-            avatar.specialAnimationLayers[1].animatorController = tpose;
-        }
-        else if (avatar.specialAnimationLayers[1].animatorController == null)
-        {
-            avatar.specialAnimationLayers[1].animatorController = tpose;
-            avatar.specialAnimationLayers[1].isDefault = false;
-        }
-
-        /*
-        // Check avatar's ExpressionParameters for needed parameters. Skip if present, attempt to append to list if absent. In cases where the list is full, inform the user and abort. 
-        */
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.95f);
-        if (addExpressionParameters)
-        {
-            if (avatar.expressionParameters == null)
-            {
-                return 7;
+                return 3;
             }
 
-            VRCExpressionParameters avatarParameters = avatar.expressionParameters;
-            int count = 0;
-            bool scalePresent = false;
-            bool sizeOpPresent = false;
-            for (int i = 0; i < avatarParameters.parameters.Length; i++)
+            /*
+            // Create any files needed in destination folder.
+            */
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Checking Destination", 0.05f);
+            VerifyDestination();
+
+            //Copy SDK templates (if needed)
+            if (insertLayers)
             {
-                switch (avatarParameters.parameters[i].name)
+                EditorUtility.DisplayProgressBar("Avatar Scaling", "Looking for Existing Animators", 0.1f);
+            }
+
+            AnimatorController gesture = (avatar.baseAnimationLayers[2].animatorController != null && insertLayers) ? (AnimatorController)avatar.baseAnimationLayers[2].animatorController : null;
+            AnimatorController sitting = (avatar.specialAnimationLayers[0].animatorController != null && insertLayers) ? (AnimatorController)avatar.specialAnimationLayers[0].animatorController : null;
+            AnimatorController tpose = (avatar.specialAnimationLayers[1].animatorController != null && insertLayers) ? (AnimatorController)avatar.specialAnimationLayers[1].animatorController : null;
+            AnimationClip sizeSettings = new AnimationClip();
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.2f);
+
+            if (gesture == null || gesture == templateAnimators[0] || gesture == templateAnimators[1] || gesture == templateAnimators[2])
+            {
+                if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
+                    AssetDatabase.CreateFolder(outputPath, "Animators");
+                if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("vrc_AvatarV3HandsLayer", new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Gesture.controller"))
                 {
-                    case "Scale":
-                        if (avatarParameters.parameters[i].valueType != VRCExpressionParameters.ValueType.Float)
-                        {
-                            return 4;
-                        }
-                        scalePresent = true;
-                        break;
-                    case "SizeOp":
-                        if (avatarParameters.parameters[i].valueType != VRCExpressionParameters.ValueType.Int)
-                        {
-                            return 5;
-                        }
-                        sizeOpPresent = true;
-                        break;
-                    case "":
-                        break;
-                    default:
-                        count++;
-                        break;
+                    return 9;
                 }
             }
 
-            if ((count >= 15 && !scalePresent && !sizeOpPresent) || (count == 16 && (!scalePresent || !sizeOpPresent)))
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.25f);
+
+            if (sitting == null || sitting == templateAnimators[0] || sitting == templateAnimators[1] || sitting == templateAnimators[2])
             {
-                return 8;
-            }
-            else
-            {
-                if (!scalePresent)
+                if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
+                    AssetDatabase.CreateFolder(outputPath, "Animators");
+                if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("vrc_AvatarV3SittingLayer", new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Sitting.controller"))
                 {
-                    for (int i = 0; i < avatarParameters.parameters.Length; i++)
+                    return 9;
+                }
+            }
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.3f);
+
+            if (tpose == null || tpose == templateAnimators[0] || tpose == templateAnimators[1] || tpose == templateAnimators[2])
+            {
+                if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
+                    AssetDatabase.CreateFolder(outputPath, "Animators");
+                if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("vrc_AvatarV3UtilityTPose", new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_TPose.controller"))
+                {
+                    return 9;
+                }
+            }
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.35f);
+
+            if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animations"))
+                AssetDatabase.CreateFolder(outputPath, "Animations");
+            if (!AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateSizes), outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Sizes.anim"))
+            {
+                return 9;
+            }
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Refreshing Asset Database", 0.4f);
+            AssetDatabase.Refresh();
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Loading New Files", 0.45f);
+
+            string[] results = AssetDatabase.FindAssets(avatar.gameObject.name + "_", new string[] { outputPath });
+            foreach (string guid in results)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                //Gesture Animator
+                if (path.Contains(avatar.gameObject.name + "_Gesture.controller") && gesture == null)
+                {
+                    gesture = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
+                }
+                //Sitting Animator
+                else if (path.Contains(avatar.gameObject.name + "_Sitting.controller") && sitting == null)
+                {
+                    sitting = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
+                }
+                //TPose Animator
+                else if (path.Contains(avatar.gameObject.name + "_TPose.controller") && tpose == null)
+                {
+                    tpose = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
+                }
+                //Size Settings Anim
+                else if (path.Contains(avatar.gameObject.name + "_Sizes.anim"))
+                {
+                    sizeSettings = (AnimationClip)AssetDatabase.LoadAssetAtPath(path, typeof(AnimationClip));
+                }
+            }
+
+            /*
+            // Append scaling layers to Animators. 
+            */
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.5f);
+
+            if (!AddLayersParameters(gesture, templateAnimators[0]) ||
+                !AddLayersParameters(sitting, templateAnimators[1]) ||
+                !AddLayersParameters(tpose, templateAnimators[2]))
+            {
+                return 6;
+            }
+
+            /*
+            // Modify copy of AnimationClip to use new sizes.
+            */
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animations", 0.7f);
+            ModifyAnimation(sizeSettings);
+
+            /*
+            // Replace reference to template AnimationClip in Gesture with the modified one.
+            */
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animators", 0.8f);
+            if (!ReplaceAnimation(gesture, "Scaling", templateSizes, sizeSettings))
+            {
+                return 10;
+            }
+
+            /*
+            // Add new Animators to the Avatar Descriptor if possible. 
+            */
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.85f);
+
+            //Enable custom layers
+            if (avatar.customizeAnimationLayers == false)
+            {
+                avatar.customizeAnimationLayers = true;
+            }
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.875f);
+            //Add Gesture
+            if (!avatar.baseAnimationLayers[2].isEnabled)
+            {
+                avatar.baseAnimationLayers[2].isEnabled = true;
+                avatar.baseAnimationLayers[2].isDefault = false;
+                avatar.baseAnimationLayers[2].animatorController = gesture;
+            }
+            else if (avatar.baseAnimationLayers[2].animatorController == null)
+            {
+                avatar.baseAnimationLayers[2].animatorController = gesture;
+                avatar.baseAnimationLayers[2].isDefault = false;
+            }
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.9f);
+            //Add Sitting
+            if (!avatar.specialAnimationLayers[0].isEnabled)
+            {
+                avatar.specialAnimationLayers[0].isEnabled = true;
+                avatar.specialAnimationLayers[0].isDefault = false;
+                avatar.specialAnimationLayers[0].animatorController = sitting;
+            }
+            else if (avatar.specialAnimationLayers[0].animatorController == null)
+            {
+                avatar.specialAnimationLayers[0].animatorController = sitting;
+                avatar.specialAnimationLayers[0].isDefault = false;
+            }
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.925f);
+            //Add TPose
+            if (!avatar.specialAnimationLayers[1].isEnabled)
+            {
+                avatar.specialAnimationLayers[1].isEnabled = true;
+                avatar.specialAnimationLayers[1].isDefault = false;
+                avatar.specialAnimationLayers[1].animatorController = tpose;
+            }
+            else if (avatar.specialAnimationLayers[1].animatorController == null)
+            {
+                avatar.specialAnimationLayers[1].animatorController = tpose;
+                avatar.specialAnimationLayers[1].isDefault = false;
+            }
+
+            /*
+            // Check avatar's ExpressionParameters for needed parameters. Skip if present, attempt to append to list if absent. In cases where the list is full, inform the user and abort. 
+            */
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.95f);
+            if (addExpressionParameters)
+            {
+                if (avatar.expressionParameters == null)
+                {
+                    return 7;
+                }
+
+                VRCExpressionParameters avatarParameters = avatar.expressionParameters;
+                int count = 0;
+                bool scalePresent = false;
+                bool sizeOpPresent = false;
+                for (int i = 0; i < avatarParameters.parameters.Length; i++)
+                {
+                    switch (avatarParameters.parameters[i].name)
                     {
-                        if (avatarParameters.parameters[i].name == "")
-                        {
-                            avatarParameters.parameters[i].name = "Scale";
-                            avatarParameters.parameters[i].valueType = VRCExpressionParameters.ValueType.Float;
+                        case "Scale":
+                            if (avatarParameters.parameters[i].valueType != VRCExpressionParameters.ValueType.Float)
+                            {
+                                return 4;
+                            }
+                            scalePresent = true;
                             break;
-                        }
-                    }
-                }
-                if (!sizeOpPresent)
-                {
-                    for (int i = 0; i < avatarParameters.parameters.Length; i++)
-                    {
-                        if (avatarParameters.parameters[i].name == "")
-                        {
-                            avatarParameters.parameters[i].name = "SizeOp";
-                            avatarParameters.parameters[i].valueType = VRCExpressionParameters.ValueType.Int;
+                        case "SizeOp":
+                            if (avatarParameters.parameters[i].valueType != VRCExpressionParameters.ValueType.Int)
+                            {
+                                return 5;
+                            }
+                            sizeOpPresent = true;
                             break;
-                        }
+                        case "":
+                            break;
+                        default:
+                            count++;
+                            break;
                     }
                 }
-            }
-        }
 
-        /*
-        // Check if a Expressions Menu was provided and attempt to add Scale Controls as a submenu to it. If none was provided then assign the template to the descriptor if the slot is empty.
-        */
-
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.975f);
-        if (expressionsMenu != null)
-        {
-            if (expressionsMenu.controls.Count == 8)
-            {
-                return 2;
-            }
-            else
-            {
-                bool exists = false;
-                foreach (VRCExpressionsMenu.Control control in expressionsMenu.controls)
+                if ((count >= 15 && !scalePresent && !sizeOpPresent) || (count == 16 && (!scalePresent || !sizeOpPresent)))
                 {
-                    if (control.type == VRCExpressionsMenu.Control.ControlType.SubMenu && control.subMenu == templateMenu.controls[0].subMenu)
-                    {
-                        exists = true;
-                        break;
-                    }
-                }
-                if (!exists)
-                {
-                    expressionsMenu.controls.Add(templateMenu.controls[0]);
+                    return 8;
                 }
                 else
                 {
-                    return 1;
+                    if (!scalePresent)
+                    {
+                        for (int i = 0; i < avatarParameters.parameters.Length; i++)
+                        {
+                            if (avatarParameters.parameters[i].name == "")
+                            {
+                                avatarParameters.parameters[i].name = "Scale";
+                                avatarParameters.parameters[i].valueType = VRCExpressionParameters.ValueType.Float;
+                                break;
+                            }
+                        }
+                    }
+                    if (!sizeOpPresent)
+                    {
+                        for (int i = 0; i < avatarParameters.parameters.Length; i++)
+                        {
+                            if (avatarParameters.parameters[i].name == "")
+                            {
+                                avatarParameters.parameters[i].name = "SizeOp";
+                                avatarParameters.parameters[i].valueType = VRCExpressionParameters.ValueType.Int;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
-        }
-        else
-        {
-            if (avatar.expressionsMenu == null)
-            {
-                avatar.expressionsMenu = (VRCExpressionsMenu)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("Scale Controls", new string[] { "Assets/Avatar Scaling/Menus" })[0]), typeof(VRCExpressionsMenu));
-            }
-        }
-        EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 1.0f);
 
-        return 0;
+            /*
+            // Check if a Expressions Menu was provided and attempt to add Scale Controls as a submenu to it. If none was provided then assign the template to the descriptor if the slot is empty.
+            */
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.975f);
+            if (expressionsMenu != null)
+            {
+                if (expressionsMenu.controls.Count == 8)
+                {
+                    return 2;
+                }
+                else
+                {
+                    bool exists = false;
+                    foreach (VRCExpressionsMenu.Control control in expressionsMenu.controls)
+                    {
+                        if (control.type == VRCExpressionsMenu.Control.ControlType.SubMenu && control.subMenu == templateMenu.controls[0].subMenu)
+                        {
+                            exists = true;
+                            break;
+                        }
+                    }
+                    if (!exists)
+                    {
+                        expressionsMenu.controls.Add(templateMenu.controls[0]);
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+            }
+            else
+            {
+                if (avatar.expressionsMenu == null)
+                {
+                    avatar.expressionsMenu = (VRCExpressionsMenu)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("Scale Controls", new string[] { "Assets/Avatar Scaling/Menus" })[0]), typeof(VRCExpressionsMenu));
+                }
+            }
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 1.0f);
+
+            return 0;
+        }
+        catch (Exception err)
+        {
+            Debug.LogError(err);
+            return 99;
+        }
     }
 
     private void VerifyDestination()
@@ -732,10 +745,36 @@ public class AvatarScalingWindow : EditorWindow
 
     private bool AddLayersParameters(AnimatorController source, AnimatorController target)
     {
+        //Clone Target Animator
+        if (!AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(target), "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + "Temporary.controller"))
+        {
+            return false;
+        }
+        AssetDatabase.Refresh();
+
+        AnimatorController cloned = null;
+
+        string[] results = AssetDatabase.FindAssets("Temporary", new string[] { "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Animators" });
+
+        foreach (string guid in results)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            //Debug.Log([Avatar Scaling Setup] Clone : path);
+            if (path.Contains("Temporary.controller"))
+            {
+                cloned = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
+            }
+        }
+
+        if (cloned == null)
+        {
+            return false;
+        }
+
         //Check and Add Parameters
         AnimatorControllerParameter[] srcParam = source.parameters;
-        AnimatorControllerParameter[] tarParam = target.parameters;
-        
+        AnimatorControllerParameter[] tarParam = cloned.parameters;
+
         foreach (AnimatorControllerParameter param in tarParam)
         {
             bool exists = false;
@@ -767,37 +806,39 @@ public class AvatarScalingWindow : EditorWindow
 
         //Check and Add/Replace Layers
         AnimatorControllerLayer[] srcLayers = source.layers;
-        AnimatorControllerLayer[] tarLayers = target.layers;
+        AnimatorControllerLayer[] tarLayers = cloned.layers;
 
         foreach (AnimatorControllerLayer layer in tarLayers)
         {
-            bool exists = false;
             for (int i = 0; i < srcLayers.Length; i++)
             {
                 if (layer.name == srcLayers[i].name)
                 {
-                    srcLayers[i] = layer;
-                    exists = true;
+                    source.RemoveLayer(i);
                     break;
                 }
             }
-            if (!exists)
-            {
-                AnimatorControllerLayer[] temp = new AnimatorControllerLayer[srcLayers.Length + 1];
-                srcLayers.CopyTo(temp, 0);
-                temp[temp.Length - 1] = layer;
-                srcLayers = temp;
-            }
+            AnimatorControllerLayer[] temp = new AnimatorControllerLayer[srcLayers.Length + 1];
+            srcLayers.CopyTo(temp, 0);
+            temp[temp.Length - 1] = layer;
+            srcLayers = temp;
         }
 
         source.layers = srcLayers;
+
+        //Delete clone
+        if (!AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(cloned)))
+        {
+            return false;
+        }
+        AssetDatabase.Refresh();
 
         return true;
     }
 
     private bool FindTemplates()
     {
-        string[] results = AssetDatabase.FindAssets("(ASTemplate)", new string[] { "Assets/Avatar Scaling/Templates" });
+        string[] results = AssetDatabase.FindAssets("(ASTemplate)", new string[] { "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" });
 
         foreach (string guid in results)
         {
@@ -844,6 +885,55 @@ public class AvatarScalingWindow : EditorWindow
                 {
                     return false;
                 }
+            }
+        }
+
+        return true;
+    }
+
+    private bool CreateTemplateClones()
+    {
+        if (!AssetDatabase.IsValidFolder("Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Temp"))
+            AssetDatabase.CreateFolder("Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates", "Temp");
+        if (!AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateAnimators[0]), "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Temp" + Path.DirectorySeparatorChar + "Gesture (ASTemplate).controller") ||
+          !AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateAnimators[1]), "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Temp" + Path.DirectorySeparatorChar + "Sitting (ASTemplate).controller") ||
+          !AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateAnimators[2]), "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Temp" + Path.DirectorySeparatorChar + "TPose (ASTemplate).controller"))
+        {
+            return false;
+        }
+
+        templateAnimators = new AnimatorController[3];
+
+        string[] results = AssetDatabase.FindAssets("(ASTemplate)", new string[] { "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Temp" });
+
+        foreach (string guid in results)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            //Debug.Log([Avatar Scaling Setup] Clone : path);
+
+            //Gesture Animator
+            if (path.Contains("Gesture (ASTemplate).controller"))
+            {
+                templateAnimators[0] = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
+            }
+            //Sitting Animator
+            else if (path.Contains("Sitting (ASTemplate).controller"))
+            {
+                templateAnimators[1] = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
+            }
+            //TPose Animator
+            else if (path.Contains("TPose (ASTemplate).controller"))
+            {
+                templateAnimators[2] = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
+            }
+        }
+
+        //Check for missing files
+        for (int i = 0; i < templateAnimators.Length; i++)
+        {
+            if (templateAnimators[i] == null)
+            {
+                return false;
             }
         }
 
