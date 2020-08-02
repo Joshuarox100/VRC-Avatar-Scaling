@@ -79,7 +79,7 @@ public class AvatarScalingWindow : EditorWindow
     
     private void DrawAboutWindow()
     {
-        string version = (AssetDatabase.FindAssets("VERSION", new string[] { "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" }).Length > 0) ? " " + File.ReadAllText(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("VERSION", new string[] { "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" })[0])) : "";
+        string version = (AssetDatabase.FindAssets("VERSION", new string[] { manager.relativePath }).Length > 0) ? " " + File.ReadAllText(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("VERSION", new string[] { manager.relativePath })[0])) : "";
         GUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
         GUILayout.Box("<b><size=18>Avatar Scaling" + version + "</size></b>", new GUIStyle(GUI.skin.GetStyle("Box")) { richText = true }, GUILayout.Width(300f));
@@ -231,58 +231,51 @@ public class AvatarScalingWindow : EditorWindow
         DrawLine();
         if (GUILayout.Button("Apply"))
         {
+            string message = "If this appears, then something has gone horribly wrong.\nPlease file a bug report with steps to reproduce.";
             switch (manager.ApplyChanges())
             {
                 case 0:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Success!", "Close"))
-                        EditorUtility.ClearProgressBar();
+                    message = "Success!";
                     break;
                 case 1:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Success!\n\nWARNING: Submenu not added.\n(Submenu already exists on the given menu!)", "Close"))
-                        EditorUtility.ClearProgressBar();
+                    message = "Success!\n\nWARNING: Submenu not added.\n(Submenu already exists on the given menu!)";
                     break;
                 case 2:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Success!\n\nWARNING: Submenu not added.\n(Given Expression Menu already contains 8 controls!)", "Close"))
-                        EditorUtility.ClearProgressBar();
+                    message = "Success!\n\nWARNING: Submenu not added.\n(Given Expression Menu already contains 8 controls!)";
                     break;
                 case 3:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: No Avatar selected!", "Close"))
-                        EditorUtility.ClearProgressBar();
+                    message = "Failed!\n\nERROR: No Avatar selected!";
                     break;
                 case 4:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: Scale already present in parameter list, but as the wrong type!", "Close"))
-                        EditorUtility.ClearProgressBar();
+                    message = "Failed!\n\nERROR: Scale already present in parameter list, but as the wrong type!";
                     break;
                 case 5:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: SizeOp already present in parameter list, but as the wrong type!", "Close"))
-                        EditorUtility.ClearProgressBar();
+                    message = "Failed!\n\nERROR: SizeOp already present in parameter list, but as the wrong type!";
                     break;
                 case 6:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: One or more parameters already present in an Animator, but as the wrong type!", "Close"))
-                        EditorUtility.ClearProgressBar();
+                    message = "Failed!\n\nERROR: One or more parameters already present in an Animator, but as the wrong type!";
                     break;
                 case 7:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: Avatar does not contain a VRCExpressionParameters object!", "Close"))
-                        EditorUtility.ClearProgressBar();
+                    message = "Failed!\n\nERROR: Avatar does not contain a VRCExpressionParameters object!";
                     break;
                 case 8:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: No unused Expression Parameters found!\n(At least two unused parameters are needed.)", "Close"))
-                        EditorUtility.ClearProgressBar();
+                    message = "Failed!\n\nERROR: No unused Expression Parameters found!\n(At least two unused parameters are needed.)";
                     break;
                 case 9:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: Failed to create one or more files!", "Close"))
-                        EditorUtility.ClearProgressBar();
+                    message = "Failed!\n\nERROR: Failed to create one or more files!";
                     break;
                 case 10:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: Failed to copy layers to one or more Animators!", "Close"))
-                        EditorUtility.ClearProgressBar();
+                    message = "Failed!\n\nERROR: Failed to copy layers to one or more Animators!";
                     break;
                 case 99:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: An exception occured! Please look at the console for further details.", "Close"))
-                        EditorUtility.ClearProgressBar();
+                    message = "Failed!\n\nERROR: An exception occured!\nPlease look at the console for further details.";
                     break;
             }
-            Selection.activeGameObject = manager.avatar.gameObject;
+            if (EditorUtility.DisplayDialog("Avatar Scaling Setup", message, "Close"))
+            {
+                EditorUtility.ClearProgressBar();
+                Selection.activeGameObject = manager.avatar.gameObject;
+            }
         }
     }
 
