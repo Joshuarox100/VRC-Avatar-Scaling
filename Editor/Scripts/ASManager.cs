@@ -614,7 +614,7 @@ public class ASManager : UnityEngine.Object
         AnimatorStateTransition[] outAnyTransitions = new AnimatorStateTransition[machine.anyStateTransitions.Length];
         for (int i = 0; i < machine.anyStateTransitions.Length; i++)
         {
-            outAnyTransitions[i] = CloneStateTransition(machine.anyStateTransitions[i]);
+            outAnyTransitions[i] = (AnimatorStateTransition)CloneTransition(machine.anyStateTransitions[i]);
         }
         AnimatorStateTransition[] fixedAnyTransitions = outAnyTransitions;
         foreach (AnimatorStateTransition transition in fixedAnyTransitions)
@@ -634,7 +634,7 @@ public class ASManager : UnityEngine.Object
         AnimatorTransition[] outEntryTransitions = new AnimatorTransition[machine.entryTransitions.Length];
         for (int i = 0; i < machine.entryTransitions.Length; i++)
         {
-            outEntryTransitions[i] = CloneEntryTransition(machine.entryTransitions[i]);
+            outEntryTransitions[i] = (AnimatorTransition)CloneTransition(machine.entryTransitions[i]);
         }
         AnimatorTransition[] fixedEntryTransitions = outEntryTransitions;
         foreach (AnimatorTransition transition in fixedEntryTransitions)
@@ -653,7 +653,7 @@ public class ASManager : UnityEngine.Object
 
         foreach (ChildAnimatorState state in outStates)
         {
-            //Using `state.state == machine.defaultState` doesn't actually get the correct state in very specific scenarios, so the state name is used instead.
+            //Using `state.state == machine.defaultState` doesn't actually get the correct state in very specific scenarios, so the state name is used instead. State names must be unique per machine so this doesn't cause issues.
             if (state.state.name == machine.defaultState.name)
             {
                 output.defaultState = state.state;
@@ -672,7 +672,7 @@ public class ASManager : UnityEngine.Object
         AnimatorStateTransition[] outTransitions = new AnimatorStateTransition[state.transitions.Length];
         for (int i = 0; i < state.transitions.Length; i++)
         {
-            outTransitions[i] = CloneStateTransition(state.transitions[i]);
+            outTransitions[i] = (AnimatorStateTransition)CloneTransition(state.transitions[i]);
         }
         output.transitions = outTransitions;
 
@@ -686,16 +686,9 @@ public class ASManager : UnityEngine.Object
         return output;
     }
 
-    private AnimatorStateTransition CloneStateTransition(AnimatorStateTransition transition)
+    private AnimatorTransitionBase CloneTransition(AnimatorTransitionBase transition)
     {
-        AnimatorStateTransition output = new AnimatorStateTransition();
-        EditorUtility.CopySerialized(transition, output);
-        return output;
-    }
-
-    private AnimatorTransition CloneEntryTransition(AnimatorTransition transition)
-    {
-        AnimatorTransition output = new AnimatorTransition();
+        AnimatorTransitionBase output = Instantiate(transition);
         EditorUtility.CopySerialized(transition, output);
         return output;
     }
@@ -707,6 +700,7 @@ public class ASManager : UnityEngine.Object
         return output;
     }
 
+    //make better variable names here.
     private bool SaveController(AnimatorController source)
     {
         foreach (AnimatorControllerLayer layer in source.layers)
