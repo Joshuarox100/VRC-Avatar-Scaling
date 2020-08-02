@@ -47,6 +47,7 @@ Setup Window
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%205.png">
 </p>
+
 | Setting | Function |
 | --------- | ---------- |
 | Active Avatar | The Avatar you want to setup scaling for. |
