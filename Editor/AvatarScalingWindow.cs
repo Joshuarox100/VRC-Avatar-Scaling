@@ -435,10 +435,17 @@ public class AvatarScalingWindow : EditorWindow
             */
 
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.5f);
-
-            if (!AddLayersParameters(gesture, templateAnimators[0]) ||
-                !AddLayersParameters(sitting, templateAnimators[1]) ||
-                !AddLayersParameters(tpose, templateAnimators[2]))
+            if (!AddLayersParameters(gesture, templateAnimators[0]))
+            {
+                return 6;
+            }
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.65f);
+            if (!AddLayersParameters(sitting, templateAnimators[1]))
+            {
+                return 6;
+            }
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.8f);
+            if (!AddLayersParameters(tpose, templateAnimators[2]))
             {
                 return 6;
             }
@@ -447,14 +454,14 @@ public class AvatarScalingWindow : EditorWindow
             // Modify copy of AnimationClip to use new sizes.
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animations", 0.7f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animations", 0.825f);
             ModifyAnimation(sizeSettings);
 
             /*
             // Replace reference to template AnimationClip in Gesture with the modified one.
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animators", 0.8f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animators", 0.85f);
             if (!ReplaceAnimation(gesture, "Scaling", templateSizes, sizeSettings))
             {
                 return 10;
@@ -464,7 +471,7 @@ public class AvatarScalingWindow : EditorWindow
             // Add new Animators to the Avatar Descriptor if possible. 
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.85f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.875f);
 
             //Enable custom layers
             if (avatar.customizeAnimationLayers == false)
@@ -472,7 +479,7 @@ public class AvatarScalingWindow : EditorWindow
                 avatar.customizeAnimationLayers = true;
             }
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.875f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.9f);
             //Add Gesture
             if (!avatar.baseAnimationLayers[2].isEnabled)
             {
@@ -486,7 +493,7 @@ public class AvatarScalingWindow : EditorWindow
                 avatar.baseAnimationLayers[2].isDefault = false;
             }
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.9f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.92f);
             //Add Sitting
             if (!avatar.specialAnimationLayers[0].isEnabled)
             {
@@ -499,7 +506,7 @@ public class AvatarScalingWindow : EditorWindow
                 avatar.specialAnimationLayers[0].animatorController = sitting;
                 avatar.specialAnimationLayers[0].isDefault = false;
             }
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.925f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.94f);
             //Add TPose
             if (!avatar.specialAnimationLayers[1].isEnabled)
             {
@@ -517,7 +524,7 @@ public class AvatarScalingWindow : EditorWindow
             // Check avatar's ExpressionParameters for needed parameters. Skip if present, attempt to append to list if absent. In cases where the list is full, inform the user and abort. 
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.95f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.96f);
             if (addExpressionParameters)
             {
                 if (avatar.expressionParameters == null)
@@ -592,7 +599,7 @@ public class AvatarScalingWindow : EditorWindow
             // Check if a Expressions Menu was provided and attempt to add Scale Controls as a submenu to it. If none was provided then assign the template to the descriptor if the slot is empty.
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.975f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.98f);
             if (expressionsMenu != null)
             {
                 if (expressionsMenu.controls.Count == 8)
@@ -1078,55 +1085,6 @@ public class AvatarScalingWindow : EditorWindow
                 {
                     return false;
                 }
-            }
-        }
-
-        return true;
-    }
-
-    private bool CreateTemplateClones()
-    {
-        if (!AssetDatabase.IsValidFolder("Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Temp"))
-            AssetDatabase.CreateFolder("Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates", "Temp");
-        if (!AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateAnimators[0]), "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Temp" + Path.DirectorySeparatorChar + "Gesture (ASTemplate).controller") ||
-          !AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateAnimators[1]), "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Temp" + Path.DirectorySeparatorChar + "Sitting (ASTemplate).controller") ||
-          !AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateAnimators[2]), "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Temp" + Path.DirectorySeparatorChar + "TPose (ASTemplate).controller"))
-        {
-            return false;
-        }
-
-        templateAnimators = new AnimatorController[3];
-
-        string[] results = AssetDatabase.FindAssets("(ASTemplate)", new string[] { "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" + Path.DirectorySeparatorChar + "Temp" });
-
-        foreach (string guid in results)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            //Debug.Log([Avatar Scaling Setup] Clone : path);
-
-            //Gesture Animator
-            if (path.Contains("Gesture (ASTemplate).controller"))
-            {
-                templateAnimators[0] = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
-            }
-            //Sitting Animator
-            else if (path.Contains("Sitting (ASTemplate).controller"))
-            {
-                templateAnimators[1] = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
-            }
-            //TPose Animator
-            else if (path.Contains("TPose (ASTemplate).controller"))
-            {
-                templateAnimators[2] = (AnimatorController)AssetDatabase.LoadAssetAtPath(path, typeof(AnimatorController));
-            }
-        }
-
-        //Check for missing files
-        for (int i = 0; i < templateAnimators.Length; i++)
-        {
-            if (templateAnimators[i] == null)
-            {
-                return false;
             }
         }
 
