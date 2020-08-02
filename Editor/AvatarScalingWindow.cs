@@ -2,7 +2,6 @@
 using System.IO;
 using UnityEditor;
 using UnityEditor.Animations;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
@@ -260,7 +259,7 @@ public class AvatarScalingWindow : EditorWindow
                         EditorUtility.ClearProgressBar();
                     break;
                 case 99:
-                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: An Exception occured! Please look at the console for further details.", "Close")) ;
+                    if (EditorUtility.DisplayDialog("Avatar Scaling Setup", "Failed!\n\nERROR: An Exception occured! Please look at the console for further details.", "Close"))
                         EditorUtility.ClearProgressBar();
                     break;
             }
@@ -814,17 +813,28 @@ public class AvatarScalingWindow : EditorWindow
             {
                 if (layer.name == srcLayers[i].name)
                 {
+                    AssetDatabase.RemoveObjectFromAsset(layer.stateMachine);
                     source.RemoveLayer(i);
                     break;
                 }
             }
-            AnimatorControllerLayer[] temp = new AnimatorControllerLayer[srcLayers.Length + 1];
-            srcLayers.CopyTo(temp, 0);
-            temp[temp.Length - 1] = layer;
-            srcLayers = temp;
+            source.AddLayer(layer.name);
+            srcLayers = source.layers;
+            AnimatorControllerLayer copiedLayer = DeepCloneLayer(layer);
+            srcLayers[srcLayers.Length - 1] = copiedLayer;
+            source.layers = srcLayers;
+            //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
+            if (AssetDatabase.GetAssetPath(copiedLayer.stateMachine).Length == 0)
+            {
+                AssetDatabase.AddObjectToAsset(copiedLayer.stateMachine, AssetDatabase.GetAssetPath(source));
+                copiedLayer.stateMachine.hideFlags = HideFlags.HideInHierarchy;
+            }
         }
 
-        source.layers = srcLayers;
+        if (!SaveController(source))
+        {
+            return false;
+        }
 
         //Delete clone
         if (!AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(cloned)))
@@ -836,6 +846,189 @@ public class AvatarScalingWindow : EditorWindow
         return true;
     }
 
+    private AnimatorControllerLayer DeepCloneLayer(AnimatorControllerLayer layer)
+    {
+        AnimatorControllerLayer output = new AnimatorControllerLayer();
+        output.name = layer.name;
+        output.defaultWeight = layer.defaultWeight;
+        output.avatarMask = layer.avatarMask;
+        output.blendingMode = layer.blendingMode;
+        output.iKPass = layer.iKPass;
+        output.syncedLayerIndex = output.syncedLayerIndex;
+        output.syncedLayerAffectsTiming = output.syncedLayerAffectsTiming;
+        output.stateMachine = CloneMachine(layer.stateMachine);
+        return output;
+    }
+
+    private AnimatorStateMachine CloneMachine(AnimatorStateMachine machine)
+    {
+        AnimatorStateMachine output = new AnimatorStateMachine();
+        EditorUtility.CopySerialized(machine, output);
+
+        ChildAnimatorStateMachine[] outMachines = new ChildAnimatorStateMachine[machine.stateMachines.Length];
+        for (int i = 0; i < machine.stateMachines.Length; i++)
+        {
+            outMachines[i] = new ChildAnimatorStateMachine();
+            outMachines[i].position = machine.stateMachines[i].position;
+            outMachines[i].stateMachine = CloneMachine(machine.stateMachines[i].stateMachine);
+        }
+        output.stateMachines = outMachines;
+
+        ChildAnimatorState[] outStates = new ChildAnimatorState[machine.states.Length];
+        for (int i = 0; i < machine.states.Length; i++)
+        {
+            outStates[i] = new ChildAnimatorState();
+            outStates[i].position = machine.states[i].position;
+            outStates[i].state = CloneState(machine.states[i].state);
+        }
+        for (int i = 0; i < machine.states.Length; i++)
+        {
+            AnimatorStateTransition[] fixedTransitions = outStates[i].state.transitions;
+            foreach (AnimatorStateTransition transition in fixedTransitions)
+            {
+                for (int j = 0; j < machine.states.Length; j++)
+                {
+                    if (transition.destinationState != null && transition.destinationState.name == machine.states[j].state.name)
+                    {
+                        transition.destinationState = outStates[j].state;
+                        break;
+                    }
+                }
+            }
+            outStates[i].state.transitions = fixedTransitions;
+        }
+        output.states = outStates;
+
+        AnimatorStateTransition[] outAnyTransitions = new AnimatorStateTransition[machine.anyStateTransitions.Length];
+        for (int i = 0; i < machine.anyStateTransitions.Length; i++)
+        {
+            outAnyTransitions[i] = CloneStateTransition(machine.anyStateTransitions[i]);
+        }
+        AnimatorStateTransition[] fixedAnyTransitions = outAnyTransitions;
+        foreach (AnimatorStateTransition transition in fixedAnyTransitions)
+        {
+            for (int j = 0; j < machine.states.Length; j++)
+            {
+                if (transition.destinationState != null && transition.destinationState.name == machine.states[j].state.name)
+                {
+                    transition.destinationState = outStates[j].state;
+                    break;
+                }
+            }
+        }
+        outAnyTransitions = fixedAnyTransitions;
+        output.anyStateTransitions = outAnyTransitions;
+
+        foreach (ChildAnimatorState state in outStates)
+        {
+            if (state.state.name == machine.defaultState.name)
+            {
+                output.defaultState = state.state;
+                break;
+            }
+        }
+
+        return output;
+    }
+
+    private AnimatorState CloneState(AnimatorState state)
+    {
+        AnimatorState output = new AnimatorState();
+        EditorUtility.CopySerialized(state, output);
+        
+        AnimatorStateTransition[] outTransitions = new AnimatorStateTransition[state.transitions.Length];
+        for (int i = 0; i < state.transitions.Length; i++)
+        {
+            outTransitions[i] = CloneStateTransition(state.transitions[i]);
+        }
+        output.transitions = outTransitions;
+
+        StateMachineBehaviour[] outBehaviors = new StateMachineBehaviour[state.behaviours.Length];
+        for (int i = 0; i < state.behaviours.Length; i++)
+        {
+            outBehaviors[i] = CloneStateBehaviors(state.behaviours[i]);
+        }
+        output.behaviours = outBehaviors;
+
+        return output;
+    }
+
+    private AnimatorStateTransition CloneStateTransition(AnimatorStateTransition transition)
+    {
+        AnimatorStateTransition output = new AnimatorStateTransition();
+        EditorUtility.CopySerialized(transition, output);
+        return output;
+    }
+
+    private StateMachineBehaviour CloneStateBehaviors(StateMachineBehaviour behavior)
+    {
+        StateMachineBehaviour output = (StateMachineBehaviour)ScriptableObject.CreateInstance(behavior.GetType());
+        EditorUtility.CopySerialized(behavior, output);
+        return output;
+    }
+
+    private bool SaveController(AnimatorController source)
+    {
+        foreach (AnimatorControllerLayer layer in source.layers)
+        {
+            foreach (var a in layer.stateMachine.stateMachines)
+            {
+                //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
+                if (AssetDatabase.GetAssetPath(a.stateMachine).Length == 0)
+                {
+                    AssetDatabase.AddObjectToAsset(a.stateMachine, AssetDatabase.GetAssetPath(source));
+                    a.stateMachine.hideFlags = HideFlags.HideInHierarchy;
+                }
+            }
+            foreach (var a in layer.stateMachine.states)
+            {
+                //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
+                if (AssetDatabase.GetAssetPath(a.state).Length == 0)
+                {
+                    AssetDatabase.AddObjectToAsset(a.state, AssetDatabase.GetAssetPath(source));
+                    a.state.hideFlags = HideFlags.HideInHierarchy;
+                }
+                foreach (var b in a.state.behaviours)
+                {
+                    //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
+                    if (AssetDatabase.GetAssetPath(b).Length == 0)
+                    {
+                        AssetDatabase.AddObjectToAsset(b, AssetDatabase.GetAssetPath(source));
+                        b.hideFlags = HideFlags.HideInHierarchy;
+                    }
+                }
+                foreach (var c in a.state.transitions)
+                {
+                    //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
+                    if (AssetDatabase.GetAssetPath(c).Length == 0)
+                    {
+                        AssetDatabase.AddObjectToAsset(c, AssetDatabase.GetAssetPath(source));
+                        c.hideFlags = HideFlags.HideInHierarchy;
+                    }
+                }
+            }
+            foreach (var a in layer.stateMachine.anyStateTransitions)
+            {
+                //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
+                if (AssetDatabase.GetAssetPath(a).Length == 0)
+                {
+                    AssetDatabase.AddObjectToAsset(a, AssetDatabase.GetAssetPath(source));
+                    a.hideFlags = HideFlags.HideInHierarchy;
+                }
+            }
+            foreach (var a in layer.stateMachine.behaviours)
+            {
+                //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
+                if (AssetDatabase.GetAssetPath(a).Length == 0)
+                {
+                    AssetDatabase.AddObjectToAsset(a, AssetDatabase.GetAssetPath(source));
+                    a.hideFlags = HideFlags.HideInHierarchy;
+                }
+            }
+        }
+
+        return true;
+    }
     private bool FindTemplates()
     {
         string[] results = AssetDatabase.FindAssets("(ASTemplate)", new string[] { "Assets" + Path.DirectorySeparatorChar + "Avatar Scaling" + Path.DirectorySeparatorChar + "Templates" });
@@ -844,7 +1037,7 @@ public class AvatarScalingWindow : EditorWindow
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
             //Debug.Log([Avatar Scaling Setup] Template : path);
-
+            
             //Gesture Animator
             if (path.Contains("Gesture (ASTemplate).controller"))
             {
