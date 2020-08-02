@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Data.OleDb;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Animations;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
+using ASExtensions;
 
 public class ASManager : UnityEngine.Object
 {
@@ -526,7 +525,7 @@ public class ASManager : UnityEngine.Object
             }
             source.AddLayer(layer.name);
             srcLayers = source.layers;
-            AnimatorControllerLayer copiedLayer = DeepCloneLayer(layer);
+            AnimatorControllerLayer copiedLayer = layer.DeepClone();
             srcLayers[srcLayers.Length - 1] = copiedLayer;
             source.layers = srcLayers;
             //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
@@ -552,7 +551,7 @@ public class ASManager : UnityEngine.Object
         return true;
     }
 
-    private AnimatorControllerLayer DeepCloneLayer(AnimatorControllerLayer layer)
+    private AnimatorControllerLayer DeepClone(AnimatorControllerLayer layer)
     {
         AnimatorControllerLayer output = new AnimatorControllerLayer
         {
