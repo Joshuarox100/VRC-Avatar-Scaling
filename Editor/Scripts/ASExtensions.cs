@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ASExtensions
 {
-    public static class ASExtensions
+    public static class LayerExtensions
     {
         public static AnimatorControllerLayer DeepClone(this AnimatorControllerLayer layer)
         {
