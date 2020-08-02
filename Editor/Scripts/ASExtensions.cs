@@ -51,6 +51,8 @@ namespace ASExtensions
                     state = CloneState(machine.states[i].state)
                 };
             }
+
+            //State Transitions
             for (int i = 0; i < outStates.Length; i++)
             {
                 AnimatorStateTransition[] outTransitions = new AnimatorStateTransition[machine.states[i].state.transitions.Length];
