@@ -488,6 +488,7 @@ public class ASManager : UnityEngine.Object
                 {
                     if (param.type == srcParam[i].type)
                     {
+                        srcParam[i] = param;
                         exists = true;
                         break;
                     }
