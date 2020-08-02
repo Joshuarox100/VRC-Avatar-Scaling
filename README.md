@@ -7,48 +7,58 @@ Usage: This package is meant for use with VRChat's Avatars 3.0 (VRCSDK3-AVATAR)
 
 Description: Scale your avatar to any size on the fly with a spin of the joystick!
 
-Contains:
-- One Animation
-- Three Animators
-- One Avatar Mask
-- One Expressions Menu
-- This README
-
 Setting Up
 --------------
-Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works. If you'd rather follow a video guide for setting this up, go [here](https://youtu.be/7O9MEG3Pico).
+Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works.
 
 1) Download and import the latest **Unity Package** from [**Releases**](https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases) on GitHub **(You will have issues if you don't)**.
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/2/Step%201.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%201.png">
 </p>
 
-2) In the Avatar Descriptor, assign the included Animators to their corresponding layers.
-	>If you already have custom versions of these layers, you can copy the states and parameters from the included Animators into your own [as shown here](https://youtu.be/ejkvgj3CZjU).
+2) Open the Avatar Scaling window located under Window -> Avatar Scaling.
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/2/Step%202.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%202.png">
 </p>
 
-3) Add the following two variables anywhere within your Expression Parameters list (without the quotation marks):
-	1. "Scale" (Float): Used for setting the scale of your avatar.
-	2. "SizeOp" (Int): Used for knowing when to update the viewpoint.
+3) Next, configure how you want scaling to be setup for your avatar:
+	>If you're not sure what a particular setting does, hover your mouse over the text to see its function or refer to [Setup Window](#setup-window).
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/2/Step%203.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%203.png">
 </p>
 
-4) In the Avatar Descriptor, either use the included Expressions Menu or use it as a submenu within your own.
-	>If you're using it as a submenu, make sure not to set 'Scale' or 'SizeOp' to any value when opening the menu or things will break.
+4) Finally, click the Apply button to automatically set up scaling for your avatar! 
+	>Data will only ever be overwritten in the following circumstances:
+	1. A file already exists with the same name as one being generated.
+	2. An Animator already contains a layer named 'Scaling'.
+	3. An Animator already contains a parameter of the correct name and type (the value is overwritten).
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-4/2/Step%204.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%204.png">
 </p>
-
-5) If you need to adjust the minimum, maximum, or default scale, adjust the values contained within the 'Size Settings' Animation [as seen here](https://youtu.be/0IDKNUBxxOc).
 
 Everything should now be fully set up! If you have any issues or questions, look in the [troubleshooting](#troubleshooting) and [questions](#common-questions) section below before [contacting me](#contacting-me).
+
+Setup Window
+--------------
+<p align="center">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%205.png">
+</p>
+| Setting | Function |
+|---------|----------|
+| Active Avatar | The Avatar you want to setup scaling for. |
+| Expressions Menu | (Optional) The Expressions Menu you want the scaling controls added to. Leave this empty if you don't want any menus to be affected.\n(Controls will be added as a submenu.) |
+| Add Parameters | Check the needed parameters for scaling within the Avatar's Expression Parameters and add them if they're absent. |
+| Use Existing Animators | If Animators are already present for Gesture, Sitting, or TPose, the parameters and layer for scaling will be added to them. If an Animator is missing or this feature is disabled, a new Animator will be generated using the defaults included in the VRChat SDK and inserted into the descriptor automatically. |
+| Minimum (Simple) | The minimum scale your avatar can be. (Multiplier) |
+| Maximum (Simple) | The maximum scale your avatar can be. (Multiplier) |
+| Minimum (Advanced) | The minimum scale your avatar can be. (Exact) |
+| Maximum (Advanced) | The maximum scale your avatar can be. (Exact) |
+| Curve Type | What curve the scaling Animation should use. |
+| Path | The folder where any generated files will be saved to.\n(Generated files will overwrite existing files with the same name: <AVATAR NAME>_<TEMPLATE NAME>) |
 
 Common Questions
 --------------
@@ -63,11 +73,11 @@ Common Questions
 
 Troubleshooting
 --------------
-**Avatar is smaller or larger than normal when loading in or adjusting scale.**
->This can happen if the default scale of your avatar isn't 1. Fix this by changing the values within the 'Size Settings' Animation to better fit your avatar as shown in the linked video for Step 5 of the tutorial. This can also be caused if you merged the 'Scaling' layer into another Animator and didn't set the 'Scale' and 'RemoteSize' parameters to 0.5.
+**Avatar sinks into the floor upon loading in.**
+>If this begins happening after an update to the VRCSDK occured, delete your TPose Animator and try the setup again with your previous settings and it should fix itself.
 
-**Unable to open the 'Size' menu.**
->If you're using 'Scale Menu' as a submenu, ensure sure that selecting it in the previous menu doesn't set 'SizeOp's value.
+**Unable to open the 'Scale' menu.**
+>Verify that your menu doesn't set 'SizeOp' or 'Scale' upon opening the submenu.
 
 **The menu doesn't change size when you do.**
 >VRChat has already stated that this will be fixed *soon*™. It will update the size when you open one of the main menus like the one for Avatars or Worlds.
@@ -83,6 +93,9 @@ Troubleshooting
 
 **Feet either move farther apart or closer together after changing size (Non-FBT).**
 >This is actually a problem with using Auto Footsteps. It currently retains the distance between the feet at your starting scale even after using Animator Remeasure Avatar. I've made a Canny post about it that you can upvote here: [[Bug] Auto Footsteps doesn't update correctly after using Remeasure Avatar.](https://feedback.vrchat.com/avatar-30/p/bug-auto-footsteps-doesnt-update-correctly-after-using-remeasure-avatar)
+
+**"An exception occured!" it said.**
+>If this happens, ensure you have a clean install of Avatar Scaling, and if the problem persists, let me know!
 
 Contacting Me
 --------------
