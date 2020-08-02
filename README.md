@@ -32,9 +32,9 @@ Before following these steps, set up your avatar how you normally would and ensu
 
 4) Finally, click the Apply button to automatically set up scaling for your avatar! 
 	>Data will only ever be overwritten in the following circumstances:
-	1. A file already exists with the same name as one being generated.
-	2. An Animator already contains a layer named 'Scaling'.
-	3. An Animator already contains a parameter of the correct name and type (the value is overwritten).
+		1. A file already exists with the same name as one being generated.
+		2. An Animator already contains a layer named 'Scaling'.
+		3. An Animator already contains a parameter of the correct name and type (the value is overwritten).
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%204.png">
