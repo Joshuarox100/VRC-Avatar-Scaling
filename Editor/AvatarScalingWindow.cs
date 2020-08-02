@@ -169,7 +169,7 @@ public class AvatarScalingWindow : EditorWindow
         manager.expressionsMenu = (VRCExpressionsMenu)EditorGUILayout.ObjectField(new GUIContent("Expressions Menu", "(Optional) The Expressions Menu you want the scaling controls added to. Leave this empty if you don't want any menus to be affected.\n(Controls will be added as a submenu.)"), manager.expressionsMenu, typeof(VRCExpressionsMenu), true);
         EditorGUILayout.Space();
         GUILayout.BeginHorizontal();
-        GUILayout.Label(new GUIContent("Add Parameters", "Check the Avatar's Expression Parameters for the needed parameters for scaling. If any are not present, it will attempt to add them."), GUILayout.Width(145));
+        GUILayout.Label(new GUIContent("Add Parameters", "Check the needed parameters for scaling within the Avatar's Expression Parameters and add them if they're absent."), GUILayout.Width(145));
         manager.addExpressionParameters = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(manager.addExpressionParameters), new string[] { "No", "Yes" }));
         GUILayout.EndHorizontal();
         EditorGUILayout.Space();
@@ -209,7 +209,7 @@ public class AvatarScalingWindow : EditorWindow
                 GUILayout.FlexibleSpace();
                 break;
         }
-        manager.curveType = EditorGUILayout.Popup(new GUIContent("Curve Type", "The curve of the Animation"), manager.curveType, new string[] { "Default", "Clamped", "Linear" });
+        manager.curveType = EditorGUILayout.Popup(new GUIContent("Curve Type", "What curve the scaling Animation should use."), manager.curveType, new string[] { "Default", "Clamped", "Linear" });
         GUILayout.FlexibleSpace();
         EditorGUILayout.Space();
         DrawLine();
