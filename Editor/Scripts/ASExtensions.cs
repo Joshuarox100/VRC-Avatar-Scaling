@@ -137,6 +137,12 @@ namespace ASExtensions
         {
             foreach (AnimatorControllerLayer layer in source.layers)
             {
+                //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
+                if (AssetDatabase.GetAssetPath(layer.stateMachine).Length == 0)
+                {
+                    AssetDatabase.AddObjectToAsset(layer.stateMachine, AssetDatabase.GetAssetPath(source));
+                    layer.stateMachine.hideFlags = HideFlags.HideInHierarchy;
+                }
                 foreach (var subStateMachine in layer.stateMachine.stateMachines)
                 {
                     if (AssetDatabase.GetAssetPath(subStateMachine.stateMachine).Length == 0)
