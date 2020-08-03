@@ -22,7 +22,7 @@ public class AvatarScalingWindow : EditorWindow
     [MenuItem("Window/Avatar Scaling")]
     static void Init()
     {
-        AvatarScalingWindow window = (AvatarScalingWindow)EditorWindow.GetWindow(typeof(AvatarScalingWindow), false, "Avatar Scaling");
+        AvatarScalingWindow window = (AvatarScalingWindow)GetWindow(typeof(AvatarScalingWindow), false, "Avatar Scaling");
         window.Show();
         window.minSize = new Vector2(375f, 515f);
     }
@@ -30,14 +30,18 @@ public class AvatarScalingWindow : EditorWindow
     private void OnGUI()
     {
         EditorGUILayout.Space();
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
         windowTab = GUILayout.Toolbar(windowTab, new string[] { "Setup", "About" }, GUILayout.Width(370f));
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
         switch (windowTab)
         {
             case 0:
                 if (found)
                 {
                     GUILayout.BeginVertical();
-                    GUILayout.BeginArea(new Rect(0, 30f, 375f, 485f));
+                    GUILayout.BeginArea(new Rect((position.width / 2f) - (375f / 2f), 30f, 375f, 485f));
                     GUILayout.BeginVertical();
                     DrawSetupWindow();
                     GUILayout.EndVertical();
@@ -54,7 +58,7 @@ public class AvatarScalingWindow : EditorWindow
                 break;
             case 1:
                 GUILayout.BeginVertical();
-                GUILayout.BeginArea(new Rect(0, 30f, 375f, 485f));
+                GUILayout.BeginArea(new Rect((position.width / 2f) - (375f / 2f), 30f, 375f, 485f));
                 GUILayout.BeginVertical();
                 DrawAboutWindow();
                 GUILayout.EndVertical();
