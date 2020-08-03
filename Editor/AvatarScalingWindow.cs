@@ -208,7 +208,7 @@ public class AvatarScalingWindow : EditorWindow
             case 0:
                 EditorGUILayout.Space();
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(new GUIContent("Multiplier", "(On) Use sizes relative to your starting scale.\n(Off) Use the exact size you will scale to."), GUILayout.Width(145));
+                GUILayout.Label(new GUIContent("Multiplier", "(On) Use sizes relative to your starting scale.\n(Off) Use the exact values you will scale to."), GUILayout.Width(145));
                 EditorGUI.BeginChangeCheck();
                 useMultiplier = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(useMultiplier), new string[] { "Off", "On" }));
                 if (EditorGUI.EndChangeCheck())
@@ -249,7 +249,7 @@ public class AvatarScalingWindow : EditorWindow
             case 1:
                 EditorGUILayout.Space();
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(new GUIContent("Multiplier", "(On) Use sizes relative to your starting scale.\n(Off) Use the exact size you will scale to."), GUILayout.Width(145));
+                GUILayout.Label(new GUIContent("Multiplier", "(On) Use sizes relative to your starting scale.\n(Off) Use the exact values you will scale to."), GUILayout.Width(145));
                 EditorGUI.BeginChangeCheck();
                 useMultiplier = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(useMultiplier), new string[] { "Off", "On" }));
                 if (EditorGUI.EndChangeCheck())
