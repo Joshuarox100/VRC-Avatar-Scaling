@@ -27,7 +27,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 	>If you're not sure what a particular setting does, hover your mouse over the text to see its function or refer to [Setup Window](#setup-window).
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%203.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Setup%20Window.png">
 </p>
 
 4) Finally, click the Apply button to automatically set up scaling for your avatar! 
@@ -36,16 +36,12 @@ Before following these steps, set up your avatar how you normally would and ensu
 		2. An Animator already contains a layer named 'Scaling' (the layer is replaced).  
 		3. An Animator already contains a parameter of the correct name and type (the value is overwritten).
 
-<p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%204.png">
-</p>
-
 Everything should now be fully set up! If you have any issues or questions, look in the [troubleshooting](#troubleshooting) and [questions](#common-questions) section below before [contacting me](#contacting-me).
 
 Setup Window
 --------------
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%205.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Setup%20Window.png">
 </p>
 
 | Setting | Function |
