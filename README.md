@@ -27,7 +27,7 @@ Before following these steps, set up your avatar how you normally would and ensu
 	>If you're not sure what a particular setting does, hover your mouse over the text to see its function or refer to [Configuration](#configuration).
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Setup%20Window.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%203.png">
 </p>
 
 4) Finally, click the Apply button to automatically set up scaling for your avatar! 
@@ -41,7 +41,7 @@ Everything should now be fully set up! If you have any issues or questions, look
 Configuration
 --------------
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Setup%20Window.png">
+  <img width="60%" height="60%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Setup%20Window.png">
 </p>
 
 | Setting | Function |
