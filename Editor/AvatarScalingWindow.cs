@@ -13,8 +13,11 @@ public class AvatarScalingWindow : EditorWindow
     int windowTab;
     bool found;
 
-    float min = 0.5f;
-    float max = 3.0f;
+    bool useMultiplier = true;
+    float minSimple = 0.5f;
+    float maxSimple = 3.0f;
+    Vector3 minAdvanced = new Vector3(0.5f, 0.5f, 0.5f);
+    Vector3 maxAdvanced = new Vector3(3.0f, 3.0f, 3.0f);
 
     [MenuItem("Window/Avatar Scaling")]
     static void Init()
@@ -70,11 +73,20 @@ public class AvatarScalingWindow : EditorWindow
             manager.avatar = FindObjectOfType<VRCAvatarDescriptor>();
         }
         manager.sizes[1] = (manager.avatar != null) ? manager.avatar.gameObject.transform.localScale : manager.sizes[1];
-        if (sizeTab == 0)
+        if (useMultiplier)
         {
-            manager.sizes[0] = new Vector3(min * manager.sizes[1].x, min * manager.sizes[1].y, min * manager.sizes[1].z);
-            manager.sizes[2] = new Vector3(max * manager.sizes[1].x, max * manager.sizes[1].y, max * manager.sizes[1].z);
-        }
+            switch (sizeTab)
+            {
+                case 0:
+                    manager.sizes[0] = new Vector3(minSimple * manager.sizes[1].x, minSimple * manager.sizes[1].y, minSimple * manager.sizes[1].z);
+                    manager.sizes[2] = new Vector3(maxSimple * manager.sizes[1].x, maxSimple * manager.sizes[1].y, maxSimple * manager.sizes[1].z);
+                    break;
+                case 1:
+                    manager.sizes[0] = new Vector3(minAdvanced.x * manager.sizes[1].x, minAdvanced.y * manager.sizes[1].y, minAdvanced.z * manager.sizes[1].z);
+                    manager.sizes[2] = new Vector3(maxAdvanced.x * manager.sizes[1].x, maxAdvanced.y * manager.sizes[1].y, maxAdvanced.z * manager.sizes[1].z);
+                    break;
+            }
+        }        
     }
     
     private void DrawAboutWindow()
@@ -155,10 +167,19 @@ public class AvatarScalingWindow : EditorWindow
         if (EditorGUI.EndChangeCheck())
         {
             manager.sizes[1] = (manager.avatar != null) ? manager.avatar.gameObject.transform.localScale : manager.sizes[1];
-            if (sizeTab == 0)
+            if (useMultiplier)
             {
-                manager.sizes[0] = new Vector3(min * manager.sizes[1].x, min * manager.sizes[1].y, min * manager.sizes[1].z);
-                manager.sizes[2] = new Vector3(max * manager.sizes[1].x, max * manager.sizes[1].y, max * manager.sizes[1].z);
+                switch (sizeTab)
+                {
+                    case 0:
+                        manager.sizes[0] = new Vector3(minSimple * manager.sizes[1].x, minSimple * manager.sizes[1].y, minSimple * manager.sizes[1].z);
+                        manager.sizes[2] = new Vector3(maxSimple * manager.sizes[1].x, maxSimple * manager.sizes[1].y, maxSimple * manager.sizes[1].z);
+                        break;
+                    case 1:
+                        manager.sizes[0] = new Vector3(minAdvanced.x * manager.sizes[1].x, minAdvanced.y * manager.sizes[1].y, minAdvanced.z * manager.sizes[1].z);
+                        manager.sizes[2] = new Vector3(maxAdvanced.x * manager.sizes[1].x, maxAdvanced.y * manager.sizes[1].y, maxAdvanced.z * manager.sizes[1].z);
+                        break;
+                }
             }
         }
         GUILayout.FlexibleSpace();
@@ -185,32 +206,89 @@ public class AvatarScalingWindow : EditorWindow
         {
             //Simple
             case 0:
-                EditorGUILayout.HelpBox("These values will be multiplied by the scale of your Avatar.\n(0.5 is half scale, 2.0 is twice your scale)", MessageType.Info);
+                EditorGUILayout.Space();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(new GUIContent("Multiplier", "(On) Use sizes relative to your starting scale.\n(Off) Use the exact size you will scale to."), GUILayout.Width(145));
+                EditorGUI.BeginChangeCheck();
+                useMultiplier = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(useMultiplier), new string[] { "Off", "On" }));
+                if (EditorGUI.EndChangeCheck())
+                {
+                    if (useMultiplier)
+                    {
+                        manager.sizes[0] = new Vector3(minSimple * manager.sizes[1].x, minSimple * manager.sizes[1].y, minSimple * manager.sizes[1].z);
+                        manager.sizes[2] = new Vector3(maxSimple * manager.sizes[1].x, maxSimple * manager.sizes[1].y, maxSimple * manager.sizes[1].z);
+                    }
+                    else
+                    {
+                        manager.sizes[0] = new Vector3(minSimple, minSimple, minSimple);
+                        manager.sizes[2] = new Vector3(maxSimple, maxSimple, maxSimple);
+                    }
+                }
+                GUILayout.EndHorizontal();
                 EditorGUI.BeginChangeCheck();
                 GUILayout.FlexibleSpace();
-                min = EditorGUILayout.FloatField(new GUIContent("Minimum", "The minimum scale your avatar can be. (Multiplier)"), min);
+                minSimple = EditorGUILayout.FloatField(new GUIContent("Minimum", "The minimum scale your avatar can be."), minSimple);
                 GUILayout.FlexibleSpace();
-                max = EditorGUILayout.FloatField(new GUIContent("Maximum", "The maximum scale your avatar can be. (Multiplier)"), max);
+                maxSimple = EditorGUILayout.FloatField(new GUIContent("Maximum", "The maximum scale your avatar can be."), maxSimple);
                 GUILayout.FlexibleSpace();
                 if (EditorGUI.EndChangeCheck())
                 {
-                    manager.sizes[0] = new Vector3(min * manager.sizes[1].x, min * manager.sizes[1].y, min * manager.sizes[1].z);
-                    manager.sizes[2] = new Vector3(max * manager.sizes[1].x, max * manager.sizes[1].y, max * manager.sizes[1].z);
+                    if (useMultiplier)
+                    {
+                        manager.sizes[0] = new Vector3(minSimple * manager.sizes[1].x, minSimple * manager.sizes[1].y, minSimple * manager.sizes[1].z);
+                        manager.sizes[2] = new Vector3(maxSimple * manager.sizes[1].x, maxSimple * manager.sizes[1].y, maxSimple * manager.sizes[1].z);
+                    }
+                    else
+                    {
+                        manager.sizes[0] = new Vector3(minSimple, minSimple, minSimple);
+                        manager.sizes[2] = new Vector3(maxSimple, maxSimple, maxSimple);
+                    }                  
                 }
                 break;
             //Advanced
             case 1:
-                EditorGUILayout.HelpBox("These values will NOT be multiplied by the scale of your Avatar.", MessageType.Info);
+                EditorGUILayout.Space();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(new GUIContent("Multiplier", "(On) Use sizes relative to your starting scale.\n(Off) Use the exact size you will scale to."), GUILayout.Width(145));
+                EditorGUI.BeginChangeCheck();
+                useMultiplier = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(useMultiplier), new string[] { "Off", "On" }));
+                if (EditorGUI.EndChangeCheck())
+                {
+                    if (useMultiplier)
+                    {
+                        manager.sizes[0] = new Vector3(minAdvanced.x * manager.sizes[1].x, minAdvanced.y * manager.sizes[1].y, minAdvanced.z * manager.sizes[1].z);
+                        manager.sizes[2] = new Vector3(maxAdvanced.x * manager.sizes[1].x, maxAdvanced.y * manager.sizes[1].y, maxAdvanced.z * manager.sizes[1].z);
+                    }
+                    else
+                    {
+                        manager.sizes[0] = minAdvanced;
+                        manager.sizes[2] = maxAdvanced;
+                    }
+                }
+                GUILayout.EndHorizontal();
+                EditorGUI.BeginChangeCheck();
                 GUILayout.FlexibleSpace();
-                manager.sizes[0] = EditorGUILayout.Vector3Field(new GUIContent("Minimum", "The minimum scale your avatar can be. (Exact)"), manager.sizes[0]);
+                minAdvanced = EditorGUILayout.Vector3Field(new GUIContent("Minimum", "The minimum scale your avatar can be."), minAdvanced);
                 GUILayout.FlexibleSpace();
-                manager.sizes[2] = EditorGUILayout.Vector3Field(new GUIContent("Maximum", "The maximum scale your avatar can be. (Exact)"), manager.sizes[2]);
+                maxAdvanced = EditorGUILayout.Vector3Field(new GUIContent("Maximum", "The maximum scale your avatar can be."), maxAdvanced);
                 EditorGUILayout.Space();
                 GUILayout.FlexibleSpace();
+                if (EditorGUI.EndChangeCheck())
+                {
+                    if (useMultiplier)
+                    {
+                        manager.sizes[0] = new Vector3(minAdvanced.x * manager.sizes[1].x, minAdvanced.y * manager.sizes[1].y, minAdvanced.z * manager.sizes[1].z);
+                        manager.sizes[2] = new Vector3(maxAdvanced.x * manager.sizes[1].x, maxAdvanced.y * manager.sizes[1].y, maxAdvanced.z * manager.sizes[1].z);
+                    }
+                    else
+                    {
+                        manager.sizes[0] = minAdvanced;
+                        manager.sizes[2] = maxAdvanced;
+                    }
+                }
                 break;
         }
         manager.curveType = EditorGUILayout.Popup(new GUIContent("Curve Type", "What curve the scaling Animation should use."), manager.curveType, new string[] { "Default", "Clamped", "Linear" });
-        GUILayout.FlexibleSpace();
         EditorGUILayout.Space();
         DrawLine();
         GUILayout.Label("Destination", EditorStyles.boldLabel);
