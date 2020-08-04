@@ -19,9 +19,11 @@ public class ASManager : UnityEngine.Object
     public bool insertLayers = true;
     public Vector3[] sizes = new Vector3[] { new Vector3(0.5f, 0.5f, 0.5f), new Vector3(1.0f, 1.0f, 1.0f), new Vector3(3.0f, 3.0f, 3.0f) };
     public int curveType;
+    public AnimationClip customCurve;
 
     public string relativePath;
     public string outputPath;
+    public bool autoOverwrite = false;
 
     public ASManager() {}
 
@@ -41,6 +43,10 @@ public class ASManager : UnityEngine.Object
             else if (addExpressionParameters && avatar.expressionParameters == null)
             {
                 return 7;
+            }
+            else if (curveType == 3 && customCurve == null)
+            {
+                return 9;
             }
 
             /*
@@ -65,11 +71,14 @@ public class ASManager : UnityEngine.Object
 
             if (gesture == null || gesture == templateAnimators[0] || gesture == templateAnimators[1] || gesture == templateAnimators[2])
             {
-                if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
-                    AssetDatabase.CreateFolder(outputPath, "Animators");
-                if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("vrc_AvatarV3HandsLayer", new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Gesture.controller"))
+                switch (CopySDKTemplate(avatar.gameObject.name + "_Gesture.controller", "vrc_AvatarV3HandsLayer"))
                 {
-                    return 9;
+                    case 1:
+                        return 98;
+                    case 3:
+                        return 11;
+                    default:
+                        break;
                 }
             }
 
@@ -77,11 +86,14 @@ public class ASManager : UnityEngine.Object
 
             if (sitting == null || sitting == templateAnimators[0] || sitting == templateAnimators[1] || sitting == templateAnimators[2])
             {
-                if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
-                    AssetDatabase.CreateFolder(outputPath, "Animators");
-                if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("vrc_AvatarV3SittingLayer", new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Sitting.controller"))
+                switch (CopySDKTemplate(avatar.gameObject.name + "_Sitting.controller", "vrc_AvatarV3SittingLayer"))
                 {
-                    return 9;
+                    case 1:
+                        return 98;
+                    case 3:
+                        return 11;
+                    default:
+                        break;
                 }
             }
 
@@ -89,21 +101,27 @@ public class ASManager : UnityEngine.Object
 
             if (tpose == null || tpose == templateAnimators[0] || tpose == templateAnimators[1] || tpose == templateAnimators[2])
             {
-                if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
-                    AssetDatabase.CreateFolder(outputPath, "Animators");
-                if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("vrc_AvatarV3UtilityTPose", new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_TPose.controller"))
+                switch (CopySDKTemplate(avatar.gameObject.name + "_TPose.controller", "vrc_AvatarV3UtilityTPose"))
                 {
-                    return 9;
+                    case 1:
+                        return 98;
+                    case 3:
+                        return 11;
+                    default:
+                        break;
                 }
             }
 
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.35f);
 
-            if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animations"))
-                AssetDatabase.CreateFolder(outputPath, "Animations");
-            if (!AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateSizes), outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + avatar.gameObject.name + "_Sizes.anim"))
+            switch (CopySizeTemplate())
             {
-                return 9;
+                case 1:
+                    return 98;
+                case 3:
+                    return 11;
+                default:
+                    break;
             }
 
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Refreshing Asset Database", 0.4f);
@@ -162,7 +180,10 @@ public class ASManager : UnityEngine.Object
             */
 
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animations", 0.825f);
-            ModifyAnimation(sizeSettings);
+            if (!ModifyAnimation(sizeSettings))
+            {
+                return 10;
+            }
 
             /*
             // Replace reference to template AnimationClip in Gesture with the modified one.
@@ -171,7 +192,7 @@ public class ASManager : UnityEngine.Object
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animators", 0.85f);
             if (!ReplaceAnimation(gesture, "Scaling", templateSizes, sizeSettings))
             {
-                return 10;
+                return 12;
             }
 
             /*
@@ -363,7 +384,7 @@ public class ASManager : UnityEngine.Object
         }
     }
 
-    private void ModifyAnimation(AnimationClip anim)
+    private bool ModifyAnimation(AnimationClip anim)
     {
         foreach (var binding in AnimationUtility.GetCurveBindings(anim))
         {
@@ -403,9 +424,34 @@ public class ASManager : UnityEngine.Object
                         AnimationUtility.SetKeyRightTangentMode(curve, i, AnimationUtility.TangentMode.Linear);
                     }
                     break;
+                case 3:
+                    if (customCurve == null)
+                    {
+                        return false; //Ref curve is being overwritten.
+                    }
+                    AnimationCurve refCurve = AnimationUtility.GetEditorCurve(customCurve, binding);
+                    if (refCurve == null)
+                    {
+                        return false;
+                    }
+                    Keyframe[] refKeys = refCurve.keys;
+                    for (int i = 0; i < keys.Length; i++)
+                    {
+                        keys[i].weightedMode = refKeys[i].weightedMode;
+                        keys[i].inWeight = refKeys[i].inWeight;
+                        keys[i].outWeight = refKeys[i].outWeight;
+                        keys[i].inTangent = refKeys[i].inTangent;
+                        keys[i].outTangent = refKeys[i].outTangent;
+                        curve.keys = keys;
+                        AnimationUtility.SetKeyBroken(curve, i, AnimationUtility.GetKeyBroken(refCurve, i));
+                        AnimationUtility.SetKeyLeftTangentMode(curve, i, AnimationUtility.GetKeyLeftTangentMode(refCurve, i));
+                        AnimationUtility.SetKeyRightTangentMode(curve, i, AnimationUtility.GetKeyRightTangentMode(refCurve, i));
+                    }
+                    break;
             }
             AnimationUtility.SetEditorCurve(anim, binding, curve);
         }
+        return true;
     }
 
     private bool ReplaceAnimation(AnimatorController source, string layerName, AnimationClip oldAnim, AnimationClip newAnim)
@@ -596,6 +642,53 @@ public class ASManager : UnityEngine.Object
         }
 
         return true;
+    }
+
+    private int CopySDKTemplate (string outFile, string SDKfile)
+    {
+        if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
+            AssetDatabase.CreateFolder(outputPath, "Animators");
+        if (!autoOverwrite && File.Exists(outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + outFile))
+        {
+            switch (EditorUtility.DisplayDialogComplex("Avatar Scaling", outFile + " already exists!\nOverwrite the file?", "Overwrite", "Cancel", "Skip"))
+            {
+                case 1:
+                    return 1;
+                case 2:
+                    return 2;
+                default:
+                    break;
+            }
+        }
+        if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(SDKfile, new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + outFile))
+        {
+            return 3;
+        }
+        return 0;
+    }
+    
+    private int CopySizeTemplate()
+    {
+        string outFile = avatar.gameObject.name + "_Sizes.anim";
+        if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animations"))
+            AssetDatabase.CreateFolder(outputPath, "Animations");
+        if (!autoOverwrite && File.Exists(outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + outFile))
+        {
+            switch (EditorUtility.DisplayDialogComplex("Avatar Scaling", outFile + " already exists!\nOverwrite the file?", "Overwrite", "Cancel", "Skip"))
+            {
+                case 1:
+                    return 1;
+                case 2:
+                    return 2;
+                default:
+                    break;
+            }
+        }
+        if (!AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateSizes), outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + outFile))
+        {
+            return 3;
+        }
+        return 0;
     }
 
     private void UpdatePaths()

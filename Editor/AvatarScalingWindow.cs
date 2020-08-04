@@ -13,7 +13,7 @@ public class AvatarScalingWindow : EditorWindow
     int windowTab;
     bool found;
 
-    bool useMultiplier = true;
+    int editMode;
     float minSimple = 0.5f;
     float maxSimple = 3.0f;
     Vector3 minAdvanced = new Vector3(0.5f, 0.5f, 0.5f);
@@ -23,42 +23,43 @@ public class AvatarScalingWindow : EditorWindow
     static void Init()
     {
         AvatarScalingWindow window = (AvatarScalingWindow)GetWindow(typeof(AvatarScalingWindow), false, "Avatar Scaling");
-        window.Show();
         window.minSize = new Vector2(375f, 515f);
+        window.wantsMouseMove = true;
+        window.Show();
     }
 
     private void OnGUI()
     {
-        EditorGUILayout.Space();
-        GUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-        windowTab = GUILayout.Toolbar(windowTab, new string[] { "Setup", "About" }, GUILayout.Width(370f));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+        GUILayout.BeginVertical();
+        GUILayout.BeginArea(new Rect((position.width / 2f) - (375f / 2f), 5f, 375f, 510f));
+        windowTab = GUILayout.Toolbar(windowTab, new string[] { "Setup", "About" });
+        DrawLine(false);
         switch (windowTab)
         {
             case 0:
-                if (found)
+                if (EditorApplication.isPlaying)
+                {
+                    EditorGUILayout.Space();
+                    EditorGUILayout.HelpBox("Scaling can only be setup outside of Play Mode.", MessageType.Info);
+                }
+                else if (found)
                 {
                     GUILayout.BeginVertical();
-                    GUILayout.BeginArea(new Rect((position.width / 2f) - (375f / 2f), 30f, 375f, 485f));
-                    GUILayout.BeginVertical();
                     DrawSetupWindow();
-                    GUILayout.EndVertical();
-                    GUILayout.EndArea();
-                    GUILayout.FlexibleSpace();
-                    EditorGUILayout.Space();
                     GUILayout.EndVertical();
                 }
                 else
                 {
+                    EditorGUILayout.Space();
                     EditorGUILayout.HelpBox("Scaling Templates not found!", MessageType.Error);
                     EditorGUILayout.HelpBox("Make sure that the original Animators and Animations included in the package haven't been renamed!", MessageType.None);
                 }
+                GUILayout.EndArea();
+                GUILayout.FlexibleSpace();
+                EditorGUILayout.Space();
+                GUILayout.EndVertical();
                 break;
             case 1:
-                GUILayout.BeginVertical();
-                GUILayout.BeginArea(new Rect((position.width / 2f) - (375f / 2f), 30f, 375f, 485f));
                 GUILayout.BeginVertical();
                 DrawAboutWindow();
                 GUILayout.EndVertical();
@@ -69,15 +70,12 @@ public class AvatarScalingWindow : EditorWindow
                 break;
         }
     }
+
     private void OnFocus()
     {
         found = manager.FindTemplates();
-        if (manager.avatar == null)
-        {
-            manager.avatar = FindObjectOfType<VRCAvatarDescriptor>();
-        }
         manager.sizes[1] = (manager.avatar != null) ? manager.avatar.gameObject.transform.localScale : manager.sizes[1];
-        if (useMultiplier)
+        if (editMode == 0)
         {
             switch (sizeTab)
             {
@@ -159,8 +157,7 @@ public class AvatarScalingWindow : EditorWindow
     }
     private void DrawSetupWindow()
     {
-        GUILayout.Label("Avatar Settings", EditorStyles.boldLabel);
-        GUILayout.BeginVertical(GUILayout.Height(40f));
+        GUILayout.BeginVertical(GUILayout.Height(54f));
         EditorGUI.BeginChangeCheck();
         GUILayout.FlexibleSpace();
         SelectAvatarDescriptor();
@@ -171,7 +168,7 @@ public class AvatarScalingWindow : EditorWindow
         if (EditorGUI.EndChangeCheck())
         {
             manager.sizes[1] = (manager.avatar != null) ? manager.avatar.gameObject.transform.localScale : manager.sizes[1];
-            if (useMultiplier)
+            if (editMode == 0)
             {
                 switch (sizeTab)
                 {
@@ -188,7 +185,6 @@ public class AvatarScalingWindow : EditorWindow
         }
         GUILayout.FlexibleSpace();
         GUILayout.EndVertical();
-        EditorGUILayout.Space();
         DrawLine();
         GUILayout.Label("Optional Settings", EditorStyles.boldLabel);
         manager.expressionsMenu = (VRCExpressionsMenu)EditorGUILayout.ObjectField(new GUIContent("Expressions Menu", "(Optional) The Expressions Menu you want the scaling controls added to. Leave this empty if you don't want any menus to be affected.\n(Controls will be added as a submenu.)"), manager.expressionsMenu, typeof(VRCExpressionsMenu), true);
@@ -205,30 +201,46 @@ public class AvatarScalingWindow : EditorWindow
         EditorGUILayout.Space();
         DrawLine();
         GUILayout.Label("Size Settings", EditorStyles.boldLabel);
+        GUILayout.BeginVertical(new GUIStyle(GUI.skin.GetStyle("Box")), GUILayout.Height(120f));
+        EditorGUI.BeginChangeCheck();
         sizeTab = GUILayout.Toolbar(sizeTab, new string[] { "Simple", "Advanced" });
+        editMode = EditorGUILayout.Popup(new GUIContent("Edit Mode", "(Multiplier) Edit sizes relative to your initial scale.\n(Exact) Edit the exact sizes you will scale to."), editMode, new string[] { "Multiplier", "Exact" });
+        if (EditorGUI.EndChangeCheck())
+        {
+            switch (sizeTab)
+            {
+                case 0:
+                    switch (editMode)
+                    {
+                        case 0:
+                            minSimple = manager.sizes[0].y / manager.sizes[1].y;
+                            maxSimple = manager.sizes[2].y / manager.sizes[1].y;
+                            break;
+                        case 1:
+                            minSimple = manager.sizes[0].y;
+                            maxSimple = manager.sizes[2].y;
+                            break;
+                    }
+                    break;
+                case 1:
+                    switch (editMode)
+                    {
+                        case 0:
+                            minAdvanced = new Vector3(manager.sizes[0].x / manager.sizes[1].x, manager.sizes[0].y / manager.sizes[1].y, manager.sizes[0].z / manager.sizes[1].z);
+                            maxAdvanced = new Vector3(manager.sizes[2].x / manager.sizes[1].x, manager.sizes[2].y / manager.sizes[1].y, manager.sizes[2].z / manager.sizes[1].z);
+                            break;
+                        case 1:
+                            minAdvanced = manager.sizes[0];
+                            maxAdvanced = manager.sizes[2];
+                            break;
+                    }
+                    break;
+            }
+        }
         switch (sizeTab)
         {
             //Simple
-            case 0:
-                EditorGUILayout.Space();
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(new GUIContent("Multiplier", "(On) Use sizes relative to your starting scale.\n(Off) Use the exact values you will scale to."), GUILayout.Width(145));
-                EditorGUI.BeginChangeCheck();
-                useMultiplier = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(useMultiplier), new string[] { "Off", "On" }));
-                if (EditorGUI.EndChangeCheck())
-                {
-                    if (useMultiplier)
-                    {
-                        manager.sizes[0] = new Vector3(minSimple * manager.sizes[1].x, minSimple * manager.sizes[1].y, minSimple * manager.sizes[1].z);
-                        manager.sizes[2] = new Vector3(maxSimple * manager.sizes[1].x, maxSimple * manager.sizes[1].y, maxSimple * manager.sizes[1].z);
-                    }
-                    else
-                    {
-                        manager.sizes[0] = new Vector3(minSimple, minSimple, minSimple);
-                        manager.sizes[2] = new Vector3(maxSimple, maxSimple, maxSimple);
-                    }
-                }
-                GUILayout.EndHorizontal();
+            case 0:              
                 EditorGUI.BeginChangeCheck();
                 GUILayout.FlexibleSpace();
                 minSimple = EditorGUILayout.FloatField(new GUIContent("Minimum", "The minimum scale your avatar can be."), minSimple);
@@ -237,39 +249,21 @@ public class AvatarScalingWindow : EditorWindow
                 GUILayout.FlexibleSpace();
                 if (EditorGUI.EndChangeCheck())
                 {
-                    if (useMultiplier)
+                    switch (editMode)
                     {
-                        manager.sizes[0] = new Vector3(minSimple * manager.sizes[1].x, minSimple * manager.sizes[1].y, minSimple * manager.sizes[1].z);
-                        manager.sizes[2] = new Vector3(maxSimple * manager.sizes[1].x, maxSimple * manager.sizes[1].y, maxSimple * manager.sizes[1].z);
-                    }
-                    else
-                    {
-                        manager.sizes[0] = new Vector3(minSimple, minSimple, minSimple);
-                        manager.sizes[2] = new Vector3(maxSimple, maxSimple, maxSimple);
-                    }                  
+                        case 0:
+                            manager.sizes[0] = new Vector3(minSimple * manager.sizes[1].x, minSimple * manager.sizes[1].y, minSimple * manager.sizes[1].z);
+                            manager.sizes[2] = new Vector3(maxSimple * manager.sizes[1].x, maxSimple * manager.sizes[1].y, maxSimple * manager.sizes[1].z);
+                            break;
+                        case 1:
+                            manager.sizes[0] = new Vector3(minSimple, minSimple, minSimple);
+                            manager.sizes[2] = new Vector3(maxSimple, maxSimple, maxSimple);
+                            break;
+                    }               
                 }
                 break;
             //Advanced
             case 1:
-                EditorGUILayout.Space();
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(new GUIContent("Multiplier", "(On) Use sizes relative to your starting scale.\n(Off) Use the exact values you will scale to."), GUILayout.Width(145));
-                EditorGUI.BeginChangeCheck();
-                useMultiplier = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(useMultiplier), new string[] { "Off", "On" }));
-                if (EditorGUI.EndChangeCheck())
-                {
-                    if (useMultiplier)
-                    {
-                        manager.sizes[0] = new Vector3(minAdvanced.x * manager.sizes[1].x, minAdvanced.y * manager.sizes[1].y, minAdvanced.z * manager.sizes[1].z);
-                        manager.sizes[2] = new Vector3(maxAdvanced.x * manager.sizes[1].x, maxAdvanced.y * manager.sizes[1].y, maxAdvanced.z * manager.sizes[1].z);
-                    }
-                    else
-                    {
-                        manager.sizes[0] = minAdvanced;
-                        manager.sizes[2] = maxAdvanced;
-                    }
-                }
-                GUILayout.EndHorizontal();
                 EditorGUI.BeginChangeCheck();
                 GUILayout.FlexibleSpace();
                 minAdvanced = EditorGUILayout.Vector3Field(new GUIContent("Minimum", "The minimum scale your avatar can be."), minAdvanced);
@@ -279,29 +273,39 @@ public class AvatarScalingWindow : EditorWindow
                 GUILayout.FlexibleSpace();
                 if (EditorGUI.EndChangeCheck())
                 {
-                    if (useMultiplier)
+                    switch (editMode)
                     {
-                        manager.sizes[0] = new Vector3(minAdvanced.x * manager.sizes[1].x, minAdvanced.y * manager.sizes[1].y, minAdvanced.z * manager.sizes[1].z);
-                        manager.sizes[2] = new Vector3(maxAdvanced.x * manager.sizes[1].x, maxAdvanced.y * manager.sizes[1].y, maxAdvanced.z * manager.sizes[1].z);
-                    }
-                    else
-                    {
-                        manager.sizes[0] = minAdvanced;
-                        manager.sizes[2] = maxAdvanced;
+                        case 0:
+                            manager.sizes[0] = new Vector3(minAdvanced.x * manager.sizes[1].x, minAdvanced.y * manager.sizes[1].y, minAdvanced.z * manager.sizes[1].z);
+                            manager.sizes[2] = new Vector3(maxAdvanced.x * manager.sizes[1].x, maxAdvanced.y * manager.sizes[1].y, maxAdvanced.z * manager.sizes[1].z);
+                            break;
+                        case 1:
+                            manager.sizes[0] = minAdvanced;
+                            manager.sizes[2] = maxAdvanced;
+                            break;
                     }
                 }
                 break;
         }
-        manager.curveType = EditorGUILayout.Popup(new GUIContent("Curve Type", "What curve the scaling Animation should use."), manager.curveType, new string[] { "Default", "Clamped", "Linear" });
+        GUILayout.EndVertical();
+        GUILayout.FlexibleSpace();
+        GUILayout.BeginVertical(GUILayout.Height(35f));
+        manager.curveType = EditorGUILayout.Popup(new GUIContent("Curve Type", "What curve the scaling Animation should use."), manager.curveType, new string[] { "Default", "Clamped", "Linear", "Custom" });
+        if (manager.curveType == 3)
+        {
+            manager.customCurve = (AnimationClip)EditorGUILayout.ObjectField(new GUIContent("Reference", "Custom Animation curve to use as reference.\n(Refer to the Github for proper usage.)"), manager.customCurve, typeof(AnimationClip), true);
+        }
+        GUILayout.EndVertical();
+        GUILayout.FlexibleSpace();
         EditorGUILayout.Space();
         DrawLine();
-        GUILayout.Label("Destination", EditorStyles.boldLabel);
+        GUILayout.Label("Output Settings", EditorStyles.boldLabel);
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Path:", new GUIStyle(GUI.skin.GetStyle("Box")) { normal = new GUIStyleState() { background = null } });
-        EditorGUILayout.LabelField(new GUIContent("<i>" + manager.outputPath.Replace('\\', '/') + "</i>", "The folder where any generated files will be saved to.\n(Generated files will overwrite existing files with the same name: <AVATAR NAME>_<TEMPLATE NAME>)"), new GUIStyle(GUI.skin.GetStyle("Box")) { richText = true });
+        EditorGUILayout.LabelField(new GUIContent("Destination", "The folder where generated files will be saved to."), new GUIStyle(GUI.skin.GetStyle("Box")) { alignment = TextAnchor.MiddleLeft, normal = new GUIStyleState() { background = null } });
         GUILayout.FlexibleSpace();
-        EditorGUILayout.EndHorizontal();
-        if (GUILayout.Button("Select"))
+        string displayPath = manager.outputPath.Replace('\\', '/');
+        displayPath = (displayPath.Length > 28) ? "..." + displayPath.Substring((displayPath.IndexOf('/', displayPath.Length - 29) != -1) ? displayPath.IndexOf('/', displayPath.Length - 29) : displayPath.Length - 29) : displayPath;
+        if (GUILayout.Button("<i>" + displayPath + "</i>", new GUIStyle(GUI.skin.GetStyle("Box")) { richText = true, hover = GUI.skin.GetStyle("Button").active }, GUILayout.MinWidth(218)))
         {
             string absPath = EditorUtility.OpenFolderPanel("Destination Folder", "", "");
             if (absPath.StartsWith(Application.dataPath))
@@ -309,9 +313,16 @@ public class AvatarScalingWindow : EditorWindow
                 manager.outputPath = "Assets" + absPath.Substring(Application.dataPath.Length);
             }
         }
+        EditorGUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        GUILayout.Label(new GUIContent("Overwrite All", "Automatically overwrite existing files if needed."), GUILayout.Width(145));
+        EditorGUI.BeginChangeCheck();
+        manager.autoOverwrite = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(manager.autoOverwrite), new string[] { "No", "Yes" }));
+        GUILayout.EndHorizontal();
         EditorGUILayout.Space();
         DrawLine();
-        if (GUILayout.Button("Apply"))
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Apply Changes", GUILayout.Width(360f / 2)))
         {
             string message = "If this appears, then something has gone horribly wrong.\nPlease file a bug report with steps to reproduce.";
             switch (manager.ApplyChanges())
@@ -344,21 +355,58 @@ public class AvatarScalingWindow : EditorWindow
                     message = "Failed!\n\nERROR: No unused Expression Parameters found!\n(At least two unused parameters are needed.)";
                     break;
                 case 9:
-                    message = "Failed!\n\nERROR: Failed to create one or more files!";
+                    message = "Failed!\n\nERROR: No Animation curve provided as reference!";
                     break;
                 case 10:
+                    message = "Failed!\n\nERROR: Provided reference curve cannot be used!";
+                    break;
+                case 11:
+                    message = "Failed!\n\nERROR: Failed to create one or more files!";
+                    break;
+                case 12:
                     message = "Failed!\n\nERROR: Failed to copy layers to one or more Animators!";
+                    break;
+                case 98:
+                    message = "Canceled!";
                     break;
                 case 99:
                     message = "Failed!\n\nERROR: An exception occured!\nPlease look at the console for further details.";
                     break;
             }
-            if (EditorUtility.DisplayDialog("Avatar Scaling Setup", message, "Close"))
+            if (EditorUtility.DisplayDialog("Avatar Scaling", message, "Close"))
             {
                 EditorUtility.ClearProgressBar();
                 Selection.activeGameObject = manager.avatar.gameObject;
             }
         }
+        GUILayout.FlexibleSpace();
+        if (GUILayout.Button("Reset Settings", GUILayout.Width(360f / 2)))
+        {
+            ResetSettings();
+        }
+        GUILayout.EndHorizontal();
+        if (mouseOverWindow != null && mouseOverWindow)
+        {
+            Repaint();
+        }
+    }
+
+    private void ResetSettings()
+    {
+        editMode = 0;
+        minSimple = 0.5f;
+        maxSimple = 3.0f;
+        minAdvanced = new Vector3(0.5f, 0.5f, 0.5f);
+        maxAdvanced = new Vector3(3.0f, 3.0f, 3.0f);
+
+        manager.expressionsMenu = null;
+        manager.addExpressionParameters = true;
+        manager.insertLayers = true;
+        manager.sizes[0] = new Vector3(minSimple * manager.sizes[1].x, minSimple * manager.sizes[1].y, minSimple * manager.sizes[1].z);
+        manager.sizes[2] = new Vector3(maxSimple * manager.sizes[1].x, maxSimple * manager.sizes[1].y, maxSimple * manager.sizes[1].z);
+        manager.curveType = 0;
+        manager.outputPath = manager.relativePath + Path.DirectorySeparatorChar + "Output";
+        manager.autoOverwrite = false;
     }
 
     /*
@@ -401,5 +449,17 @@ public class AvatarScalingWindow : EditorWindow
         Handles.DrawLine(new Vector2(rect.x - 15, rect.y), new Vector2(rect.width + 15, rect.y));
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space();
+    }
+
+    private void DrawLine(bool addSpace)
+    {
+        var rect = EditorGUILayout.BeginHorizontal();
+        Handles.color = Color.gray;
+        Handles.DrawLine(new Vector2(rect.x - 15, rect.y), new Vector2(rect.width + 15, rect.y));
+        EditorGUILayout.EndHorizontal();
+        if (addSpace)
+        {
+            EditorGUILayout.Space();
+        }
     }
 }
