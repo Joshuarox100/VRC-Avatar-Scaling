@@ -32,7 +32,7 @@ public class AvatarScalingWindow : EditorWindow
     [MenuItem("Window/Avatar Scaling/Check For Updates")]
     static void CheckForUpdates()
     {
-        ASManager.IsUpdateAvailable();
+        ASManager.CheckForUpdates();
     }
 
     private void OnGUI()

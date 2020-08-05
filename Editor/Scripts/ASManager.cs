@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.Networking;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 using ASExtensions;
-using System.Collections;
-using UnityEngine.Networking;
 
 public class ASManager : UnityEngine.Object
 {
@@ -755,7 +755,7 @@ public class ASManager : UnityEngine.Object
 
     private class NetworkManager : MonoBehaviour { }
 
-    public static void IsUpdateAvailable()
+    public static void CheckForUpdates()
     {
         string relativePath = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("(ASTemplate)")[0]).Substring(0, AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("(ASTemplate)")[0]).LastIndexOf("Templates") - 1);
         string installedVersion = (AssetDatabase.FindAssets("VERSION", new string[] { relativePath }).Length > 0) ? File.ReadAllText(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("VERSION", new string[] { relativePath })[0])) : "";
@@ -772,7 +772,7 @@ public class ASManager : UnityEngine.Object
             }
             else if (installedVersion != latestVersion)
             {
-                if (EditorUtility.DisplayDialog("Avatar Scaling", "A new update is available!\nOpen the Releases page?", "Yes", "No"))
+                if (EditorUtility.DisplayDialog("Avatar Scaling", "A new update is available! (" + latestVersion + ")\nOpen the Releases page?", "Yes", "No"))
                 {
                     Application.OpenURL("https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases");
                 }
