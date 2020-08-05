@@ -762,7 +762,15 @@ public class ASManager : UnityEngine.Object
 
         GameObject netMan = new GameObject { hideFlags = HideFlags.HideInHierarchy };
         netMan.AddComponent<NetworkManager>().StartCoroutine(GetText("https://raw.githubusercontent.com/Joshuarox100/VRC-Avatar-Scaling/master/VERSION", latestVersion => {
-            if (latestVersion != "" && installedVersion != "" && installedVersion != latestVersion)
+            if (latestVersion == "")
+            {
+                EditorUtility.DisplayDialog("Avatar Scaling", "Failed to fetch the latest version.\n(Check console for details.)", "Close");
+            }
+            else if (installedVersion == "")
+            {
+                EditorUtility.DisplayDialog("Avatar Scaling", "Failed to identify installed version.\n(VERSION file was not found.)", "Close");
+            }
+            else if (installedVersion != latestVersion)
             {
                 if (EditorUtility.DisplayDialog("Avatar Scaling", "A new update is available!\nOpen the Releases page?", "Yes", "No"))
                 {
