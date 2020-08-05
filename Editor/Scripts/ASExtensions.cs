@@ -123,13 +123,9 @@ namespace ASExtensions
         {
             AnimatorTransitionBase output = Object.Instantiate(transition);
             EditorUtility.CopySerialized(transition, output);
-            for (int i = 0; i < states.Length; i++)
+            for (int i = 0; i < states.Length && output.destinationState != null; i++)
             {
-                if (output.destinationState == null)
-                {
-                    break;
-                }
-                else if (output.destinationState.name == states[i].state.name)
+                if (output.destinationState.name == states[i].state.name)
                 {
                     output.destinationState = states[i].state;
                     break;
