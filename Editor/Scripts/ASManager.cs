@@ -753,31 +753,30 @@ public class ASManager : UnityEngine.Object
         }
     }
 
-    //Needed for making the web request for version checking.
-    public class NetworkManager : MonoBehaviour { }
+    private class NetworkManager : MonoBehaviour { }
 
-    public static IEnumerator IsUpdateAvailable(GameObject obj, Action<bool> result)
+    public static void IsUpdateAvailable()
     {
         string relativePath = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("(ASTemplate)")[0]).Substring(0, AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("(ASTemplate)")[0]).LastIndexOf("Templates") - 1);
         string installedVersion = (AssetDatabase.FindAssets("VERSION", new string[] { relativePath }).Length > 0) ? File.ReadAllText(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("VERSION", new string[] { relativePath })[0])) : "";
 
-        bool available = false;
-        yield return available;
-
-        obj.GetComponent<NetworkManager>().StartCoroutine(GetText("https://raw.githubusercontent.com/Joshuarox100/VRC-Avatar-Scaling/master/VERSION", latestVersion => {
-            if (latestVersion != "" && installedVersion != "")
+        GameObject netMan = new GameObject { hideFlags = HideFlags.HideInHierarchy };
+        netMan.AddComponent<NetworkManager>().StartCoroutine(GetText("https://raw.githubusercontent.com/Joshuarox100/VRC-Avatar-Scaling/master/VERSION", latestVersion => {
+            if (latestVersion != "" && installedVersion != "" && installedVersion != latestVersion)
             {
-                //Debug.Log(latestVersion);
-                //Debug.Log(installedVersion);
-                result?.Invoke(installedVersion != latestVersion);
+                if (EditorUtility.DisplayDialog("Avatar Scaling", "A new update is available!\nOpen the Releases page?", "Yes", "No"))
+                {
+                    Application.OpenURL("https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases");
+                }
             }
             else
             {
-                result?.Invoke(false);
+                EditorUtility.DisplayDialog("Avatar Scaling", "You are using the latest version.", "Close");
             }
-        } ));
+            DestroyImmediate(netMan);
+        }));
     }
-    static IEnumerator GetText(string url, Action<string> result)
+    private static IEnumerator GetText(string url, Action<string> result)
     {
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();

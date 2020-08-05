@@ -32,22 +32,7 @@ public class AvatarScalingWindow : EditorWindow
     [MenuItem("Window/Avatar Scaling/Check For Updates")]
     static void CheckForUpdates()
     {
-        GameObject obj = new GameObject { hideFlags = HideFlags.HideInHierarchy };
-        obj.AddComponent<ASManager.NetworkManager>().StartCoroutine(ASManager.IsUpdateAvailable(obj, result =>
-        {
-            if (result)
-            {
-                if (EditorUtility.DisplayDialog("Avatar Scaling", "A new update is available!\nOpen the Releases page?", "Yes", "No"))
-                {
-                    Application.OpenURL("https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases");
-                }
-            }
-            else
-            {
-                EditorUtility.DisplayDialog("Avatar Scaling", "You are using the latest version.", "Close");
-            }
-            DestroyImmediate(obj);
-        }));
+        ASManager.IsUpdateAvailable();
     }
 
     private void OnGUI()
