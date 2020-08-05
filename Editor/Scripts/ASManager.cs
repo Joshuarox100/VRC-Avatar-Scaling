@@ -601,7 +601,7 @@ public class ASManager : UnityEngine.Object
             {
                 if (layer.name == srcLayers[i].name)
                 {
-                    AssetDatabase.RemoveObjectFromAsset(layer.stateMachine);
+                    AssetDatabase.RemoveObjectFromAsset(srcLayers[i].stateMachine);
                     source.RemoveLayer(i);
                     break;
                 }
