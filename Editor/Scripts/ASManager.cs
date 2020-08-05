@@ -38,17 +38,9 @@ public class ASManager : UnityEngine.Object
             // Check if necessary objects are found.
             */
 
-            if (avatar == null)
+            if (!DoSafetyChecks(out int result))
             {
-                return 3;
-            }
-            else if (addExpressionParameters && avatar.expressionParameters == null)
-            {
-                return 7;
-            }
-            else if (curveType == 3 && customCurve == null)
-            {
-                return 9;
+                return result;
             }
 
             /*
@@ -404,6 +396,27 @@ public class ASManager : UnityEngine.Object
             Debug.LogException(err);
             return 99;
         }
+    }
+
+    private bool DoSafetyChecks(out int result)
+    {
+        if (avatar == null)
+        {
+            result = 3;
+            return false;
+        }
+        else if (addExpressionParameters && avatar.expressionParameters == null)
+        {
+            result = 7;
+            return false;
+        }
+        else if (curveType == 3 && customCurve == null)
+        {
+            result = 9;
+            return false;
+        }
+        result = 0;
+        return true;
     }
 
     private void VerifyDestination()
