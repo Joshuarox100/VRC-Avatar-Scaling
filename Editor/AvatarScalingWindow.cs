@@ -2,6 +2,7 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 
@@ -23,7 +24,7 @@ public class AvatarScalingWindow : EditorWindow
     static void Init()
     {
         AvatarScalingWindow window = (AvatarScalingWindow)GetWindow(typeof(AvatarScalingWindow), false, "Avatar Scaling");
-        window.minSize = new Vector2(375f, 515f);
+        window.minSize = new Vector2(375f, 525f);
         window.wantsMouseMove = true;
         window.Show();
     }
@@ -31,7 +32,7 @@ public class AvatarScalingWindow : EditorWindow
     private void OnGUI()
     {
         GUILayout.BeginVertical();
-        GUILayout.BeginArea(new Rect((position.width / 2f) - (375f / 2f), 5f, 375f, 510f));
+        GUILayout.BeginArea(new Rect((position.width / 2f) - (375f / 2f), 5f, 375f, 520f));
         windowTab = GUILayout.Toolbar(windowTab, new string[] { "Setup", "About" });
         DrawLine(false);
         switch (windowTab)
@@ -187,17 +188,21 @@ public class AvatarScalingWindow : EditorWindow
         GUILayout.EndVertical();
         DrawLine();
         GUILayout.Label("Optional Settings", EditorStyles.boldLabel);
+        EditorGUILayout.BeginVertical(new GUIStyle(GUI.skin.GetStyle("Box")), GUILayout.Height(75f));
+        GUILayout.FlexibleSpace();
         manager.expressionsMenu = (VRCExpressionsMenu)EditorGUILayout.ObjectField(new GUIContent("Expressions Menu", "(Optional) The Expressions Menu you want the scaling controls added to. Leave this empty if you don't want any menus to be affected.\n(Controls will be added as a submenu.)"), manager.expressionsMenu, typeof(VRCExpressionsMenu), true);
-        EditorGUILayout.Space();
+        GUILayout.FlexibleSpace();
         GUILayout.BeginHorizontal();
         GUILayout.Label(new GUIContent("Add Parameters", "(Optional) Check for needed parameters within the Avatar's Expression Parameters and add them if necessary."), GUILayout.Width(145));
         manager.addExpressionParameters = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(manager.addExpressionParameters), new string[] { "No", "Yes" }));
         GUILayout.EndHorizontal();
-        EditorGUILayout.Space();
+        GUILayout.FlexibleSpace();
         GUILayout.BeginHorizontal();
         GUILayout.Label(new GUIContent("Use Existing Animators", "(Optional) If Animators are already present for Gesture, Sitting, or TPose, the parameters and layer for scaling will be added to them. If an Animator is missing or this feature is disabled, a new Animator will be generated using the defaults included in the VRChat SDK and inserted into the descriptor automatically."), GUILayout.Width(145));
         manager.insertLayers = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(manager.insertLayers), new string[] { "No", "Yes" }));
         GUILayout.EndHorizontal();
+        GUILayout.FlexibleSpace();
+        EditorGUILayout.EndVertical();
         EditorGUILayout.Space();
         DrawLine();
         GUILayout.Label("Size Settings", EditorStyles.boldLabel);
@@ -289,7 +294,7 @@ public class AvatarScalingWindow : EditorWindow
         }
         GUILayout.EndVertical();
         GUILayout.FlexibleSpace();
-        GUILayout.BeginVertical(GUILayout.Height(35f));
+        GUILayout.BeginVertical(new GUIStyle(GUI.skin.GetStyle("Box")), GUILayout.Height(40f));
         manager.curveType = EditorGUILayout.Popup(new GUIContent("Curve Type", "What curve the scaling Animation should use."), manager.curveType, new string[] { "Default", "Clamped", "Linear", "Custom" });
         if (manager.curveType == 3)
         {
@@ -300,12 +305,17 @@ public class AvatarScalingWindow : EditorWindow
         EditorGUILayout.Space();
         DrawLine();
         GUILayout.Label("Output Settings", EditorStyles.boldLabel);
+        EditorGUILayout.BeginVertical(new GUIStyle(GUI.skin.GetStyle("Box")), GUILayout.Height(50f));
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField(new GUIContent("Destination", "The folder where generated files will be saved to."), new GUIStyle(GUI.skin.GetStyle("Box")) { alignment = TextAnchor.MiddleLeft, normal = new GUIStyleState() { background = null } });
         GUILayout.FlexibleSpace();
         string displayPath = manager.outputPath.Replace('\\', '/');
-        displayPath = (displayPath.Length > 28) ? "..." + displayPath.Substring((displayPath.IndexOf('/', displayPath.Length - 29) != -1) ? displayPath.IndexOf('/', displayPath.Length - 29) : displayPath.Length - 29) : displayPath;
-        if (GUILayout.Button("<i>" + displayPath + "</i>", new GUIStyle(GUI.skin.GetStyle("Box")) { richText = true, hover = GUI.skin.GetStyle("Button").active }, GUILayout.MinWidth(218)))
+        displayPath = ((new GUIStyle(GUI.skin.GetStyle("Box")) { richText = true, hover = GUI.skin.GetStyle("Button").active }).CalcSize(new GUIContent("<i>" + displayPath + "</i>")).x > 210) ? "..." + displayPath.Substring((displayPath.IndexOf('/', displayPath.Length - 29) != -1) ? displayPath.IndexOf('/', displayPath.Length - 29) : displayPath.Length - 29) : displayPath;
+        while ((new GUIStyle(GUI.skin.GetStyle("Box")) { richText = true, hover = GUI.skin.GetStyle("Button").active }).CalcSize(new GUIContent("<i>" + displayPath + "</i>")).x > 210)
+        {
+            displayPath = "..." + displayPath.Substring(4);
+        }
+        if (GUILayout.Button("<i>" + displayPath + "</i>", new GUIStyle(GUI.skin.GetStyle("Box")) { richText = true, hover = GUI.skin.GetStyle("Button").active }, GUILayout.MinWidth(210)))
         {
             string absPath = EditorUtility.OpenFolderPanel("Destination Folder", "", "");
             if (absPath.StartsWith(Application.dataPath))
@@ -319,6 +329,7 @@ public class AvatarScalingWindow : EditorWindow
         EditorGUI.BeginChangeCheck();
         manager.autoOverwrite = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(manager.autoOverwrite), new string[] { "No", "Yes" }));
         GUILayout.EndHorizontal();
+        EditorGUILayout.EndVertical();
         EditorGUILayout.Space();
         DrawLine();
         GUILayout.BeginHorizontal();
