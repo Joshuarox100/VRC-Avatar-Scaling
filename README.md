@@ -54,7 +54,7 @@ Configuration
 | Destination | The folder where generated files will be saved to. |
 | Overwrite All | Automatically overwrite existing files if needed. |
 
->\* \- Reference Animations must be 3 frames long and contain curves for Local Scale.<br>(You easily create a compatible reference by creating and modifying a duplicate of "Size Settings (ASTemplate)".)
+>\* \- Reference Animations must be 3 frames long and contain curves for Local Scale.<br>(You can easily create a compatible reference by creating and modifying a duplicate of "Size Settings (ASTemplate)".)
 
 Common Questions
 --------------
