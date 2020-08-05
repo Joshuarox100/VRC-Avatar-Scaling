@@ -28,6 +28,7 @@ public class ASManager : UnityEngine.Object
     public string outputPath;
     public bool autoOverwrite = false;
 
+    private ASBackup backupManager;
     public ASManager() { }
 
     public int ApplyChanges()
@@ -35,7 +36,9 @@ public class ASManager : UnityEngine.Object
         try
         {
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Starting", 0f);
- 
+            backupManager = null;
+            AssetDatabase.SaveAssets();
+
             /*
             // Check if necessary objects are found.
             */
@@ -63,21 +66,21 @@ public class ASManager : UnityEngine.Object
             AnimationClip sizeSettings = new AnimationClip();
 
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating Restore Point", 0.05f);
-            Asset[] backupList = new Asset[4] { new Asset(outputPath), null, null, null };
+            AssetList backupList = new AssetList();
             if (gesture != null)
             {
-                backupList[1] = new Asset(AssetDatabase.GetAssetPath(gesture));
+                backupList.Add(new Asset(AssetDatabase.GetAssetPath(gesture)));
             }
             if (sitting != null)
             {
-                backupList[2] = new Asset(AssetDatabase.GetAssetPath(sitting));
+                backupList.Add(new Asset(AssetDatabase.GetAssetPath(sitting)));
             }
             if (tpose != null)
             {
-                backupList[3] = new Asset(AssetDatabase.GetAssetPath(tpose));
+                backupList.Add(new Asset(AssetDatabase.GetAssetPath(tpose)));
             }
 
-            ASBackup backup = ASBackup.CreateBackup(backupList);
+            backupManager = new ASBackup(backupList);
 
             /*
             // Create any files needed in destination folder.
@@ -90,10 +93,10 @@ public class ASManager : UnityEngine.Object
                 switch (CopySDKTemplate(avatar.gameObject.name + "_Gesture.controller", "vrc_AvatarV3HandsLayer"))
                 {
                     case 1:
-                        RevertChanges(backup);
+                        RevertChanges();
                         return 98;
                     case 3:
-                        RevertChanges(backup);
+                        RevertChanges();
                         return 11;
                 }
             }
@@ -102,10 +105,10 @@ public class ASManager : UnityEngine.Object
                 switch (CopySDKTemplate(avatar.gameObject.name + "_Gesture.controller", AssetDatabase.GetAssetPath(gesture).Substring(AssetDatabase.GetAssetPath(gesture).IndexOf("vrc_"), AssetDatabase.GetAssetPath(gesture).IndexOf(".controller"))))
                 {
                     case 1:
-                        RevertChanges(backup);
+                        RevertChanges();
                         return 98;
                     case 3:
-                        RevertChanges(backup);
+                        RevertChanges();
                         return 11;
                 }
             }
@@ -117,10 +120,10 @@ public class ASManager : UnityEngine.Object
                 switch (CopySDKTemplate(avatar.gameObject.name + "_Sitting.controller", "vrc_AvatarV3SittingLayer"))
                 {
                     case 1:
-                        RevertChanges(backup);
+                        RevertChanges();
                         return 98;
                     case 3:
-                        RevertChanges(backup);
+                        RevertChanges();
                         return 11;
                 }
             }
@@ -129,10 +132,10 @@ public class ASManager : UnityEngine.Object
                 switch (CopySDKTemplate(avatar.gameObject.name + "_Sitting.controller", AssetDatabase.GetAssetPath(sitting).Substring(AssetDatabase.GetAssetPath(sitting).IndexOf("vrc_"), AssetDatabase.GetAssetPath(sitting).IndexOf(".controller"))))
                 {
                     case 1:
-                        RevertChanges(backup);
+                        RevertChanges();
                         return 98;
                     case 3:
-                        RevertChanges(backup);
+                        RevertChanges();
                         return 11;
                 }
             }
@@ -144,10 +147,10 @@ public class ASManager : UnityEngine.Object
                 switch (CopySDKTemplate(avatar.gameObject.name + "_TPose.controller", "vrc_AvatarV3UtilityTPose"))
                 {
                     case 1:
-                        RevertChanges(backup);
+                        RevertChanges();
                         return 98;
                     case 3:
-                        RevertChanges(backup);
+                        RevertChanges();
                         return 11;
                 }
             }
@@ -156,10 +159,10 @@ public class ASManager : UnityEngine.Object
                 switch (CopySDKTemplate(avatar.gameObject.name + "_TPose.controller", AssetDatabase.GetAssetPath(tpose).Substring(AssetDatabase.GetAssetPath(tpose).IndexOf("vrc_"), AssetDatabase.GetAssetPath(tpose).IndexOf(".controller"))))
                 {
                     case 1:
-                        RevertChanges(backup);
+                        RevertChanges();
                         return 98;
                     case 3:
-                        RevertChanges(backup);
+                        RevertChanges();
                         return 11;
                 }
             }
@@ -169,10 +172,10 @@ public class ASManager : UnityEngine.Object
             switch (CopySizeTemplate())
             {
                 case 1:
-                    RevertChanges(backup);
+                    RevertChanges();
                     return 98;
                 case 3:
-                    RevertChanges(backup);
+                    RevertChanges();
                     return 11;
             }
 
@@ -214,19 +217,19 @@ public class ASManager : UnityEngine.Object
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.5f);
             if (!AddLayersParameters(gesture, templateAnimators[0]))
             {
-                RevertChanges(backup);
+                RevertChanges();
                 return 6;
             }
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.65f);
             if (!AddLayersParameters(sitting, templateAnimators[1]))
             {
-                RevertChanges(backup);
+                RevertChanges();
                 return 6;
             }
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.8f);
             if (!AddLayersParameters(tpose, templateAnimators[2]))
             {
-                RevertChanges(backup);
+                RevertChanges();
                 return 6;
             }
 
@@ -237,7 +240,7 @@ public class ASManager : UnityEngine.Object
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animations", 0.825f);
             if (!ModifyAnimation(sizeSettings))
             {
-                RevertChanges(backup);
+                RevertChanges();
                 return 10;
             }
 
@@ -248,7 +251,7 @@ public class ASManager : UnityEngine.Object
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animators", 0.85f);
             if (!ReplaceAnimation(gesture, "Scaling", templateSizes, sizeSettings))
             {
-                RevertChanges(backup);
+                RevertChanges();
                 return 12;
             }
 
@@ -323,7 +326,7 @@ public class ASManager : UnityEngine.Object
                         case "Scale":
                             if (avatarParameters.parameters[i].valueType != VRCExpressionParameters.ValueType.Float)
                             {
-                                RevertChanges(backup);
+                                RevertChanges();
                                 return 4;
                             }
                             scalePresent = true;
@@ -331,7 +334,7 @@ public class ASManager : UnityEngine.Object
                         case "SizeOp":
                             if (avatarParameters.parameters[i].valueType != VRCExpressionParameters.ValueType.Int)
                             {
-                                RevertChanges(backup);
+                                RevertChanges();
                                 return 5;
                             }
                             sizeOpPresent = true;
@@ -346,7 +349,7 @@ public class ASManager : UnityEngine.Object
 
                 if ((count >= 15 && !scalePresent && !sizeOpPresent) || (count == 16 && (!scalePresent || !sizeOpPresent)))
                 {
-                    RevertChanges(backup);
+                    RevertChanges();
                     return 8;
                 }
                 else
@@ -799,41 +802,11 @@ public class ASManager : UnityEngine.Object
 
     private void RevertChanges()
     {
-        AssetList assets = new AssetList() { new Asset(outputPath) };
-
-        AnimatorController gesture = (avatar.baseAnimationLayers[2].animatorController != null && insertLayers) ? (AnimatorController)avatar.baseAnimationLayers[2].animatorController : null;
-        AnimatorController sitting = (avatar.specialAnimationLayers[0].animatorController != null && insertLayers) ? (AnimatorController)avatar.specialAnimationLayers[0].animatorController : null;
-        AnimatorController tpose = (avatar.specialAnimationLayers[1].animatorController != null && insertLayers) ? (AnimatorController)avatar.specialAnimationLayers[1].animatorController : null;
-
-        if (gesture != null)
+        AssetDatabase.SaveAssets();
+        if (backupManager != null && !backupManager.RestoreAssets())
         {
-            assets.Add(new Asset(AssetDatabase.GetAssetPath(gesture)));
+            Debug.LogError("[Avatar Scaling] Failed to revert changes.");
         }
-        if (sitting != null)
-        {
-            assets.Add(new Asset(AssetDatabase.GetAssetPath(sitting)));
-        }
-        if (tpose != null)
-        {
-            assets.Add(new Asset(AssetDatabase.GetAssetPath(tpose)));
-        }
-
-        if (Provider.RevertIsValid(assets, RevertMode.Normal))
-        {
-            Task revert = Provider.Revert(assets, RevertMode.Normal);
-            revert.Wait();
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-        }
-        else
-        {
-            Debug.LogError("[Avatar Scaling] Unable to revert changes!");
-        }
-    }
-
-    private void RevertChanges(ASBackup backup)
-    {
-        
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }

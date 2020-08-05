@@ -1,41 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.IO;
 using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
 
 public class ASBackup
 {
-    private readonly Object[][] assets;
-    private readonly string[] aliases;
+    private readonly Asset[] assets;
+    private readonly byte[][] backup;
 
-    public ASBackup (Asset[] assets, string[] aliases)
+    public ASBackup (AssetList assets)
     {
-        this.assets = new Object[assets.Length][];
+        this.assets = assets.ToArray();
+        backup = new byte[this.assets.Length][];
+        for (int i = 0; i < this.assets.Length; i++)
+        {
+            backup[i] = File.ReadAllBytes(this.assets[i].path);
+        }
+    }
+
+    public bool RestoreAssets()
+    {
         for (int i = 0; i < assets.Length; i++)
         {
-            if (assets[i].isFolder)
+            try
             {
-                this.assets[i] = GetFolderContents(assets[i]);
+                
+                File.WriteAllBytes(assets[i].path, backup[i]);
             }
-            else
+            catch (Exception err)
             {
-                this.assets[i] = new Object[] { assets[i].Load() };
+                Debug.LogError(err);
+                return false;
             }
         }
-        this.aliases = aliases;
+        return true;
     }
-
-    private Object[] GetFolderContents(Asset folder)
-    {
-        string[] guids = AssetDatabase.FindAssets("", new string[] { folder.path });
-        Object[] output = new Object[guids.Length];
-        for (int i = 0; i < guids.Length; i++)
-        {
-            output[i] = 
-        }
-        return output;
-    }
-
-
 }
