@@ -31,10 +31,6 @@ Before following these steps, set up your avatar how you normally would and ensu
 </p>
 
 4) Finally, click the Apply button to automatically set up scaling for your avatar! 
-	>Data will only ever be overwritten in the following circumstances:  
-		1. A file already exists with the same name as one being generated.  
-		2. An Animator already contains a layer named 'Scaling' (the layer is replaced).  
-		3. An Animator already contains a parameter of the correct name and type (the value is overwritten).
 
 Everything should now be fully set up! If you have any issues or questions, look in the [troubleshooting](#troubleshooting) and [questions](#common-questions) section below before [contacting me](#contacting-me).
 
@@ -50,11 +46,15 @@ Configuration
 | Expressions Menu | (Optional) The Expressions Menu you want the scaling controls added to. Leave this empty if you don't want any menus to be affected. (Controls will be added as a submenu.) |
 | Add Parameters | (Optional) Check for needed parameters within the Avatar's Expression Parameters and add them if necessary. |
 | Use Existing Animators | (Optional) If Animators are already present for Gesture, Sitting, or TPose, the parameters and layer for scaling will be added to them. If an Animator is missing or this feature is disabled, a new Animator will be generated using the defaults included in the VRChat SDK and inserted into the descriptor automatically. |
-| Multiplier | (On) Use sizes relative to your starting scale.<br>(Off) Use the exact values you will scale to. |
+| Edit Mode | (Multiplier) Edit sizes relative to your initial scale.<br>(Exact) Edit the exact sizes you will scale to. |
 | Minimum | The minimum scale your avatar can be. |
 | Maximum | The maximum scale your avatar can be. |
 | Curve Type | What curve the scaling Animation should use. |
-| Path | The folder where any generated files will be saved to. (Generated files will overwrite existing files with the same name: \<AVATAR NAME>_\<TEMPLATE NAME>) |
+| Reference* | Custom Animation curve to use as reference. |
+| Destination | The folder where generated files will be saved to. |
+| Overwrite All | Automatically overwrite existing files if needed. |
+
+>* - Reference Animations must be 3 frames long and contain curves for Local Scale. (You can duplicate "Size Settings (ASTemplate)" and modify it to ensure it's compatible.)
 
 Common Questions
 --------------
