@@ -6,7 +6,6 @@ using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 using ASExtensions;
-using NUnit.Framework.Constraints;
 
 public class ASManager : UnityEngine.Object
 {
