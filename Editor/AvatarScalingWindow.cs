@@ -395,7 +395,7 @@ public class AvatarScalingWindow : EditorWindow
             }
         }
         GUILayout.EndHorizontal();
-        if (mouseOverWindow != null && mouseOverWindow)
+        if (mouseOverWindow != null && mouseOverWindow == this)
         {
             Repaint();
         }
