@@ -12,6 +12,7 @@ public class AvatarScalingWindow : EditorWindow
     int sizeTab;
     int windowTab;
     bool found;
+    bool focused;
 
     int editMode;
     float minSimple = 0.5f;
@@ -398,6 +399,12 @@ public class AvatarScalingWindow : EditorWindow
         if (mouseOverWindow != null && mouseOverWindow == this)
         {
             Repaint();
+            focused = true;
+        }
+        else if (focused && mouseOverWindow == null)
+        {
+            Repaint();
+            focused = false;
         }
     }
 
