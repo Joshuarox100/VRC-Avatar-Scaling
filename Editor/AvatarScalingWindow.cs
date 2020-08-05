@@ -333,6 +333,11 @@ public class AvatarScalingWindow : EditorWindow
         EditorGUILayout.Space();
         DrawLine();
         GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Reset Settings", GUILayout.Width(360f / 2)))
+        {
+            ResetSettings();
+        }
+        GUILayout.FlexibleSpace();
         if (GUILayout.Button("Apply Changes", GUILayout.Width(360f / 2)))
         {
             string message = "If this appears, then something has gone horribly wrong.\nPlease file a bug report with steps to reproduce.";
@@ -389,11 +394,6 @@ public class AvatarScalingWindow : EditorWindow
                 EditorUtility.ClearProgressBar();
                 Selection.activeGameObject = manager.avatar.gameObject;
             }
-        }
-        GUILayout.FlexibleSpace();
-        if (GUILayout.Button("Reset Settings", GUILayout.Width(360f / 2)))
-        {
-            ResetSettings();
         }
         GUILayout.EndHorizontal();
         if (mouseOverWindow != null && mouseOverWindow)
