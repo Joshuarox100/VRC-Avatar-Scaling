@@ -6,6 +6,7 @@ using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 using ASExtensions;
+using NUnit.Framework.Constraints;
 
 public class ASManager : UnityEngine.Object
 {
@@ -81,12 +82,36 @@ public class ASManager : UnityEngine.Object
                         break;
                 }
             }
+            else if (IsSDKController(gesture))
+            {
+                switch (CopySDKTemplate(avatar.gameObject.name + "_Gesture.controller", AssetDatabase.GetAssetPath(gesture).Substring(AssetDatabase.GetAssetPath(gesture).IndexOf("vrc_"), AssetDatabase.GetAssetPath(gesture).IndexOf(".controller"))))
+                {
+                    case 1:
+                        return 98;
+                    case 3:
+                        return 11;
+                    default:
+                        break;
+                }
+            }
 
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.25f);
 
             if (sitting == null || sitting == templateAnimators[0] || sitting == templateAnimators[1] || sitting == templateAnimators[2])
             {
                 switch (CopySDKTemplate(avatar.gameObject.name + "_Sitting.controller", "vrc_AvatarV3SittingLayer"))
+                {
+                    case 1:
+                        return 98;
+                    case 3:
+                        return 11;
+                    default:
+                        break;
+                }    
+            }
+            else if (IsSDKController(sitting))
+            {
+                switch (CopySDKTemplate(avatar.gameObject.name + "_Sitting.controller", AssetDatabase.GetAssetPath(sitting).Substring(AssetDatabase.GetAssetPath(sitting).IndexOf("vrc_"), AssetDatabase.GetAssetPath(sitting).IndexOf(".controller"))))
                 {
                     case 1:
                         return 98;
@@ -102,6 +127,18 @@ public class ASManager : UnityEngine.Object
             if (tpose == null || tpose == templateAnimators[0] || tpose == templateAnimators[1] || tpose == templateAnimators[2])
             {
                 switch (CopySDKTemplate(avatar.gameObject.name + "_TPose.controller", "vrc_AvatarV3UtilityTPose"))
+                {
+                    case 1:
+                        return 98;
+                    case 3:
+                        return 11;
+                    default:
+                        break;
+                }
+            }
+            else if (IsSDKController(tpose))
+            {
+                switch (CopySDKTemplate(avatar.gameObject.name + "_TPose.controller", AssetDatabase.GetAssetPath(tpose).Substring(AssetDatabase.GetAssetPath(tpose).IndexOf("vrc_"), AssetDatabase.GetAssetPath(tpose).IndexOf(".controller"))))
                 {
                     case 1:
                         return 98;
@@ -642,6 +679,18 @@ public class ASManager : UnityEngine.Object
         }
 
         return true;
+    }
+
+    private bool IsSDKController(AnimatorController controller)
+    {
+        foreach (string guid in AssetDatabase.FindAssets("vrc_", new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" }))
+        {
+            if (AssetDatabase.GetAssetPath(controller) == AssetDatabase.GUIDToAssetPath(guid))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private int CopySDKTemplate (string outFile, string SDKfile)
