@@ -135,19 +135,20 @@ namespace ASExtensions
         }
         public static void SaveController(this AnimatorController source)
         {
+            string sourcePath = AssetDatabase.GetAssetPath(source);
             foreach (AnimatorControllerLayer layer in source.layers)
             {
                 //if (AssetDatabase.GetAssetPath(a.stateMachine) != "") // doesn't work for some reasons
                 if (AssetDatabase.GetAssetPath(layer.stateMachine).Length == 0)
                 {
-                    AssetDatabase.AddObjectToAsset(layer.stateMachine, AssetDatabase.GetAssetPath(source));
+                    AssetDatabase.AddObjectToAsset(layer.stateMachine, sourcePath);
                     layer.stateMachine.hideFlags = HideFlags.HideInHierarchy;
                 }
                 foreach (var subStateMachine in layer.stateMachine.stateMachines)
                 {
                     if (AssetDatabase.GetAssetPath(subStateMachine.stateMachine).Length == 0)
                     {
-                        AssetDatabase.AddObjectToAsset(subStateMachine.stateMachine, AssetDatabase.GetAssetPath(source));
+                        AssetDatabase.AddObjectToAsset(subStateMachine.stateMachine, sourcePath);
                         subStateMachine.stateMachine.hideFlags = HideFlags.HideInHierarchy;
                     }
                 }
@@ -155,14 +156,14 @@ namespace ASExtensions
                 {
                     if (AssetDatabase.GetAssetPath(childState.state).Length == 0)
                     {
-                        AssetDatabase.AddObjectToAsset(childState.state, AssetDatabase.GetAssetPath(source));
+                        AssetDatabase.AddObjectToAsset(childState.state, sourcePath);
                         childState.state.hideFlags = HideFlags.HideInHierarchy;
                     }
                     foreach (var stateBehavior in childState.state.behaviours)
                     {
                         if (AssetDatabase.GetAssetPath(stateBehavior).Length == 0)
                         {
-                            AssetDatabase.AddObjectToAsset(stateBehavior, AssetDatabase.GetAssetPath(source));
+                            AssetDatabase.AddObjectToAsset(stateBehavior, sourcePath);
                             stateBehavior.hideFlags = HideFlags.HideInHierarchy;
                         }
                     }
@@ -170,7 +171,7 @@ namespace ASExtensions
                     {
                         if (AssetDatabase.GetAssetPath(stateTransition).Length == 0)
                         {
-                            AssetDatabase.AddObjectToAsset(stateTransition, AssetDatabase.GetAssetPath(source));
+                            AssetDatabase.AddObjectToAsset(stateTransition, sourcePath);
                             stateTransition.hideFlags = HideFlags.HideInHierarchy;
                         }
                     }
@@ -179,7 +180,7 @@ namespace ASExtensions
                 {
                     if (AssetDatabase.GetAssetPath(anyStateTransition).Length == 0)
                     {
-                        AssetDatabase.AddObjectToAsset(anyStateTransition, AssetDatabase.GetAssetPath(source));
+                        AssetDatabase.AddObjectToAsset(anyStateTransition, sourcePath);
                         anyStateTransition.hideFlags = HideFlags.HideInHierarchy;
                     }
                 }
@@ -187,7 +188,7 @@ namespace ASExtensions
                 {
                     if (AssetDatabase.GetAssetPath(entryTransition).Length == 0)
                     {
-                        AssetDatabase.AddObjectToAsset(entryTransition, AssetDatabase.GetAssetPath(source));
+                        AssetDatabase.AddObjectToAsset(entryTransition, sourcePath);
                         entryTransition.hideFlags = HideFlags.HideInHierarchy;
                     }
                 }
@@ -195,7 +196,7 @@ namespace ASExtensions
                 {
                     if (AssetDatabase.GetAssetPath(machineBehavior).Length == 0)
                     {
-                        AssetDatabase.AddObjectToAsset(machineBehavior, AssetDatabase.GetAssetPath(source));
+                        AssetDatabase.AddObjectToAsset(machineBehavior, sourcePath);
                         machineBehavior.hideFlags = HideFlags.HideInHierarchy;
                     }
                 }
