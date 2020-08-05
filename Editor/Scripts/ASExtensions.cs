@@ -125,7 +125,11 @@ namespace ASExtensions
             EditorUtility.CopySerialized(transition, output);
             for (int i = 0; i < states.Length; i++)
             {
-                if (output.destinationState != null && output.destinationState.name == states[i].state.name)
+                if (output.destinationState == null)
+                {
+                    break;
+                }
+                else if (output.destinationState.name == states[i].state.name)
                 {
                     output.destinationState = states[i].state;
                     break;
