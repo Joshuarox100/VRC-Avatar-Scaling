@@ -2,7 +2,6 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 
