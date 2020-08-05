@@ -20,13 +20,34 @@ public class AvatarScalingWindow : EditorWindow
     Vector3 minAdvanced = new Vector3(0.5f, 0.5f, 0.5f);
     Vector3 maxAdvanced = new Vector3(3.0f, 3.0f, 3.0f);
 
-    [MenuItem("Window/Avatar Scaling")]
-    static void Init()
+    [MenuItem("Window/Avatar Scaling/Configure Scaling")]
+    static void ConfigureScaling()
     {
         AvatarScalingWindow window = (AvatarScalingWindow)GetWindow(typeof(AvatarScalingWindow), false, "Avatar Scaling");
         window.minSize = new Vector2(375f, 525f);
         window.wantsMouseMove = true;
         window.Show();
+    }
+
+    [MenuItem("Window/Avatar Scaling/Check For Updates")]
+    static void CheckForUpdates()
+    {
+        GameObject obj = new GameObject { hideFlags = HideFlags.HideInHierarchy };
+        obj.AddComponent<ASManager.NetworkManager>().StartCoroutine(ASManager.IsUpdateAvailable(obj, result =>
+        {
+            if (result)
+            {
+                if (EditorUtility.DisplayDialog("Avatar Scaling", "A new update is available!\nOpen the Releases page?", "Yes", "No"))
+                {
+                    Application.OpenURL("https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases");
+                }
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("Avatar Scaling", "You are using the latest version.", "Close");
+            }
+            DestroyImmediate(obj);
+        }));
     }
 
     private void OnGUI()
@@ -70,6 +91,7 @@ public class AvatarScalingWindow : EditorWindow
                 GUILayout.EndVertical();
                 break;
         }
+
     }
 
     private void OnFocus()

@@ -6,6 +6,8 @@ using UnityEngine;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
 using ASExtensions;
+using System.Collections;
+using UnityEngine.Networking;
 
 public class ASManager : UnityEngine.Object
 {
@@ -25,7 +27,7 @@ public class ASManager : UnityEngine.Object
     public string outputPath;
     public bool autoOverwrite = false;
 
-    public ASManager() {}
+    public ASManager() { }
 
     public int ApplyChanges()
     {
@@ -106,7 +108,7 @@ public class ASManager : UnityEngine.Object
                         return 11;
                     default:
                         break;
-                }    
+                }
             }
             else if (IsSDKController(sitting))
             {
@@ -692,7 +694,7 @@ public class ASManager : UnityEngine.Object
         return false;
     }
 
-    private int CopySDKTemplate (string outFile, string SDKfile)
+    private int CopySDKTemplate(string outFile, string SDKfile)
     {
         if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
             AssetDatabase.CreateFolder(outputPath, "Animators");
@@ -714,7 +716,7 @@ public class ASManager : UnityEngine.Object
         }
         return 0;
     }
-    
+
     private int CopySizeTemplate()
     {
         string outFile = avatar.gameObject.name + "_Sizes.anim";
@@ -750,4 +752,46 @@ public class ASManager : UnityEngine.Object
             outputPath = relativePath + Path.DirectorySeparatorChar + "Output";
         }
     }
+
+    //Needed for making the web request for version checking.
+    public class NetworkManager : MonoBehaviour { }
+
+    public static IEnumerator IsUpdateAvailable(GameObject obj, Action<bool> result)
+    {
+        string relativePath = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("(ASTemplate)")[0]).Substring(0, AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("(ASTemplate)")[0]).LastIndexOf("Templates") - 1);
+        string installedVersion = (AssetDatabase.FindAssets("VERSION", new string[] { relativePath }).Length > 0) ? File.ReadAllText(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("VERSION", new string[] { relativePath })[0])) : "";
+
+        bool available = false;
+        yield return available;
+
+        obj.GetComponent<NetworkManager>().StartCoroutine(GetText("https://raw.githubusercontent.com/Joshuarox100/VRC-Avatar-Scaling/master/VERSION", latestVersion => {
+            if (latestVersion != "" && installedVersion != "")
+            {
+                //Debug.Log(latestVersion);
+                //Debug.Log(installedVersion);
+                result?.Invoke(installedVersion != latestVersion);
+            }
+            else
+            {
+                result?.Invoke(false);
+            }
+        } ));
+    }
+    static IEnumerator GetText(string url, Action<string> result)
+    {
+        UnityWebRequest www = UnityWebRequest.Get(url);
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.LogError(www.error);
+            result?.Invoke("");
+        }
+        else
+        {
+            result?.Invoke(www.downloadHandler.text);
+        }
+    }
+
+
 }
