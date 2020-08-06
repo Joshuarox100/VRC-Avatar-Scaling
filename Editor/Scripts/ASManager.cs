@@ -29,6 +29,7 @@ public class ASManager : UnityEngine.Object
     public bool autoOverwrite = false;
 
     private ASBackup backupManager;
+    private AssetList generated;
     public ASManager() { }
 
     public int ApplyChanges()
@@ -37,6 +38,7 @@ public class ASManager : UnityEngine.Object
         {
             EditorUtility.DisplayProgressBar("Avatar Scaling", "Starting", 0f);
             backupManager = null;
+            generated = new AssetList();
             AssetDatabase.SaveAssets();
 
             /*
@@ -256,63 +258,10 @@ public class ASManager : UnityEngine.Object
             }
 
             /*
-            // Add new Animators to the Avatar Descriptor if possible. 
-            */
-
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.875f);
-
-            //Enable custom layers
-            if (avatar.customizeAnimationLayers == false)
-            {
-                avatar.customizeAnimationLayers = true;
-            }
-
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.9f);
-            //Add Gesture
-            if (!avatar.baseAnimationLayers[2].isEnabled)
-            {
-                avatar.baseAnimationLayers[2].isEnabled = true;
-                avatar.baseAnimationLayers[2].isDefault = false;
-                avatar.baseAnimationLayers[2].animatorController = gesture;
-            }
-            else if (avatar.baseAnimationLayers[2].animatorController == null)
-            {
-                avatar.baseAnimationLayers[2].animatorController = gesture;
-                avatar.baseAnimationLayers[2].isDefault = false;
-            }
-
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.92f);
-            //Add Sitting
-            if (!avatar.specialAnimationLayers[0].isEnabled)
-            {
-                avatar.specialAnimationLayers[0].isEnabled = true;
-                avatar.specialAnimationLayers[0].isDefault = false;
-                avatar.specialAnimationLayers[0].animatorController = sitting;
-            }
-            else if (avatar.specialAnimationLayers[0].animatorController == null)
-            {
-                avatar.specialAnimationLayers[0].animatorController = sitting;
-                avatar.specialAnimationLayers[0].isDefault = false;
-            }
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Updating Avatar Descriptor", 0.94f);
-            //Add TPose
-            if (!avatar.specialAnimationLayers[1].isEnabled)
-            {
-                avatar.specialAnimationLayers[1].isEnabled = true;
-                avatar.specialAnimationLayers[1].isDefault = false;
-                avatar.specialAnimationLayers[1].animatorController = tpose;
-            }
-            else if (avatar.specialAnimationLayers[1].animatorController == null)
-            {
-                avatar.specialAnimationLayers[1].animatorController = tpose;
-                avatar.specialAnimationLayers[1].isDefault = false;
-            }
-
-            /*
             // Check avatar's ExpressionParameters for needed parameters. Skip if present, attempt to append to list if absent. In cases where the list is full, inform the user and abort. 
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.96f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.9f);
             if (addExpressionParameters)
             {
                 VRCExpressionParameters avatarParameters = avatar.expressionParameters;
@@ -382,6 +331,59 @@ public class ASManager : UnityEngine.Object
             }
 
             /*
+            // Add new Animators to the Avatar Descriptor if possible. 
+            */
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.915f);
+
+            //Enable custom layers
+            if (avatar.customizeAnimationLayers == false)
+            {
+                avatar.customizeAnimationLayers = true;
+            }
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.93f);
+            //Add Gesture
+            if (!avatar.baseAnimationLayers[2].isEnabled)
+            {
+                avatar.baseAnimationLayers[2].isEnabled = true;
+                avatar.baseAnimationLayers[2].isDefault = false;
+                avatar.baseAnimationLayers[2].animatorController = gesture;
+            }
+            else if (avatar.baseAnimationLayers[2].animatorController == null)
+            {
+                avatar.baseAnimationLayers[2].animatorController = gesture;
+                avatar.baseAnimationLayers[2].isDefault = false;
+            }
+
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.945f);
+            //Add Sitting
+            if (!avatar.specialAnimationLayers[0].isEnabled)
+            {
+                avatar.specialAnimationLayers[0].isEnabled = true;
+                avatar.specialAnimationLayers[0].isDefault = false;
+                avatar.specialAnimationLayers[0].animatorController = sitting;
+            }
+            else if (avatar.specialAnimationLayers[0].animatorController == null)
+            {
+                avatar.specialAnimationLayers[0].animatorController = sitting;
+                avatar.specialAnimationLayers[0].isDefault = false;
+            }
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.96f);
+            //Add TPose
+            if (!avatar.specialAnimationLayers[1].isEnabled)
+            {
+                avatar.specialAnimationLayers[1].isEnabled = true;
+                avatar.specialAnimationLayers[1].isDefault = false;
+                avatar.specialAnimationLayers[1].animatorController = tpose;
+            }
+            else if (avatar.specialAnimationLayers[1].animatorController == null)
+            {
+                avatar.specialAnimationLayers[1].animatorController = tpose;
+                avatar.specialAnimationLayers[1].isDefault = false;
+            }
+
+            /*
             // Check if a Expressions Menu was provided and attempt to add Scale Controls as a submenu to it. If none was provided then assign the template to the descriptor if the slot is empty.
             */
 
@@ -390,6 +392,7 @@ public class ASManager : UnityEngine.Object
             {
                 if (expressionsMenu.controls.Count == 8)
                 {
+                    EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 1f);
                     return 2;
                 }
                 else
@@ -409,6 +412,7 @@ public class ASManager : UnityEngine.Object
                     }
                     else
                     {
+                        EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 1f);
                         return 1;
                     }
                 }
@@ -420,7 +424,7 @@ public class ASManager : UnityEngine.Object
                     avatar.expressionsMenu = (VRCExpressionsMenu)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("Scale Controls", new string[] { relativePath + Path.DirectorySeparatorChar + "Menus" })[0]), typeof(VRCExpressionsMenu));
                 }
             }
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 1.0f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 1f);
 
             return 0;
         }
@@ -745,21 +749,36 @@ public class ASManager : UnityEngine.Object
     {
         if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators"))
             AssetDatabase.CreateFolder(outputPath, "Animators");
-        if (!autoOverwrite && File.Exists(outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + outFile))
+        bool existed = true;
+        if (File.Exists(outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + outFile))
         {
-            switch (EditorUtility.DisplayDialogComplex("Avatar Scaling", outFile + " already exists!\nOverwrite the file?", "Overwrite", "Cancel", "Skip"))
+            if (!autoOverwrite)
             {
-                case 1:
-                    return 1;
-                case 2:
-                    return 2;
-                default:
-                    break;
-            }
+                switch (EditorUtility.DisplayDialogComplex("Avatar Scaling", outFile + " already exists!\nOverwrite the file?", "Overwrite", "Cancel", "Skip"))
+                {
+                    case 1:
+                        return 1;
+                    case 2:
+                        return 2;
+                    default:
+                        break;
+                }
+            }           
+            backupManager.AddToBackup(new Asset(outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + outFile));
+        }
+        else
+        {
+            existed = false;
         }
         if (!AssetDatabase.CopyAsset(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(SDKfile, new string[] { "Assets" + Path.DirectorySeparatorChar + "VRCSDK" + Path.DirectorySeparatorChar + "Examples3" + Path.DirectorySeparatorChar + "Animation" + Path.DirectorySeparatorChar + "Controllers" })[0]), outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + outFile))
         {
             return 3;
+        }
+        else
+        {
+            AssetDatabase.Refresh();
+            if (!existed)
+                generated.Add(new Asset(outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + outFile));
         }
         return 0;
     }
@@ -769,21 +788,36 @@ public class ASManager : UnityEngine.Object
         string outFile = avatar.gameObject.name + "_Sizes.anim";
         if (!AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animations"))
             AssetDatabase.CreateFolder(outputPath, "Animations");
-        if (!autoOverwrite && File.Exists(outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + outFile))
+        bool existed = true;
+        if (File.Exists(outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + outFile))
         {
-            switch (EditorUtility.DisplayDialogComplex("Avatar Scaling", outFile + " already exists!\nOverwrite the file?", "Overwrite", "Cancel", "Skip"))
+            if (!autoOverwrite)
             {
-                case 1:
-                    return 1;
-                case 2:
-                    return 2;
-                default:
-                    break;
+                switch (EditorUtility.DisplayDialogComplex("Avatar Scaling", outFile + " already exists!\nOverwrite the file?", "Overwrite", "Cancel", "Skip"))
+                {
+                    case 1:
+                        return 1;
+                    case 2:
+                        return 2;
+                    default:
+                        break;
+                }
             }
+            backupManager.AddToBackup(new Asset(outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + outFile));
+        }
+        else
+        {
+            existed = false;
         }
         if (!AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(templateSizes), outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + outFile))
         {
             return 3;
+        }
+        else
+        {
+            AssetDatabase.Refresh();
+            if (!existed)
+                generated.Add(new Asset(outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + outFile));
         }
         return 0;
     }
@@ -804,9 +838,20 @@ public class ASManager : UnityEngine.Object
     {
         AssetDatabase.SaveAssets();
         if (backupManager != null && !backupManager.RestoreAssets())
-        {
-            Debug.LogError("[Avatar Scaling] Failed to revert changes.");
-        }
+            Debug.LogError("[Avatar Scaling] Failed to revert all changes.");
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+        for (int i = 0; i < generated.ToArray().Length; i++)
+            if (!AssetDatabase.DeleteAsset(generated[i].path))
+                Debug.LogError("[Avatar Scaling] Failed to revert all changes.");
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+        if (AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animations") && AssetDatabase.FindAssets("", new string[] { outputPath + Path.DirectorySeparatorChar + "Animations" }).Length == 0)
+            if (!AssetDatabase.DeleteAsset(outputPath + Path.DirectorySeparatorChar + "Animations"))
+                Debug.LogError("[Avatar Scaling] Failed to revert all changes.");
+        if (AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators") && AssetDatabase.FindAssets("", new string[] { outputPath + Path.DirectorySeparatorChar + "Animators" }).Length == 0)
+            if (!AssetDatabase.DeleteAsset(outputPath + Path.DirectorySeparatorChar + "Animators"))
+                Debug.LogError("[Avatar Scaling] Failed to revert all changes.");
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
