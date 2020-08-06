@@ -879,6 +879,10 @@ public class ASManager : UnityEngine.Object
             {
                 EditorUtility.DisplayDialog("Avatar Scaling", "Failed to identify installed version.\n(VERSION file was not found.)", "Close");
             }
+            else if (latestVersion == "RIP")
+            {
+                EditorUtility.DisplayDialog("Avatar Scaling", "Project has been put on hold indefinitely.", "Close");
+            }
             else if (installedVersion != latestVersion)
             {
                 if (EditorUtility.DisplayDialog("Avatar Scaling", "A new update is available! (" + latestVersion + ")\nOpen the Releases page?", "Yes", "No"))
