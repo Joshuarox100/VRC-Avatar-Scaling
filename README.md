@@ -91,7 +91,7 @@ Troubleshooting
 >This is actually a problem with using Auto Footsteps. It currently retains the distance between the feet at your starting scale even after using Animator Remeasure Avatar. I've made a Canny post about it that you can upvote here: [[Bug] Auto Footsteps doesn't update correctly after using Remeasure Avatar.](https://feedback.vrchat.com/avatar-30/p/bug-auto-footsteps-doesnt-update-correctly-after-using-remeasure-avatar)
 
 **Avatar Scaling window refuses to open.**
->To fix this, reset your Editor layout by clicking Layout in the top right of the Editor, clicking Reset Factory Settings, and attempt to open the window again.
+>To fix this, reset your Editor layout by clicking Layout in the top right of the Editor and clicking Reset Factory Settings, then attempt to open the window again.
 
 **"An exception occured!"**
 >If this happens, ensure you have a clean install of Avatar Scaling, and if the problem persists, [let me know](#contacting-me)!
