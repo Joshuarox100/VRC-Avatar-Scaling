@@ -17,10 +17,10 @@ Before following these steps, set up your avatar how you normally would and ensu
   <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%201.png">
 </p>
 
-2) Open the Avatar Scaling window located under Window -> Avatar Scaling.
+2) Open the configuring window located under Window -> Avatar Scaling -> Configure Scaling.
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%202.png">
+  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/1/Step%202.png">
 </p>
 
 3) Next, configure how you want scaling to be setup for your avatar:
