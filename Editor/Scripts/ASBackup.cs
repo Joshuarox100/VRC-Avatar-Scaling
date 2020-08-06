@@ -30,19 +30,19 @@ public class ASBackup
     public void AddToBackup(Asset asset)
     {
         Asset[] newAssets = new Asset[assets.Length + 1];
-        assets.CopyTo(newAssets, 0);
-        newAssets[assets.Length] = asset;
+        assets.CopyTo(newAssets, 1);
+        newAssets[0] = asset;
         assets = newAssets;
 
         byte[][] newBytes = new byte[backup.Length + 1][];
-        backup.CopyTo(newBytes, 0);
+        backup.CopyTo(newBytes, 1);
         try
         {
-            newBytes[backup.Length] = File.ReadAllBytes(asset.path);
+            newBytes[0] = File.ReadAllBytes(asset.path);
         }
         catch (Exception err)
         {
-            newBytes[backup.Length] = null;
+            newBytes[0] = null;
             Debug.LogError(err);
         }
         backup = newBytes;
