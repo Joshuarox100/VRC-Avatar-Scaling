@@ -54,12 +54,12 @@ public class ASManager : UnityEngine.Object
             // Check destination and create restore point.
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Checking Destination", 0.05f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Starting", 0f);
             VerifyDestination();
 
             if (insertLayers)
             {
-                EditorUtility.DisplayProgressBar("Avatar Scaling", "Looking for Existing Animators", 0.1f);
+                EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating Restore Point", 0.05f);
             }
 
             AnimatorController gesture = (avatar.baseAnimationLayers[2].animatorController != null && insertLayers) ? (AnimatorController)avatar.baseAnimationLayers[2].animatorController : null;
@@ -67,7 +67,7 @@ public class ASManager : UnityEngine.Object
             AnimatorController tpose = (avatar.specialAnimationLayers[1].animatorController != null && insertLayers) ? (AnimatorController)avatar.specialAnimationLayers[1].animatorController : null;
             AnimationClip sizeSettings = new AnimationClip();
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating Restore Point", 0.05f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating Restore Point", 0.1f);
             AssetList backupList = new AssetList();
             if (gesture != null)
             {
@@ -88,7 +88,7 @@ public class ASManager : UnityEngine.Object
             // Create any files needed in destination folder.
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.2f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.125f);
 
             if (gesture == null || gesture == templateAnimators[0] || gesture == templateAnimators[1] || gesture == templateAnimators[2])
             {
@@ -115,7 +115,7 @@ public class ASManager : UnityEngine.Object
                 }
             }
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.25f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.15f);
 
             if (sitting == null || sitting == templateAnimators[0] || sitting == templateAnimators[1] || sitting == templateAnimators[2])
             {
@@ -142,7 +142,7 @@ public class ASManager : UnityEngine.Object
                 }
             }
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.3f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.175f);
 
             if (tpose == null || tpose == templateAnimators[0] || tpose == templateAnimators[1] || tpose == templateAnimators[2])
             {
@@ -169,7 +169,7 @@ public class ASManager : UnityEngine.Object
                 }
             }
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.35f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Creating New Files", 0.2f);
 
             switch (CopySizeTemplate())
             {
@@ -181,10 +181,10 @@ public class ASManager : UnityEngine.Object
                     return 11;
             }
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Refreshing Asset Database", 0.4f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Loading New Files", 0.225f);
             AssetDatabase.Refresh();
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Loading New Files", 0.45f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Loading New Files", 0.25f);
 
             string[] results = AssetDatabase.FindAssets(avatar.gameObject.name + "_", new string[] { outputPath });
             foreach (string guid in results)
@@ -216,19 +216,19 @@ public class ASManager : UnityEngine.Object
             // Append scaling layers to Animators. 
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.5f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.3f);
             if (!AddLayersParameters(gesture, templateAnimators[0]))
             {
                 RevertChanges();
                 return 6;
             }
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.65f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.5f);
             if (!AddLayersParameters(sitting, templateAnimators[1]))
             {
                 RevertChanges();
                 return 6;
             }
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.8f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Appending Layers", 0.7f);
             if (!AddLayersParameters(tpose, templateAnimators[2]))
             {
                 RevertChanges();
@@ -239,7 +239,7 @@ public class ASManager : UnityEngine.Object
             // Modify copy of AnimationClip to use new sizes.
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animations", 0.825f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animations", 0.9f);
             if (!ModifyAnimation(sizeSettings))
             {
                 RevertChanges();
@@ -250,7 +250,7 @@ public class ASManager : UnityEngine.Object
             // Replace reference to template AnimationClip in Gesture with the modified one.
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animators", 0.85f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Configuring Animations", 0.95f);
             if (!ReplaceAnimation(gesture, "Scaling", templateSizes, sizeSettings))
             {
                 RevertChanges();
@@ -261,7 +261,7 @@ public class ASManager : UnityEngine.Object
             // Check avatar's ExpressionParameters for needed parameters. Skip if present, attempt to append to list if absent. In cases where the list is full, inform the user and abort. 
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.9f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.95f);
             if (addExpressionParameters)
             {
                 VRCExpressionParameters avatarParameters = avatar.expressionParameters;
@@ -334,7 +334,7 @@ public class ASManager : UnityEngine.Object
             // Add new Animators to the Avatar Descriptor if possible. 
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.915f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.96f);
 
             //Enable custom layers
             if (avatar.customizeAnimationLayers == false)
@@ -342,7 +342,7 @@ public class ASManager : UnityEngine.Object
                 avatar.customizeAnimationLayers = true;
             }
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.93f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.97f);
             //Add Gesture
             if (!avatar.baseAnimationLayers[2].isEnabled)
             {
@@ -356,7 +356,7 @@ public class ASManager : UnityEngine.Object
                 avatar.baseAnimationLayers[2].isDefault = false;
             }
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.945f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.98f);
             //Add Sitting
             if (!avatar.specialAnimationLayers[0].isEnabled)
             {
@@ -369,7 +369,7 @@ public class ASManager : UnityEngine.Object
                 avatar.specialAnimationLayers[0].animatorController = sitting;
                 avatar.specialAnimationLayers[0].isDefault = false;
             }
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.96f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.99f);
             //Add TPose
             if (!avatar.specialAnimationLayers[1].isEnabled)
             {
@@ -387,7 +387,7 @@ public class ASManager : UnityEngine.Object
             // Check if a Expressions Menu was provided and attempt to add Scale Controls as a submenu to it. If none was provided then assign the template to the descriptor if the slot is empty.
             */
 
-            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.98f);
+            EditorUtility.DisplayProgressBar("Avatar Scaling", "Finalizing", 0.995f);
             if (expressionsMenu != null)
             {
                 if (expressionsMenu.controls.Count == 8)
