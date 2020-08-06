@@ -760,8 +760,6 @@ public class ASManager : UnityEngine.Object
                         return 1;
                     case 2:
                         return 2;
-                    default:
-                        break;
                 }
             }           
             backupManager.AddToBackup(new Asset(outputPath + Path.DirectorySeparatorChar + "Animators" + Path.DirectorySeparatorChar + outFile));
@@ -799,8 +797,6 @@ public class ASManager : UnityEngine.Object
                         return 1;
                     case 2:
                         return 2;
-                    default:
-                        break;
                 }
             }
             backupManager.AddToBackup(new Asset(outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + outFile));
@@ -852,6 +848,16 @@ public class ASManager : UnityEngine.Object
         if (AssetDatabase.IsValidFolder(outputPath + Path.DirectorySeparatorChar + "Animators") && AssetDatabase.FindAssets("", new string[] { outputPath + Path.DirectorySeparatorChar + "Animators" }).Length == 0)
             if (!AssetDatabase.DeleteAsset(outputPath + Path.DirectorySeparatorChar + "Animators"))
                 Debug.LogError("[Avatar Scaling] Failed to revert all changes.");
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+        //Fix reference to old sizes
+        AnimatorController gesture = (avatar.baseAnimationLayers[2].animatorController != null && insertLayers) ? (AnimatorController)avatar.baseAnimationLayers[2].animatorController : null;
+        AnimationClip settings = (File.Exists(outputPath + Path.DirectorySeparatorChar + "Animations" + Path.DirectorySeparatorChar + avatar.name + "_Sizes.anim")) ? (AnimationClip)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(avatar.name + "_Sizes", new string[] { outputPath + Path.DirectorySeparatorChar + "Animations" })[0]), typeof(AnimationClip)) : null;
+        if (gesture != null && settings != null)
+        {
+            ReplaceAnimation(gesture, "Scaling", null, settings);
+        }
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
