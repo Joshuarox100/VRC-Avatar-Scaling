@@ -8,7 +8,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 using VRC.SDK3.Avatars.Components;
 using VRC.SDK3.Avatars.ScriptableObjects;
-using ASExtensions;
+using BMBLibraries.Classes;
+using BMBLibraries.Extensions;
 
 public class ASManager : UnityEngine.Object
 {
@@ -28,7 +29,7 @@ public class ASManager : UnityEngine.Object
     public string outputPath;
     public bool autoOverwrite = false;
 
-    private ASBackup backupManager;
+    private Backup backupManager;
     private AssetList generated;
     public ASManager() { }
 
@@ -82,7 +83,7 @@ public class ASManager : UnityEngine.Object
                 backupList.Add(new Asset(AssetDatabase.GetAssetPath(tpose)));
             }
 
-            backupManager = new ASBackup(backupList);
+            backupManager = new Backup(backupList);
 
             /*
             // Create any files needed in destination folder.
