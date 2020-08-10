@@ -20,8 +20,8 @@ public class AvatarScalingWindow : EditorWindow
     Vector3 minAdvanced = new Vector3(0.5f, 0.5f, 0.5f);
     Vector3 maxAdvanced = new Vector3(3.0f, 3.0f, 3.0f);
 
-    [MenuItem("Window/Avatar Scaling/Configure Scaling")]
-    static void ConfigureScaling()
+    [MenuItem("Window/AV3 Tools/Avatar Scaling/Configure Scaling")]
+    public static void ConfigureScaling()
     {
         AvatarScalingWindow window = (AvatarScalingWindow)GetWindow(typeof(AvatarScalingWindow), false, "Avatar Scaling");
         window.minSize = new Vector2(375f, 525f);
@@ -29,8 +29,8 @@ public class AvatarScalingWindow : EditorWindow
         window.Show();
     }
 
-    [MenuItem("Window/Avatar Scaling/Check For Updates")]
-    static void CheckForUpdates()
+    [MenuItem("Window/AV3 Tools/Avatar Scaling/Check For Updates")]
+    public static void CheckForUpdates()
     {
         ASManager.CheckForUpdates();
     }
@@ -333,7 +333,6 @@ public class AvatarScalingWindow : EditorWindow
         EditorGUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
         GUILayout.Label(new GUIContent("Overwrite All", "Automatically overwrite existing files if needed."), GUILayout.Width(145));
-        EditorGUI.BeginChangeCheck();
         manager.autoOverwrite = Convert.ToBoolean(GUILayout.Toolbar(Convert.ToInt32(manager.autoOverwrite), new string[] { "No", "Yes" }));
         GUILayout.EndHorizontal();
         EditorGUILayout.EndVertical();

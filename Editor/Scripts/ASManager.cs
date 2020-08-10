@@ -871,7 +871,7 @@ public class ASManager : UnityEngine.Object
         string installedVersion = (AssetDatabase.FindAssets("VERSION", new string[] { relativePath }).Length > 0) ? File.ReadAllText(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("VERSION", new string[] { relativePath })[0])) : "";
 
         GameObject netMan = new GameObject { hideFlags = HideFlags.HideInHierarchy };
-        netMan.AddComponent<NetworkManager>().StartCoroutine(GetText("https://raw.githubusercontent.com/Joshuarox100/VRC-Avatar-Scaling/master/VERSION", latestVersion => {
+        netMan.AddComponent<NetworkManager>().StartCoroutine(GetText("https://raw.githubusercontent.com/Joshuarox100/VRC-Avatar-Scaling/master/Editor/VERSION", latestVersion => {
             if (latestVersion == "")
             {
                 EditorUtility.DisplayDialog("Avatar Scaling", "Failed to fetch the latest version.\n(Check console for details.)", "Close");
