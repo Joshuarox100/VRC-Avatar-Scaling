@@ -3,11 +3,11 @@ VRC Avatar Scaling
 
 Author: Joshuarox100
 
-Usage: This package is meant for use with VRChat's Avatars 3.0 (VRCSDK3-AVATAR)
-
 Description: Scale your avatar to any size on the fly with a spin of the joystick!
 
-Dependencies: [BMB Libraries](https://github.com/Joshuarox100/BMB-Libraries) (Included)
+Dependencies: 
+- [BMB Libraries](https://github.com/Joshuarox100/BMB-Libraries) (Included)
+- VRCSDK3-AVATAR (Not Included)
 
 Setting Up
 --------------
@@ -16,20 +16,20 @@ Before following these steps, set up your avatar how you normally would and ensu
 1) Download and import the latest **Unity Package** from [**Releases**](https://github.com/Joshuarox100/VRC-Avatar-Scaling/releases) on GitHub **(You will have issues if you don't)**.
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%201.png">
+  <img width="80%" height="80%" src="Images/Step 1.png">
 </p>
 
 2) Open the setup window located under Window -> Avatar Scaling -> Configure Scaling.
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/1/Step%202.png">
+  <img width="80%" height="80%" src="Images/Step 2.png">
 </p>
 
 3) Next, configure how you want scaling to be setup for your avatar:
 	>If you're not sure what a particular setting does, hover your mouse over the text to see its function or refer to [Configuration](#configuration).
 
 <p align="center">
-  <img width="80%" height="80%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Step%203.png">
+  <img width="80%" height="80%" src="Images/Step 3.png">
 </p>
 
 4) Finally, click Apply Changes to automatically set up scaling for your avatar! 
@@ -39,7 +39,7 @@ Everything should now be fully set up! If you have any issues or questions, look
 Configuration
 --------------
 <p align="center">
-  <img width="60%" height="60%" src="https://github.com/Joshuarox100/VRC-Avatar-Scaling/blob/Tutorial-Images/Tutorial%20Images/0-5/0/Setup%20Window.png">
+  <img width="60%" height="60%" src="Images/Setup Window.png">
 </p>
 
 | Setting | Function |
