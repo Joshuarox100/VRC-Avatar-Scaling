@@ -7,6 +7,8 @@ Usage: This package is meant for use with VRChat's Avatars 3.0 (VRCSDK3-AVATAR)
 
 Description: Scale your avatar to any size on the fly with a spin of the joystick!
 
+Dependencies: [BMB Libraries](https://github.com/Joshuarox100/BMB-Libraries)(Included)
+
 Setting Up
 --------------
 Before following these steps, set up your avatar how you normally would and ensure that you have a basic understanding of how Avatars 3.0 works.
