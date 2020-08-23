@@ -20,7 +20,7 @@ public class AvatarScalingWindow : EditorWindow
     Vector3 minAdvanced = new Vector3(0.5f, 0.5f, 0.5f);
     Vector3 maxAdvanced = new Vector3(3.0f, 3.0f, 3.0f);
 
-    [MenuItem("Window/AV3 Tools/Avatar Scaling/Configure Scaling")]
+    [MenuItem("Tools/Avatars 3.0//Avatar Scaling/Configure Scaling")]
     public static void ConfigureScaling()
     {
         AvatarScalingWindow window = (AvatarScalingWindow)GetWindow(typeof(AvatarScalingWindow), false, "Avatar Scaling");
@@ -29,7 +29,7 @@ public class AvatarScalingWindow : EditorWindow
         window.Show();
     }
 
-    [MenuItem("Window/AV3 Tools/Avatar Scaling/Check For Updates")]
+    [MenuItem("Tools/Avatars 3.0//Avatar Scaling/Check For Updates")]
     public static void CheckForUpdates()
     {
         ASManager.CheckForUpdates();
