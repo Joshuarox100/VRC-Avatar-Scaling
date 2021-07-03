@@ -133,6 +133,11 @@ MonoBehaviour:
   parameters:
   - name: Scale
     value: 0.5
+    valueMin: 0
+    valueMax: 0
+    chance: 0
+    type: 0
+  localOnly: 0
   debugString: 
 --- !u!1102 &1102301017541114446
 AnimatorState:

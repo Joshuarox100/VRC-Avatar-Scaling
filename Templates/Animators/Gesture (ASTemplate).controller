@@ -1331,10 +1331,23 @@ MonoBehaviour:
   parameters:
   - name: Scale
     value: 0.5
+    valueMin: 0
+    valueMax: 0
+    chance: 0
+    type: 0
   - name: SizeOp
     value: 0
+    valueMin: 0
+    valueMax: 0
+    chance: 0
+    type: 0
   - name: LoadFlag
     value: 0
+    valueMin: 0
+    valueMax: 0
+    chance: 0
+    type: 0
+  localOnly: 0
   debugString: 
 --- !u!114 &114646667553275426
 MonoBehaviour:
@@ -1506,10 +1519,23 @@ MonoBehaviour:
   parameters:
   - name: Scale
     value: 0.5
+    valueMin: 0
+    valueMax: 0
+    chance: 0
+    type: 0
   - name: SizeOp
     value: 0
+    valueMin: 0
+    valueMax: 0
+    chance: 0
+    type: 0
   - name: LoadFlag
     value: 0
+    valueMin: 0
+    valueMax: 0
+    chance: 0
+    type: 0
+  localOnly: 0
   debugString: 
 --- !u!114 &114871519511550830
 MonoBehaviour:
@@ -6217,7 +6243,6 @@ AnimatorState:
   m_Transitions:
   - {fileID: 1101894923528073806}
   m_StateMachineBehaviours:
-  - {fileID: 114296230666551660}
   - {fileID: 114528186855621174}
   - {fileID: 114822727655490080}
   m_Position: {x: 50, y: 50, z: 0}
